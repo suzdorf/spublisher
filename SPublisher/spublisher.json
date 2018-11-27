@@ -1,0 +1,41 @@
+{
+  "BuildSteps": [
+    {
+      "Name": "Build .net core solution",
+      "Type": "bat",
+      "FileName": "build.bat"
+    },
+    {
+      "Name": "Build angular client",
+      "Type": "cmd",
+      "Commands": [
+        "cd C:\\Temp",
+        "dotnet build"
+      ]
+    }
+  ],
+  "Applications": [
+    {
+      "Name": "taskmanager",
+      "AppPoolName": "TaskManager",
+      "ManagedRuntimeVersion": "No Managed Code",
+      "Path": "..\\TaskManager.Client\\dist\\task-manager-client",
+      "Applications": [
+        {
+          "Name": "api",
+          "AppPoolName": "TaskManagerApi",
+          "ManagedRuntimeVersion": "No Managed Code",
+          "Path": "..\\TaskManager.WebApi\\bin\\Debug\\netcoreapp2.1",
+          "Applications": [ ]
+        },
+        {
+          "Name": "messaging",
+          "AppPoolName": "TaskManagerMessaging",
+          "ManagedRuntimeVersion": "No Managed Code",
+          "Path": "..\\TaskManager.MessagingService\\bin\\Debug\\netcoreapp2.1",
+          "Applications": [ ]
+        }
+      ]
+    }
+  ]
+}
