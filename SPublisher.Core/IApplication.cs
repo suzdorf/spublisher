@@ -1,6 +1,6 @@
 ﻿namespace SPublisher.Core
 {
-    public interface IApplication
+    public interface IApplication : IAppPoolInfo, IApplicationInfo
     {
         string Name { get; }
         string AppPoolName { get; }

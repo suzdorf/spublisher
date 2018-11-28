@@ -44,6 +44,8 @@
     <Compile Include="BuildSteps\IBuildStep.cs" />
     <Compile Include="BuildSteps\ICommandLineStep.cs" />
     <Compile Include="IApplication.cs" />
+    <Compile Include="IApplicationInfo.cs" />
+    <Compile Include="IAppPoolInfo.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IConfigurationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
