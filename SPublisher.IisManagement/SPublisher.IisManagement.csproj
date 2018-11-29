@@ -173,7 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationCreator.cs" />
-    <Compile Include="DefaultSiteCreator.cs" />
+    <Compile Include="SiteCreator.cs" />
     <Compile Include="IApplicationCreator.cs" />
     <Compile Include="IServerManagerAccessor.cs" />
     <Compile Include="IServerManagerDataProvider.cs" />

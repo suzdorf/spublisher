@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq;
-using SPublisher.Core;
+﻿using SPublisher.Core;
 
 namespace SPublisher.IisManagement
 {
-    public class DefaultSiteCreator : ISiteCreator
+    public class SiteCreator : ISiteCreator
     {
         private readonly IApplicationCreator _applicationCreator;
         private readonly IServerManagerAccessor _serverManagerCreator;
 
-        public DefaultSiteCreator(IServerManagerAccessor serverManagerCreator, IApplicationCreator applicationCreator)
+        public SiteCreator(IServerManagerAccessor serverManagerCreator, IApplicationCreator applicationCreator)
         {
             _serverManagerCreator = serverManagerCreator;
             _applicationCreator = applicationCreator;

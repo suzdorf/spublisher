@@ -1,0 +1,7 @@
+﻿namespace SPublisher.Core
+{
+    public interface ILogger
+    {
+        void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage =  null);
+    }
+}

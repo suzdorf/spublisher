@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SPublisher.Configuration.BuildSteps;
@@ -7,6 +8,13 @@ namespace SPublisher.Configuration.JsonConversion
 {
     public class BuildStepsConverter : CustomConverter<BuildStepModel>
     {
+        private readonly IDictionary<string, Func<BuildStepModel>> _buildStepModelCreators;
+
+        public BuildStepsConverter(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators)
+        {
+            _buildStepModelCreators = buildStepModelCreators;
+        }
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -16,15 +24,7 @@ namespace SPublisher.Configuration.JsonConversion
         {
             var type = jObject["Type"].Value<string>();
 
-            switch (type)
-            {
-                case "cmd":
-                    return new CommandLineStepModel();
-                case "bat":
-                    return new BatchFileStepModel();
-                default:
-                    return new BuildStepModel();
-            }
+            return _buildStepModelCreators[type]();
         }
     }
 }

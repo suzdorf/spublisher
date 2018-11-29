@@ -2,7 +2,7 @@
 
 namespace SPublisher.Configuration.BuildSteps
 {
-    class BatchFileStepModel : BuildStepModel, IBatchFileStep
+    public class BatchFileStepModel : BuildStepModel, IBatchFileStep
     {
         public string FileName { get; set; }
     }

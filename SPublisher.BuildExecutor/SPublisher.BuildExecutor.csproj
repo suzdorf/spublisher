@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8AE01366-9A0E-4349-9FB9-29841E0D5126}</ProjectGuid>
+    <ProjectGuid>{5928CA43-C7B7-425E-9376-61C7C1FC6D4A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPublisher.Core</RootNamespace>
-    <AssemblyName>SPublisher.Core</AssemblyName>
+    <RootNamespace>SPublisher.BuildExecutor</RootNamespace>
+    <AssemblyName>SPublisher.BuildExecutor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,20 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildSteps\IBatchFileStep.cs" />
-    <Compile Include="BuildSteps\IBuildStep.cs" />
-    <Compile Include="BuildSteps\ICommandLineStep.cs" />
-    <Compile Include="IApplication.cs" />
-    <Compile Include="IApplicationInfo.cs" />
-    <Compile Include="IAppPoolInfo.cs" />
-    <Compile Include="IBuildExecutor.cs" />
-    <Compile Include="IConfiguration.cs" />
-    <Compile Include="IConfigurationFactory.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="ILogMessage.cs" />
+    <Compile Include="BuildExecutor.cs" />
+    <Compile Include="BuildStepExecutorFactory.cs" />
+    <Compile Include="BuildStepExecutors\BatchFileExecutor.cs" />
+    <Compile Include="BuildStepExecutors\CommandLineExecutor.cs" />
+    <Compile Include="IBuildStepExecutor.cs" />
+    <Compile Include="IBuildStepExecutorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SPublisherEvent.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPublisher.Core\SPublisher.Core.csproj">
+      <Project>{8AE01366-9A0E-4349-9FB9-29841E0D5126}</Project>
+      <Name>SPublisher.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
