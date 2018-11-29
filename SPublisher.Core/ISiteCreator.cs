@@ -1,6 +1,4 @@
-﻿using SPublisher.Core;
-
-namespace SPublisher.IisManagement
+﻿namespace SPublisher.Core
 {
     public interface ISiteCreator
     {

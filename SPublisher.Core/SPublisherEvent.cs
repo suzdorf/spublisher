@@ -9,6 +9,12 @@
         BuildStepExecutionStarted,
         BuildStepExecutionCompleted,
         IisManagementStarted,
-        IisManagementCompleted
+        IisManagementCompleted,
+        ApplicationPoolExists,
+        ApplicationPoolCreated,
+        SiteExists,
+        SiteCreated,
+        ApplicationExists,
+        ApplicationCreated
     }
 }

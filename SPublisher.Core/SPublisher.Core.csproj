@@ -43,6 +43,7 @@
     <Compile Include="BuildSteps\IBatchFileStep.cs" />
     <Compile Include="BuildSteps\IBuildStep.cs" />
     <Compile Include="BuildSteps\ICommandLineStep.cs" />
+    <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="IApplication.cs" />
     <Compile Include="IApplicationInfo.cs" />
     <Compile Include="IAppPoolInfo.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="IConfigurationFactory.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
+    <Compile Include="ISiteCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPublisherEvent.cs" />
   </ItemGroup>

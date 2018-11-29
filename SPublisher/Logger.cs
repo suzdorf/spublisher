@@ -31,8 +31,13 @@ namespace SPublisher
                     }
                 },
                 {SPublisherEvent.IisManagementStarted, message => "iis site creation started"},
-                {SPublisherEvent.IisManagementCompleted, message => "iis site creation completed"}
-
+                {SPublisherEvent.IisManagementCompleted, message => "iis site creation completed"},
+                {SPublisherEvent.ApplicationPoolExists, message => $"application pool with name '{((IAppPoolInfo) message).AppPoolName}' already exists"},
+                {SPublisherEvent.ApplicationPoolCreated, message => $"application pool '{((IAppPoolInfo) message).AppPoolName}' created"},
+                {SPublisherEvent.SiteExists, message => $"Site with name '{((IApplicationInfo) message).Name}' already exists"},
+                {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).AppPoolName}' created"},
+                {SPublisherEvent.ApplicationExists, message => $"Application with name '{((IApplicationInfo) message).Name}' already exists"},
+                {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).AppPoolName}' created"}
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

@@ -44,6 +44,7 @@
     <Compile Include="BuildStepExecutorFactory.cs" />
     <Compile Include="BuildStepExecutors\BatchFileExecutor.cs" />
     <Compile Include="BuildStepExecutors\CommandLineExecutor.cs" />
+    <Compile Include="BuildStepExecutors\IisManagementExecutor.cs" />
     <Compile Include="IBuildStepExecutor.cs" />
     <Compile Include="IBuildStepExecutorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

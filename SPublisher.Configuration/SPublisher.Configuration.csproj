@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildSteps\IisManagementStepModel.cs" />
     <Compile Include="ConfigurationFactory.cs" />
     <Compile Include="ConfigurationModel.cs" />
     <Compile Include="IISObjects\ApplicationModel.cs" />

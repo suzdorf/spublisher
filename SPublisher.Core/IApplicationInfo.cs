@@ -1,6 +1,6 @@
 ﻿namespace SPublisher.Core
 {
-    public interface IApplicationInfo
+    public interface IApplicationInfo : ILogMessage
     {
         string Name { get; }
         string Path { get; }

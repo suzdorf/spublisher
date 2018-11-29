@@ -178,7 +178,6 @@
     <Compile Include="IServerManagerAccessor.cs" />
     <Compile Include="IServerManagerDataProvider.cs" />
     <Compile Include="IServerManagerStorage.cs" />
-    <Compile Include="ISiteCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerManagerAccessor.cs" />
     <Compile Include="ServerManagerDataProvider.cs" />

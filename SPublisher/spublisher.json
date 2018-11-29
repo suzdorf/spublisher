@@ -12,34 +12,38 @@
         "cd C:\\Temp",
         "echo 1st command"
       ]
-    }
-  ],
-  "Applications": [
+    },
     {
-      "Name": "spublisher_test1",
-      "AppPoolName": "spublisher_test1",
-      "ManagedRuntimeVersion": "No Managed Code",
-      "Path": "C:\\Temp",
+      "Name": "Create site",
+      "Type": "iis",
       "Applications": [
         {
-          "Name": "spublisher_test2",
-          "AppPoolName": "spublisher_test2",
+          "Name": "spublisher_test1",
+          "AppPoolName": "spublisher_test1",
           "ManagedRuntimeVersion": "No Managed Code",
           "Path": "C:\\Temp",
-          "Applications": [ ]
-        },
-        {
-          "Name": "spublisher_test3",
-          "AppPoolName": "spublisher_test3",
-          "ManagedRuntimeVersion": "No Managed Code",
-          "Path":  "C:\\Temp",
           "Applications": [
             {
-              "Name": "spublisher_test4",
-              "AppPoolName": "spublisher_test4",
+              "Name": "spublisher_test2",
+              "AppPoolName": "spublisher_test2",
+              "ManagedRuntimeVersion": "No Managed Code",
+              "Path": "C:\\Temp",
+              "Applications": [ ]
+            },
+            {
+              "Name": "spublisher_test3",
+              "AppPoolName": "spublisher_test3",
               "ManagedRuntimeVersion": "No Managed Code",
               "Path":  "C:\\Temp",
-              "Applications": []
+              "Applications": [
+                {
+                  "Name": "spublisher_test4",
+                  "AppPoolName": "spublisher_test4",
+                  "ManagedRuntimeVersion": "No Managed Code",
+                  "Path":  "C:\\Temp",
+                  "Applications": []
+                }
+              ]
             }
           ]
         }
