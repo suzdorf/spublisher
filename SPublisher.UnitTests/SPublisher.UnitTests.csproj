@@ -92,11 +92,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BuildExecutor\BuildExecutorTests.cs" />
+    <Compile Include="BuildExecutor\IisManagementExecutorTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPublisher.BuildExecutor\SPublisher.BuildExecutor.csproj">
+      <Project>{5928CA43-C7B7-425E-9376-61C7C1FC6D4A}</Project>
+      <Name>SPublisher.BuildExecutor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPublisher.Core\SPublisher.Core.csproj">
       <Project>{8AE01366-9A0E-4349-9FB9-29841E0D5126}</Project>
       <Name>SPublisher.Core</Name>
