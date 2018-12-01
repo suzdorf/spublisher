@@ -14,7 +14,7 @@
       ]
     },
     {
-      "Name": "Create site",
+      "Name": "Create Iis Site structure",
       "Type": "iis",
       "Applications": [
         {

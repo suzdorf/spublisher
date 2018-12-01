@@ -16,7 +16,7 @@ namespace SPublisher
         private static readonly ServerManagerAccessor ServerManagerAccessor = new ServerManagerAccessor();
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
-        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator);
+        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
 
         private const string CommandLineBuildStep = "cmd";
         private const string BatchFileBuildStep = "bat";

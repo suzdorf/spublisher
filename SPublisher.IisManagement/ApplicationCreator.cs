@@ -1,4 +1,5 @@
-﻿using SPublisher.Core;
+﻿using System.Linq;
+using SPublisher.Core;
 
 namespace SPublisher.IisManagement
 {
@@ -27,10 +28,11 @@ namespace SPublisher.IisManagement
                 _logger.LogEvent(SPublisherEvent.SiteExists, application);
             }
 
-            foreach (var app in application.Applications)
-            {
-              CreateApplication(app, application.Name, "/");
-            }
+            if (application.Applications != null && application.Applications.Any())
+                foreach (var app in application.Applications)
+                {
+                  CreateApplication(app, application.Name, "/");
+                }
         }
 
         private void CreateApplication(IApplication application, string siteName, string path)
@@ -47,10 +49,11 @@ namespace SPublisher.IisManagement
                 _logger.LogEvent(SPublisherEvent.ApplicationExists, application);
             }
 
-            foreach (var app in application.Applications)
-            {
-                CreateApplication(app, siteName, $"{path}{application.Name}/");
-            }
+            if (application.Applications != null && application.Applications.Any())
+                foreach (var app in application.Applications)
+                {
+                    CreateApplication(app, siteName, $"{path}{application.Name}/");
+                }
         }
 
         private void CreateAppPool(IAppPoolInfo info)

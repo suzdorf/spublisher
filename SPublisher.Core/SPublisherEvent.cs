@@ -15,6 +15,7 @@
         SiteExists,
         SiteCreated,
         ApplicationExists,
-        ApplicationCreated
+        ApplicationCreated,
+        ApplicationListIsEmpty
     }
 }

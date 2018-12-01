@@ -37,7 +37,8 @@ namespace SPublisher
                 {SPublisherEvent.SiteExists, message => $"Site with name '{((IApplicationInfo) message).Name}' already exists"},
                 {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.ApplicationExists, message => $"Application with name '{((IApplicationInfo) message).Name}' already exists"},
-                {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).AppPoolName}' created"}
+                {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).AppPoolName}' created"},
+                {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"}
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

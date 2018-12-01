@@ -12,9 +12,9 @@ namespace SPublisher.UnitTests.IIsManagement
         private readonly Mock<IServerManagerAccessor> _accessorMock = new Mock<IServerManagerAccessor>();
         private readonly Mock<IApplicationCreator> _applicationCreatorMock = new Mock<IApplicationCreator>();
         private readonly Mock<IDisposable> _serverManagerMock = new Mock<IDisposable>();
+        private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
         private readonly ISiteCreator _siteCreator;
-        private readonly IApplication[] _applications = new []
-        {
+        private readonly IApplication[] _applications = {
             new Mock<IApplication>().Object,
             new Mock<IApplication>().Object
         };
@@ -22,7 +22,7 @@ namespace SPublisher.UnitTests.IIsManagement
         public SiteCreatorTests()
         {
             _accessorMock.Setup(x => x.ServerManager()).Returns(_serverManagerMock.Object);
-            _siteCreator = new SiteCreator(_accessorMock.Object, _applicationCreatorMock.Object);
+            _siteCreator = new SiteCreator(_accessorMock.Object, _applicationCreatorMock.Object, _loggerMock.Object);
         }
 
         [Fact]
@@ -42,6 +42,30 @@ namespace SPublisher.UnitTests.IIsManagement
 
             _applicationCreatorMock.Verify(x=>x.Create(_applications.First()), Times.Once);
             _applicationCreatorMock.Verify(x => x.Create(_applications.Last()), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldReturnIfApplicationsIsNullAndLogEvent()
+        {
+            _siteCreator.Create(null);
+
+            _accessorMock.Verify(x => x.ServerManager(), Times.Never);
+            _accessorMock.Verify(x => x.CommitChanges(), Times.Never);
+            _serverManagerMock.Verify(x => x.Dispose(), Times.Never);
+            _applicationCreatorMock.Verify(x => x.Create(It.IsAny<IApplication>()), Times.Never);
+            _loggerMock.Verify(x =>x.LogEvent(SPublisherEvent.ApplicationListIsEmpty, null), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldReturnIfApplicationsIsEmptyAndLogEvent()
+        {
+            _siteCreator.Create(new IApplication[0]);
+
+            _accessorMock.Verify(x => x.ServerManager(), Times.Never);
+            _accessorMock.Verify(x => x.CommitChanges(), Times.Never);
+            _serverManagerMock.Verify(x => x.Dispose(), Times.Never);
+            _applicationCreatorMock.Verify(x => x.Create(It.IsAny<IApplication>()), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ApplicationListIsEmpty, null), Times.Once);
         }
     }
 }
