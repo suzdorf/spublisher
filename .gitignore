@@ -4,3 +4,8 @@ bin
 obj
 packages
 .vs
+/Installer/Installer/spublisher
+/Installer/Installer/wix/*.wxs
+/Installer/Installer/*.msi
+/Installer/Installer/Installer.exe
+/Installer/Installer/Installer.pdb
