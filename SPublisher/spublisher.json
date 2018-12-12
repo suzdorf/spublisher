@@ -1,52 +1,14 @@
 {
   "BuildSteps": [
     {
-      "Name": "Build .net core solution",
-      "Type": "bat",
-      "FileName": "build.bat"
-    },
-    {
       "Name": "Build angular client",
       "Type": "cmd",
+      "RunAsAdministrator": true,
       "Commands": [
-        "cd C:\\Temp",
-        "echo 1st command"
-      ]
-    },
-    {
-      "Name": "Create Iis Site structure",
-      "Type": "iis",
-      "Applications": [
-        {
-          "Name": "spublisher_test1",
-          "AppPoolName": "spublisher_test1",
-          "ManagedRuntimeVersion": "No Managed Code",
-          "Path": "C:\\Temp",
-          "Applications": [
-            {
-              "Name": "spublisher_test2",
-              "AppPoolName": "spublisher_test2",
-              "ManagedRuntimeVersion": "No Managed Code",
-              "Path": "C:\\Temp",
-              "Applications": [ ]
-            },
-            {
-              "Name": "spublisher_test3",
-              "AppPoolName": "spublisher_test3",
-              "ManagedRuntimeVersion": "No Managed Code",
-              "Path":  "C:\\Temp",
-              "Applications": [
-                {
-                  "Name": "spublisher_test4",
-                  "AppPoolName": "spublisher_test4",
-                  "ManagedRuntimeVersion": "No Managed Code",
-                  "Path":  "C:\\Temp",
-                  "Applications": []
-                }
-              ]
-            }
-          ]
-        }
+        "D:",
+        "cd D:\\Dev\\TaskManager\\TaskManager.Client",
+        "call npm install",
+        "ng build --prod --extract-css=false"
       ]
     }
   ]
