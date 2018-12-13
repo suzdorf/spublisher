@@ -30,6 +30,22 @@ namespace SPublisher
                             $"build step with name '{buildStep.Name}' and of type '{buildStep.Type}' completed";
                     }
                 },
+                {
+                SPublisherEvent.BuildStepExecutionCompletedWithError, message =>
+                    {
+                        var buildStep = (IBuildStep) message;
+                        return
+                            $"build step with name '{buildStep.Name}' and of type '{buildStep.Type}' has finished with error";
+                    }
+                },
+                {
+                    SPublisherEvent.BuildStepWasSkipped, message =>
+                    {
+                        var buildStep = (IBuildStep) message;
+                        return
+                            $"build step with name '{buildStep.Name}' and of type '{buildStep.Type}' was skipped";
+                    }
+                },
                 {SPublisherEvent.IisManagementStarted, message => "iis site creation started"},
                 {SPublisherEvent.IisManagementCompleted, message => "iis site creation completed"},
                 {SPublisherEvent.ApplicationPoolExists, message => $"application pool with name '{((IAppPoolInfo) message).AppPoolName}' already exists"},
@@ -43,6 +59,11 @@ namespace SPublisher
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
             Console.WriteLine($"INFO: {Messages[sPublisherEvent](logMessage)}");
+        }
+
+        public void LogError(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
+        {
+            Console.WriteLine($"ERROR: {Messages[sPublisherEvent](logMessage)}");
         }
     }
 }

@@ -8,6 +8,8 @@
         BuildExecutionCompleted,
         BuildStepExecutionStarted,
         BuildStepExecutionCompleted,
+        BuildStepExecutionCompletedWithError,
+        BuildStepWasSkipped,
         IisManagementStarted,
         IisManagementCompleted,
         ApplicationPoolExists,

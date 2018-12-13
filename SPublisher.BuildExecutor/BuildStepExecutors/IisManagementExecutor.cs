@@ -15,7 +15,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
             _logger = logger;
         }
 
-        public void Execute(IBuildStep buildStep)
+        public ExecutionResult Execute(IBuildStep buildStep)
         {
             var step = (IIisManagementStep) buildStep;
 
@@ -25,6 +25,8 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
                 _siteCreator.Create(step.Applications);
                 _logger.LogEvent(SPublisherEvent.IisManagementCompleted);
             }
+
+            return ExecutionResult.Success;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
     public class CommandLineExecutor : IBuildStepExecutor
     {
-        public void Execute(IBuildStep buildStep)
+        public ExecutionResult Execute(IBuildStep buildStep)
         {
             var step = (ICommandLineStep) buildStep;
             var command = string.Join(" && ", step.Commands);
@@ -26,10 +26,10 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 
             if (step.RunAsAdministrator)
             {
-//                if (!IsAdministrator())
-//                {
-//                    throw new Exception("You should run as administrator.");
-//                }
+                if (!IsAdministrator())
+                {
+                    throw new Exception("You should run as administrator.");
+                }
                 process.StartInfo.Verb = "runas";
             }
 
@@ -55,7 +55,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 
             process.WaitForExit();
             Task.WhenAll(outputTask, outputErrorTask).Wait();
-            Console.WriteLine("Process exited with code: {0}", process.ExitCode);
+            return process.ExitCode == 0 ? ExecutionResult.Success : ExecutionResult.Error;
         }
 
         public static bool IsAdministrator()

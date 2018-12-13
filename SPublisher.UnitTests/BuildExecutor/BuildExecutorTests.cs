@@ -37,5 +37,23 @@ namespace SPublisher.UnitTests.BuildExecutor
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionCompleted, _firstStepMock.Object), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionCompleted, _secondStepMock.Object), Times.Once);
         }
+
+        [Fact]
+        public void ShouldSkipOtherBuildStepsIfBuildStepFails()
+        {
+            _buildStepExecutorMock.Setup(x => x.Execute(_firstStepMock.Object)).Returns(ExecutionResult.Error);
+
+            _buildExecutor.Execute(_buildSteps);
+
+            _buildStepExecutorMock.Verify(x => x.Execute(_firstStepMock.Object), Times.Once);
+            _buildStepExecutorMock.Verify(x => x.Execute(_secondStepMock.Object), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionStarted, _firstStepMock.Object), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionStarted, _secondStepMock.Object), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionCompleted, _firstStepMock.Object), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepExecutionCompleted, _secondStepMock.Object), Times.Never);
+
+            _loggerMock.Verify(x => x.LogError(SPublisherEvent.BuildStepExecutionCompletedWithError, _firstStepMock.Object), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BuildStepWasSkipped, _secondStepMock.Object), Times.Once);
+        }
     }
 }

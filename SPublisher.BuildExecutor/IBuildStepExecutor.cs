@@ -4,6 +4,6 @@ namespace SPublisher.BuildExecutor
 {
     public interface IBuildStepExecutor
     {
-        void Execute(IBuildStep buildStep);
+        ExecutionResult Execute(IBuildStep buildStep);
     }
 }

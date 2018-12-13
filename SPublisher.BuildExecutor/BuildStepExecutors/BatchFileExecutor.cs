@@ -4,8 +4,9 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
     public class BatchFileExecutor : IBuildStepExecutor
     {
-        public void Execute(IBuildStep buildStep)
+        public ExecutionResult Execute(IBuildStep buildStep)
         {
+            return ExecutionResult.Success;
         }
     }
 }
