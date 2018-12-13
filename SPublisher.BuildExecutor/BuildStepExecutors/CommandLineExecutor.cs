@@ -26,10 +26,6 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 
             if (step.RunAsAdministrator)
             {
-                if (!IsAdministrator())
-                {
-                    throw new Exception("You should run as administrator.");
-                }
                 process.StartInfo.Verb = "runas";
             }
 
@@ -56,13 +52,6 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
             process.WaitForExit();
             Task.WhenAll(outputTask, outputErrorTask).Wait();
             return process.ExitCode == 0 ? ExecutionResult.Success : ExecutionResult.Error;
-        }
-
-        public static bool IsAdministrator()
-        {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

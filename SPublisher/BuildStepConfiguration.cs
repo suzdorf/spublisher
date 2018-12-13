@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using SPublisher.BuildExecutor;
 using SPublisher.BuildExecutor.BuildStepExecutors;
+using SPublisher.Configuration;
 using SPublisher.Configuration.BuildSteps;
+using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Core;
 using SPublisher.IisManagement;
 
@@ -36,6 +38,14 @@ namespace SPublisher
                 {CommandLineBuildStep, () => new CommandLineStepModel()},
                 {BatchFileBuildStep, () => new BatchFileStepModel()},
                 {IisManagementBuildStep, () => new IisManagementStepModel()}
+            };
+
+        public static readonly IDictionary<string, IBuildStepValidator> BuildStepValidators =
+            new Dictionary<string, IBuildStepValidator>
+            {
+                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode) },
+                {BatchFileBuildStep, null},
+                {IisManagementBuildStep, null}
             };
     }
 }

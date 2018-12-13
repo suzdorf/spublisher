@@ -10,15 +10,19 @@ namespace SPublisher.Configuration
     public class ConfigurationFactory : IConfigurationFactory
     {
         private readonly IDictionary<string, Func<BuildStepModel>> _buildStepModelCreators;
+        private readonly IConfigurationValidator _validator;
 
-        public ConfigurationFactory(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators)
+        public ConfigurationFactory(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators, IConfigurationValidator validator)
         {
             _buildStepModelCreators = buildStepModelCreators;
+            _validator = validator;
         }
 
         public IConfiguration Get(string json)
         {
-            return JsonConvert.DeserializeObject<ConfigurationModel>(json, new BuildStepsConverter(_buildStepModelCreators));
+            var configuration = JsonConvert.DeserializeObject<ConfigurationModel>(json, new BuildStepsConverter(_buildStepModelCreators));
+            _validator.Validate(configuration);
+            return configuration;
         }
     }
 }

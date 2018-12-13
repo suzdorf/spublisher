@@ -44,6 +44,7 @@
     <Compile Include="BuildSteps\IBuildStep.cs" />
     <Compile Include="BuildSteps\ICommandLineStep.cs" />
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
+    <Compile Include="Exceptions\SPublisherException.cs" />
     <Compile Include="IApplication.cs" />
     <Compile Include="IApplicationInfo.cs" />
     <Compile Include="IAppPoolInfo.cs" />
