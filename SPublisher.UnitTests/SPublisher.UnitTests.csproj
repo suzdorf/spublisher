@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="BuildExecutor\BuildExecutorTests.cs" />
     <Compile Include="BuildExecutor\IisManagementExecutorTests.cs" />
+    <Compile Include="Configuration\CommandLineStepValidatorTests.cs" />
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />

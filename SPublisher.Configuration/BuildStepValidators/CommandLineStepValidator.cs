@@ -12,7 +12,7 @@ namespace SPublisher.Configuration.BuildStepValidators
             _isAdministratorMode = isAdministratorMode;
         }
 
-        public IBuildStepValidationResult Validate(IBuildStep step)
+        public ValidationErrorType[] Validate(IBuildStep step)
         {
             var commandLineStep = (ICommandLineStep) step;
             var errors = new List<ValidationErrorType>();
@@ -22,7 +22,7 @@ namespace SPublisher.Configuration.BuildStepValidators
                 errors.Add(ValidationErrorType.ShouldRunAsAdministrator);
             }
 
-            return new BuildStepValidationResult(errors.ToArray(), step);
+            return errors.ToArray();
         }
     }
 }

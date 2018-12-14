@@ -4,6 +4,6 @@ namespace SPublisher.Configuration
 {
     public interface IBuildStepValidator
     {
-        IBuildStepValidationResult Validate(IBuildStep step);
+        ValidationErrorType[] Validate(IBuildStep step);
     }
 }

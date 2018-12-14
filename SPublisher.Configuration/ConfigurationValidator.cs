@@ -16,20 +16,21 @@ namespace SPublisher.Configuration
 
         public void Validate(IConfiguration configuration)
         {
-            var validationResult = new List<IBuildStepValidationResult>();
+            var validationResultList = new List<IBuildStepValidationResult>();
 
             foreach (var buildStep in configuration.BuildSteps)
             {
                 var validator = _validatorFactory.Get(buildStep);
                 if (validator != null)
                 {
-                    validationResult.Add(validator.Validate(buildStep));
+                    var validationResult = validator.Validate(buildStep);
+                    validationResultList.Add(new BuildStepValidationResult(validationResult, buildStep));
                 }
             }
 
-            if (validationResult.Any(x => x.Errors.Any()))
+            if (validationResultList.Any(x => x.Errors.Any()))
             {
-                throw new ValidationException(validationResult);
+                throw new ValidationException(validationResultList);
             }
         }
     }
