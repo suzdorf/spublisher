@@ -18,6 +18,9 @@
         SiteCreated,
         ApplicationExists,
         ApplicationCreated,
-        ApplicationListIsEmpty
+        ApplicationListIsEmpty,
+        InvalidJson,
+        SpublisherJsonNotFound,
+        UnknownError
     }
 }

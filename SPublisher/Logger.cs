@@ -54,7 +54,10 @@ namespace SPublisher
                 {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.ApplicationExists, message => $"Application with name '{((IApplicationInfo) message).Name}' already exists"},
                 {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).AppPoolName}' created"},
-                {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"}
+                {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"},
+                {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
+                {SPublisherEvent.SpublisherJsonNotFound, message => "Application exited with error because 'spublisher.json' was not found."},
+                {SPublisherEvent.UnknownError, message => "Application exited due to uknown error."}
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
@@ -64,6 +67,25 @@ namespace SPublisher
         public void LogError(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
             Console.WriteLine($"ERROR: {Messages[sPublisherEvent](logMessage)}");
+        }
+
+        public void LogValidationError(IValidationInfo info)
+        {
+            Console.WriteLine("VALIDATION ERROR: There are validation errors in you build configuration.");
+            foreach (var error in info.Errors)
+            {
+                Console.WriteLine($"VALIDATION ERROR: {error}");
+            }
+        }
+
+        public void LogOutput(string output)
+        {
+            Console.WriteLine(output);
+        }
+
+        public void LogError(string error)
+        {
+            Console.WriteLine(error);
         }
     }
 }

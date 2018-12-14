@@ -27,7 +27,7 @@ namespace SPublisher
         public static readonly IDictionary<string, IBuildStepExecutor> BuildStepExecutors =
             new Dictionary<string, IBuildStepExecutor>
             {
-                {CommandLineBuildStep, new CommandLineExecutor()},
+                {CommandLineBuildStep, new CommandLineExecutor(Logger)},
                 {BatchFileBuildStep, new BatchFileExecutor()},
                 {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)}
             };
@@ -43,7 +43,7 @@ namespace SPublisher
         public static readonly IDictionary<string, IBuildStepValidator> BuildStepValidators =
             new Dictionary<string, IBuildStepValidator>
             {
-                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode) },
+                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode()) },
                 {BatchFileBuildStep, null},
                 {IisManagementBuildStep, null}
             };

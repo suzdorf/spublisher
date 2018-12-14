@@ -1,8 +1,9 @@
 ﻿namespace SPublisher.Core
 {
-    public interface ILogger
+    public interface ILogger : IProcessOutputLogger
     {
-        void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage =  null);
+        void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null);
         void LogError(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null);
+        void LogValidationError(IValidationInfo info);
     }
 }

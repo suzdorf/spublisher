@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SPublisher.Core;
 using SPublisher.Core.Exceptions;
 
 namespace SPublisher.Configuration.Exceptions
@@ -11,5 +12,7 @@ namespace SPublisher.Configuration.Exceptions
         {
             ValidationResults = validationResults;
         }
+
+        public IValidationInfo ValidationInfo => new ValidationInfo(ValidationResults);
     }
 }

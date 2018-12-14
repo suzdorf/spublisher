@@ -1,16 +1,27 @@
-﻿using System;
-using System.Diagnostics;
-using System.Security.Principal;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 
 namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
     public class CommandLineExecutor : IBuildStepExecutor
     {
+        private readonly IProcessOutputLogger _logger;
+
+        public CommandLineExecutor(IProcessOutputLogger logger)
+        {
+            _logger = logger;
+        }
+
         public ExecutionResult Execute(IBuildStep buildStep)
         {
             var step = (ICommandLineStep) buildStep;
+
+            if (!step.Commands.Any())
+                return ExecutionResult.Success;
+
             var command = string.Join(" && ", step.Commands);
 
             var process = new Process
@@ -36,7 +47,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
                 while (!process.StandardOutput.EndOfStream)
                 {
                     var output = process.StandardOutput.ReadLine();
-                    Console.WriteLine(output);
+                    _logger.LogOutput(output);
                 }
             });
 
@@ -45,7 +56,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
                 while (!process.StandardError.EndOfStream)
                 {
                     var output = process.StandardError.ReadLine();
-                    Console.WriteLine(output);
+                    _logger.LogError(output);
                 }
             });
 

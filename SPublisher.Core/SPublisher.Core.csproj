@@ -53,7 +53,9 @@
     <Compile Include="IConfigurationFactory.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
+    <Compile Include="IProcessOutputLogger.cs" />
     <Compile Include="ISiteCreator.cs" />
+    <Compile Include="IValidationInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPublisherEvent.cs" />
   </ItemGroup>

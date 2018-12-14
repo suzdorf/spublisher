@@ -1,5 +1,4 @@
-﻿using System;
-using SPublisher.Configuration.IISObjects;
+﻿using SPublisher.Configuration.IISObjects;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 

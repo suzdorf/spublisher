@@ -1,5 +1,4 @@
-﻿using SPublisher.Core;
-using SPublisher.Core.BuildSteps;
+﻿using SPublisher.Core.BuildSteps;
 
 namespace SPublisher.Configuration.BuildSteps
 {
