@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Moq;
 using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
@@ -23,11 +22,11 @@ namespace SPublisher.UnitTests.Configuration
             var result = validator.Validate(buildStepMock.Object);
             if (isValid)
             {
-                result.Length.Should().Be(0);
+                result.Should().NotContain(ValidationErrorType.ShouldRunAsAdministrator);
             }
             else
             {
-                result.First().Should().Be(ValidationErrorType.ShouldRunAsAdministrator);
+                result.Should().Contain(ValidationErrorType.ShouldRunAsAdministrator);
             }
         }
     }
