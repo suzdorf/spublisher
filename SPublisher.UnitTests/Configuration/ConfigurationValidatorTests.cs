@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using SPublisher.Configuration;
@@ -66,13 +67,24 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldNotCallValidatorIfItIsNull()
         {
+            _validatorFactoryMock.Setup(x => x.Get(_firstStepMock.Object)).Returns((IBuildStepValidator) null);
+            _secondStepResult.SetupGet(x => x.Errors).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator });
 
+            Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
+            action.Should().Throw<ValidationException>().Which.ValidationResults.Count.Should().Be(1);
         }
 
         [Fact]
         public void ShouldCollectAllErrorsWithinException()
         {
+            _firstStepResult.SetupGet(x => x.Errors).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator , ValidationErrorType.ShouldRunAsAdministrator });
+            _secondStepResult.SetupGet(x => x.Errors).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator });
 
+            Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
+            var validationResults = action.Should().Throw<ValidationException>().Which.ValidationResults;
+            validationResults.Count.Should().Be(2);
+            validationResults.First().Errors.Length.Should().Be(2);
+            validationResults.Last().Errors.Length.Should().Be(1);
         }
     }
 }
