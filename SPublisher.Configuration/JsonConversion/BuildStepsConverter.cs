@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SPublisher.Configuration.BuildSteps;
+using SPublisher.Configuration.Exceptions;
 
 namespace SPublisher.Configuration.JsonConversion
 {
@@ -22,9 +23,23 @@ namespace SPublisher.Configuration.JsonConversion
 
         protected override BuildStepModel Create(Type objectType, JObject jObject)
         {
-            var type = jObject["Type"].Value<string>();
+            var typeField = jObject["Type"];
 
-            return _buildStepModelCreators[type]();
+            if (typeField == null)
+            {
+                throw new BuildStepTypeIsMissingException();
+            }
+
+            var type = typeField.Value<string>();
+
+            try
+            {
+                return _buildStepModelCreators[type]();
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new BuildStepTypeNotFoundException(type);
+            }
         }
     }
 }

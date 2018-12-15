@@ -44,14 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildSteps\IisManagementStepModel.cs" />
+    <Compile Include="BuildStepTypeNotFoundMessage.cs" />
     <Compile Include="BuildStepValidationResult.cs" />
     <Compile Include="BuildStepValidatorFactory.cs" />
     <Compile Include="BuildStepValidators\CommandLineStepValidator.cs" />
     <Compile Include="ConfigurationFactory.cs" />
     <Compile Include="ConfigurationModel.cs" />
     <Compile Include="ConfigurationValidator.cs" />
+    <Compile Include="Exceptions\BuildStepTypeIsMissingException.cs" />
+    <Compile Include="Exceptions\BuildStepTypeNotFoundException.cs" />
     <Compile Include="Exceptions\InvalidJsonException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
+    <Compile Include="IBuildStepTypeNotFoundMessage.cs" />
     <Compile Include="IBuildStepValidationResult.cs" />
     <Compile Include="IBuildStepValidator.cs" />
     <Compile Include="IBuildStepValidatorFactory.cs" />

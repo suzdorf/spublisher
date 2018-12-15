@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPublisher.Configuration;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 
@@ -57,7 +58,10 @@ namespace SPublisher
                 {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"},
                 {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
                 {SPublisherEvent.SpublisherJsonNotFound, message => "Application exited with error because 'spublisher.json' was not found."},
-                {SPublisherEvent.UnknownError, message => "Application exited due to uknown error."}
+                {SPublisherEvent.UnknownError, message => "Application exited due to uknown error."},
+                {SPublisherEvent.BuildStepTypeNotFound, message => $"spublisher.json contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
+                {SPublisherEvent.BuildStepTypeIsMissing, message => "spublisher.json contains build step which misses the 'Type' field."},
+                {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." }
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

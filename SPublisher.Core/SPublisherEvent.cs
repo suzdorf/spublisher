@@ -21,6 +21,9 @@
         ApplicationListIsEmpty,
         InvalidJson,
         SpublisherJsonNotFound,
-        UnknownError
+        UnknownError,
+        BuildStepTypeNotFound,
+        BuildStepTypeIsMissing,
+        CommandLineCouldNotStart
     }
 }

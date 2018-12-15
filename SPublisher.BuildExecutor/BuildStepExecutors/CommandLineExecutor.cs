@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using SPublisher.BuildExecutor.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 
@@ -40,7 +43,14 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
                 process.StartInfo.Verb = "runas";
             }
 
-            process.Start();
+            try
+            {
+                process.Start();
+            }
+            catch (Win32Exception)
+            {
+                throw new CommandLineStartException();
+            }
 
             var outputTask = Task.Run(() =>
             {

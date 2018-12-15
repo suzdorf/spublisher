@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using SPublisher.BuildExecutor;
+using SPublisher.BuildExecutor.Exceptions;
 using SPublisher.Configuration;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
@@ -38,6 +39,14 @@ namespace SPublisher
 
                 Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
             }
+            catch (BuildStepTypeNotFoundException ex)
+            {
+                Logger.LogError(SPublisherEvent.BuildStepTypeNotFound, new BuildStepTypeNotFoundMessage(ex.Type));
+            }
+            catch (BuildStepTypeIsMissingException)
+            {
+                Logger.LogError(SPublisherEvent.BuildStepTypeIsMissing);
+            }
             catch (FileNotFoundException)
             {
                 Logger.LogError(SPublisherEvent.SpublisherJsonNotFound);
@@ -45,6 +54,10 @@ namespace SPublisher
             catch (ValidationException ex)
             {
                 Logger.LogValidationError(ex.ValidationInfo);
+            }
+            catch (CommandLineStartException)
+            {
+                Logger.LogError(SPublisherEvent.CommandLineCouldNotStart);
             }
             catch (InvalidJsonException)
             {
