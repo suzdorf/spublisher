@@ -95,7 +95,7 @@ Example:
  
 ### Command line build step
  
-Command line build step allows you to execute command lines one by one in the command prompt. If one step is succeded another will be executed.
+Command line build step allows you to execute command lines one by one in the command prompt. If one line is succeeds another will be executed.
  
 In the example below we build a dotnet core application in the specific folder:
 ```
@@ -113,6 +113,16 @@ In the example below we build a dotnet core application in the specific folder:
 }
 
 ```
+- **"RunAsAdministrator"** parameter
+
+If you want to run your command lines with administrator permissions you should add to your build step the following line:
+
+```
+"RunAsAdministrator": true
+
+```
+
+By deafult this parameter is set to **"false"**. When you enable this parameter you should run spublisher as administrator otherwise you will get an error.
 
 ### IIS management build step
 
@@ -121,6 +131,7 @@ IIS management build step allows you to create an application tree in IIS.
 In the example below a site with two applications within will be created. During creation application pools with the specific names will  also be created:
 
 ```
+
 {
   "BuildSteps": [
     {
@@ -153,3 +164,5 @@ In the example below a site with two applications within will be created. During
     }
   ]
 }
+
+```
