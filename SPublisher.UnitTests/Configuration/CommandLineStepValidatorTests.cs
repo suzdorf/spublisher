@@ -1,7 +1,9 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Moq;
 using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
+using SPublisher.Configuration.Exceptions;
 using SPublisher.Core.BuildSteps;
 using Xunit;
 
@@ -19,14 +21,16 @@ namespace SPublisher.UnitTests.Configuration
             var validator = new CommandLineStepValidator(isAdministratorMode);
             var buildStepMock = new Mock<IBuildStep>();
             buildStepMock.As<ICommandLineStep>().SetupGet(x => x.RunAsAdministrator).Returns(runAsAdministrator);
-            var result = validator.Validate(buildStepMock.Object);
+
+            Action action = () => { validator.Validate(buildStepMock.Object); };
+
             if (isValid)
             {
-                result.Should().NotContain(ValidationErrorType.ShouldRunAsAdministrator);
+                action.Should().NotThrow<ShouldRunAsAdministratorException>();
             }
             else
             {
-                result.Should().Contain(ValidationErrorType.ShouldRunAsAdministrator);
+                action.Should().Throw<ShouldRunAsAdministratorException>();
             }
         }
     }

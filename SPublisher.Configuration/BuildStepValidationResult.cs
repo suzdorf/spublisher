@@ -4,13 +4,13 @@ namespace SPublisher.Configuration
 {
     public class BuildStepValidationResult : IBuildStepValidationResult
     {
-        public BuildStepValidationResult(ValidationErrorType[] errors, IBuildStep buildStep)
+        public BuildStepValidationResult(IValidationError[] errors, IBuildStep buildStep)
         {
             Errors = errors;
             BuildStep = buildStep;
         }
 
-        public ValidationErrorType[] Errors { get; }
+        public IValidationError[] Errors { get; }
         public IBuildStep BuildStep { get; }
     }
 }

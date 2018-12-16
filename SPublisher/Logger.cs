@@ -61,7 +61,8 @@ namespace SPublisher
                 {SPublisherEvent.UnknownError, message => "Application exited due to uknown error."},
                 {SPublisherEvent.BuildStepTypeNotFound, message => $"spublisher.json contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
                 {SPublisherEvent.BuildStepTypeIsMissing, message => "spublisher.json contains build step which misses the 'Type' field."},
-                {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." }
+                {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." },
+                {SPublisherEvent.ShouldRunAsAdministrator, message => "You should run spublisher as administrator in order to execute some of the build steps" }
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

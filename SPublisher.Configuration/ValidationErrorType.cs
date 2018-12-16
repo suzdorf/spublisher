@@ -2,6 +2,9 @@
 {
     public enum ValidationErrorType
     {
-        ShouldRunAsAdministrator
+        ApplicationPoolForTheSiteIsRequired,
+        PathValueIsRequired,
+        NameValueIsRequired,
+        ApplicationChildrenShouldHaveUniqueNames
     }
 }

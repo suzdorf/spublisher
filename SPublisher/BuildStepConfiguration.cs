@@ -19,6 +19,7 @@ namespace SPublisher
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
         private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
+        private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
 
         private const string CommandLineBuildStep = "cmd";
         private const string BatchFileBuildStep = "bat";
@@ -45,7 +46,7 @@ namespace SPublisher
             {
                 {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode()) },
                 {BatchFileBuildStep, null},
-                {IisManagementBuildStep, null}
+                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode())}
             };
     }
 }

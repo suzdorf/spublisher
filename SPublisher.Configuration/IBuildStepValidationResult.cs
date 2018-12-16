@@ -4,7 +4,7 @@ namespace SPublisher.Configuration
 {
     public interface IBuildStepValidationResult
     {
-        ValidationErrorType[] Errors { get; }
+        IValidationError[] Errors { get; }
 
         IBuildStep BuildStep { get; }
     }

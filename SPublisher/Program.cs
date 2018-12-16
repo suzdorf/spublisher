@@ -39,6 +39,10 @@ namespace SPublisher
 
                 Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
             }
+            catch (ShouldRunAsAdministratorException)
+            {
+                Logger.LogError(SPublisherEvent.ShouldRunAsAdministrator);
+            }
             catch (BuildStepTypeNotFoundException ex)
             {
                 Logger.LogError(SPublisherEvent.BuildStepTypeNotFound, new BuildStepTypeNotFoundMessage(ex.Type));

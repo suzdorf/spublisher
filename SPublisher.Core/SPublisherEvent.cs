@@ -24,6 +24,7 @@
         UnknownError,
         BuildStepTypeNotFound,
         BuildStepTypeIsMissing,
-        CommandLineCouldNotStart
+        CommandLineCouldNotStart,
+        ShouldRunAsAdministrator
     }
 }

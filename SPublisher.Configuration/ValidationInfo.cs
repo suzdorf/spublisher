@@ -23,17 +23,20 @@ namespace SPublisher.Configuration
 
                 foreach (var result in _validationResults)
                 {
-                    errors.AddRange(result.Errors.Select(x => MessageDictionary[x](result.BuildStep)));
+                    errors.AddRange(result.Errors.Select(x => MessageDictionary[x.Type](result.BuildStep, x.Data)));
                 }
 
                 return errors.ToArray();
             }
         }
 
-        private static readonly IDictionary<ValidationErrorType, Func<IBuildStep, string>> MessageDictionary =
-            new Dictionary<ValidationErrorType, Func<IBuildStep, string>>
+        private static readonly IDictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>> MessageDictionary =
+            new Dictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>>
             {
-                {ValidationErrorType.ShouldRunAsAdministrator, step => $"You should run spublisher as administrator to run '{step.Name}'. " }
+                {ValidationErrorType.ApplicationPoolForTheSiteIsRequired, (step, data) => $"'AppPoolName' value is missing in one of the sites in the build step '{step.Name}'." },
+                {ValidationErrorType.PathValueIsRequired, (step, data) => $"'Path' value is missing in one of the applications in the build step '{step.Name}'." },
+                {ValidationErrorType.NameValueIsRequired, (step, data) => $"'Name' value is missing in one of the applications in the build step '{step.Name}'." },
+                {ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames, (step, data) => $"Non unique 'Name' values have been found in application array of the build step '{step.Name}'." }
             };
     }
 }

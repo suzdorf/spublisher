@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SPublisher.Configuration.Exceptions;
 using SPublisher.Core.BuildSteps;
 
 namespace SPublisher.Configuration.BuildStepValidators
@@ -12,17 +13,16 @@ namespace SPublisher.Configuration.BuildStepValidators
             _isAdministratorMode = isAdministratorMode;
         }
 
-        public ValidationErrorType[] Validate(IBuildStep step)
+        public IValidationError[] Validate(IBuildStep step)
         {
             var commandLineStep = (ICommandLineStep) step;
-            var errors = new List<ValidationErrorType>();
 
             if (commandLineStep.RunAsAdministrator && !_isAdministratorMode)
             {
-                errors.Add(ValidationErrorType.ShouldRunAsAdministrator);
+                throw new ShouldRunAsAdministratorException();
             }
 
-            return errors.ToArray();
+            return new IValidationError[0];
         }
     }
 }

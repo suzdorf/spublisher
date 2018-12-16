@@ -43,8 +43,8 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldNotThrowValidationExceptionIfNoErrors()
         {
-            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new ValidationErrorType[0]);
-            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new ValidationErrorType[0]);
+            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new IValidationError[0]);
+            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new IValidationError[0]);
             Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
             action.Should().NotThrow<ValidationException>();
         }
@@ -52,8 +52,8 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldThrowValidationExceptionIfThereAreAnyErrors()
         {
-            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new ValidationErrorType[0]);
-            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator });
+            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new IValidationError[0]);
+            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { new Mock<IValidationError>().Object  });
             Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
             action.Should().Throw<ValidationException>();
         }
@@ -62,7 +62,7 @@ namespace SPublisher.UnitTests.Configuration
         public void ShouldNotCallValidatorIfItIsNull()
         {
             _validatorFactoryMock.Setup(x => x.Get(_firstStepMock.Object)).Returns((IBuildStepValidator) null);
-            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator });
+            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { new Mock<IValidationError>().Object });
 
             Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
             action.Should().Throw<ValidationException>().Which.ValidationResults.Count.Should().Be(1);
@@ -71,8 +71,8 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldCollectAllErrorsWithinException()
         {
-            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator , ValidationErrorType.ShouldRunAsAdministrator });
-            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { ValidationErrorType.ShouldRunAsAdministrator });
+            _firstStepValidatorMock.Setup(x => x.Validate(_firstStepMock.Object)).Returns(new[] { new Mock<IValidationError>().Object, new Mock<IValidationError>().Object });
+            _secondStepValidatorMock.Setup(x => x.Validate(_secondStepMock.Object)).Returns(new[] { new Mock<IValidationError>().Object });
 
             Action action = () => { _configurationValidator.Validate(_configurationMock.Object); };
             var validationResults = action.Should().Throw<ValidationException>().Which.ValidationResults;
