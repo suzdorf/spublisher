@@ -88,6 +88,7 @@
     <Compile Include="BuildExecutor\IisManagementExecutorTests.cs" />
     <Compile Include="Configuration\CommandLineStepValidatorTests.cs" />
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
+    <Compile Include="Configuration\IisManagementStepValidatorTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
