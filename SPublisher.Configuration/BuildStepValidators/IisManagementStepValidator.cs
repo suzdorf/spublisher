@@ -42,7 +42,7 @@ namespace SPublisher.Configuration.BuildStepValidators
             {
                 ValidatePath(application.Path, errors);
 
-                if (application.Applications.Any())
+                if (application.Applications != null && application.Applications.Any())
                 {
                     ValidateApplications(application.Applications, errors);
                 }

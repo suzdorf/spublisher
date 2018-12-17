@@ -37,7 +37,11 @@ namespace SPublisher.IisManagement
         public void CreateApplication(IApplicationInfo info, string siteName, string path)
         {
             var app = _storage.Get().Sites[siteName].Applications.Add($"{path}{info.Name}", Path.GetFullPath(info.Path));
-            app.ApplicationPoolName = info.AppPoolName;
+
+            if (!string.IsNullOrEmpty(info.AppPoolName))
+            {
+                app.ApplicationPoolName = info.AppPoolName;
+            }
         }
 
         public void CreateSite(IApplicationInfo info)
@@ -45,6 +49,17 @@ namespace SPublisher.IisManagement
             var iisSite = _storage.Get().Sites.Add(info.Name, "http", $"*:80:{info.Name}",
                 Path.GetFullPath(info.Path));
             iisSite.ApplicationDefaults.ApplicationPoolName = info.AppPoolName;
+        }
+
+        public bool VirtualDirectoryIsExist(string siteName, string path)
+        {
+            var parentSite = _storage.Get().Sites[siteName];
+            return parentSite?.Applications[0].VirtualDirectories.FirstOrDefault(x => x.Path == path) != null;
+        }
+
+        public void CreateVirtualDirectory(IApplicationInfo info, string siteName, string path)
+        {
+            _storage.Get().Sites[siteName].Applications[0].VirtualDirectories.Add($"{path}{info.Name}", Path.GetFullPath(info.Path));
         }
     }
 }

@@ -10,10 +10,7 @@ namespace SPublisher.Configuration.IISObjects
         public string ManagedRuntimeVersion { get; set; }
         public string Path { get; set; }
         public ApplicationModel[] Applications { get; set; }
-
-        IApplication[] IApplication.Applications
-        {
-            get { return Applications; }
-        }
+        public bool IsVirtualDirectory { get; set; }
+        IApplication[] IApplication.Applications => Applications;
     }
 }

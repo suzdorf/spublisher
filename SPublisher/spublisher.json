@@ -1,14 +1,38 @@
 {
   "BuildSteps": [
     {
-      "Name": "Build angular client",
-      "Type": "cmd",
-      "RunAsAdministrator": true,
-      "Commands": [
-        "D:",
-        "cd D:\\Dev\\TaskManager\\TaskManager.Client",
-        "call npm install",
-        "ng build --prod --extract-css=false"
+      "Name": "Your first IIS site created through spublisher",
+      "Type": "iis",
+      "Applications": [
+        {
+          "Name": "test",
+          "AppPoolName": "testAppPool",
+          "Path": "C:\\Temp",
+          "Applications": [
+            {
+              "Name": "test1",
+              "Path": "C:\\Temp",
+              "IsVirtualDirectory": true
+            },
+            {
+              "Name": "test2",
+              "Path": "C:\\Temp",
+              "AppPoolName": "testAppPool",
+              "Applications": [
+                {
+                  "Name": "test1",
+                  "Path": "C:\\Temp",
+                  "IsVirtualDirectory": true
+                },
+                {
+                  "Name": "test2",
+                  "Path": "C:\\Temp",
+                  "AppPoolName": "testAppPool"
+                }
+              ]
+            }
+          ]
+        }
       ]
     }
   ]

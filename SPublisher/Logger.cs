@@ -55,6 +55,8 @@ namespace SPublisher
                 {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.ApplicationExists, message => $"Application with name '{((IApplicationInfo) message).Name}' already exists"},
                 {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).AppPoolName}' created"},
+                {SPublisherEvent.VirtualDirectoryExists, message => $"Virtual directory with name '{((IApplicationInfo) message).Name}' already exists"},
+                {SPublisherEvent.VirtualDirectoryCreated, message =>$"Virtual directory '{((IApplicationInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"},
                 {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
                 {SPublisherEvent.SpublisherJsonNotFound, message => "Application exited with error because 'spublisher.json' was not found."},

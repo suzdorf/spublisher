@@ -10,5 +10,7 @@ namespace SPublisher.IisManagement
         void CreateAppPool(IAppPoolInfo info);
         void CreateApplication(IApplicationInfo info, string siteName, string path);
         void CreateSite(IApplicationInfo info);
+        bool VirtualDirectoryIsExist(string siteName, string path);
+        void CreateVirtualDirectory(IApplicationInfo info, string siteName, string path);
     }
 }

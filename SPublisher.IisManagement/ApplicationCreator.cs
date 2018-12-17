@@ -37,16 +37,31 @@ namespace SPublisher.IisManagement
 
         private void CreateApplication(IApplication application, string siteName, string path)
         {
-            CreateAppPool(application);
-
-            if (!_serverManagerDataProvider.ApplicationIsExist(siteName, $"{path}{application.Name}"))
+            if (!application.IsVirtualDirectory)
             {
-                _serverManagerDataProvider.CreateApplication(application, siteName, path);
-                _logger.LogEvent(SPublisherEvent.ApplicationCreated, application);
+                CreateAppPool(application);
+
+                if (!_serverManagerDataProvider.ApplicationIsExist(siteName, $"{path}{application.Name}"))
+                {
+                    _serverManagerDataProvider.CreateApplication(application, siteName, path);
+                    _logger.LogEvent(SPublisherEvent.ApplicationCreated, application);
+                }
+                else
+                {
+                    _logger.LogEvent(SPublisherEvent.ApplicationExists, application);
+                }
             }
             else
             {
-                _logger.LogEvent(SPublisherEvent.ApplicationExists, application);
+                if (!_serverManagerDataProvider.VirtualDirectoryIsExist(siteName, $"{path}{application.Name}"))
+                {
+                    _serverManagerDataProvider.CreateVirtualDirectory(application, siteName, path);
+                    _logger.LogEvent(SPublisherEvent.VirtualDirectoryCreated, application);
+                }
+                else
+                {
+                    _logger.LogEvent(SPublisherEvent.VirtualDirectoryExists, application);
+                }
             }
 
             if (application.Applications != null && application.Applications.Any())

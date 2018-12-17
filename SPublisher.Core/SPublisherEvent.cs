@@ -18,6 +18,8 @@
         SiteCreated,
         ApplicationExists,
         ApplicationCreated,
+        VirtualDirectoryExists,
+        VirtualDirectoryCreated,
         ApplicationListIsEmpty,
         InvalidJson,
         SpublisherJsonNotFound,

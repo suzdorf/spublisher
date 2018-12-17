@@ -109,5 +109,44 @@ namespace SPublisher.UnitTests.IIsManagement
             _dataProviderMock.Verify(x => x.CreateApplication(nestedApplicationMock.Object, SiteName, "/"), Times.Never);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ApplicationExists, nestedApplicationMock.Object), Times.Once);
         }
+
+        [Fact]
+        public void ShouldCreateVirtualDirectoryIfNotExists()
+        {
+            var virtualDirectoryMock = new Mock<IApplication>();
+            virtualDirectoryMock.SetupGet(x => x.Name).Returns(FirstApplicationName);
+            virtualDirectoryMock.SetupGet(x => x.IsVirtualDirectory).Returns(true);
+            _applicationMock.SetupGet(x => x.Applications).Returns(new[]
+            {
+                virtualDirectoryMock.Object
+            });
+
+            _dataProviderMock.Setup(x => x.SiteIsExist(SiteName)).Returns(false);
+
+            _creator.Create(_applicationMock.Object);
+
+            _dataProviderMock.Verify(x => x.CreateVirtualDirectory(virtualDirectoryMock.Object, SiteName, "/"), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.VirtualDirectoryCreated, virtualDirectoryMock.Object), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldNotCreateVirtualDirectoryIfExists()
+        {
+            var virtualDirectoryMock = new Mock<IApplication>();
+            virtualDirectoryMock.SetupGet(x => x.Name).Returns(FirstApplicationName);
+            virtualDirectoryMock.SetupGet(x => x.IsVirtualDirectory).Returns(true);
+            _applicationMock.SetupGet(x => x.Applications).Returns(new[]
+            {
+                virtualDirectoryMock.Object
+            });
+
+            _dataProviderMock.Setup(x => x.SiteIsExist(SiteName)).Returns(false);
+            _dataProviderMock.Setup(x => x.VirtualDirectoryIsExist(SiteName, $"/{FirstApplicationName}")).Returns(true);
+
+            _creator.Create(_applicationMock.Object);
+
+            _dataProviderMock.Verify(x => x.CreateVirtualDirectory(virtualDirectoryMock.Object, SiteName, "/"), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.VirtualDirectoryExists, virtualDirectoryMock.Object), Times.Once);
+        }
     }
 }

@@ -3,5 +3,6 @@
     public interface IApplication : IAppPoolInfo, IApplicationInfo
     {
         IApplication[] Applications { get; }
+        bool IsVirtualDirectory { get; }
     }
 }
