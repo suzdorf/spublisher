@@ -69,6 +69,7 @@ namespace SPublisher.UnitTests.IIsManagement
             var nestedApplicationMock1 = new Mock<IApplication>();
             var nestedApplicationMock2 = new Mock<IApplication>();
             nestedApplicationMock1.SetupGet(x => x.Name).Returns(FirstApplicationName);
+            nestedApplicationMock1.As<IAppPoolInfo>().SetupGet(x => x.AppPoolName).Returns(AppPoolName);
             nestedApplicationMock1.SetupGet(x => x.Applications).Returns(new[]
             {
                 nestedApplicationMock2.Object
@@ -86,7 +87,7 @@ namespace SPublisher.UnitTests.IIsManagement
             _dataProviderMock.Verify(x => x.CreateApplication(nestedApplicationMock1.Object, SiteName, "/"), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ApplicationCreated, nestedApplicationMock1.Object), Times.Once);
 
-            _dataProviderMock.Verify(x => x.CreateAppPool(nestedApplicationMock2.Object), Times.Once);
+            _dataProviderMock.Verify(x => x.CreateAppPool(nestedApplicationMock2.Object), Times.Never);
             _dataProviderMock.Verify(x => x.CreateApplication(nestedApplicationMock2.Object, SiteName, $"/{FirstApplicationName}/"), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ApplicationCreated, nestedApplicationMock1.Object), Times.Once);
         }
@@ -141,7 +142,7 @@ namespace SPublisher.UnitTests.IIsManagement
             });
 
             _dataProviderMock.Setup(x => x.SiteIsExist(SiteName)).Returns(false);
-            _dataProviderMock.Setup(x => x.VirtualDirectoryIsExist(SiteName, $"/{FirstApplicationName}")).Returns(true);
+            _dataProviderMock.Setup(x => x.VirtualDirectoryIsExist(FirstApplicationName, SiteName, "/")).Returns(true);
 
             _creator.Create(_applicationMock.Object);
 

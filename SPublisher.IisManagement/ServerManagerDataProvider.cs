@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using Microsoft.Web.Administration;
 using SPublisher.Core;
 
 namespace SPublisher.IisManagement
@@ -48,18 +49,40 @@ namespace SPublisher.IisManagement
         {
             var iisSite = _storage.Get().Sites.Add(info.Name, "http", $"*:80:{info.Name}",
                 Path.GetFullPath(info.Path));
-            iisSite.ApplicationDefaults.ApplicationPoolName = info.AppPoolName;
+
+            if (!string.IsNullOrEmpty(info.AppPoolName))
+            {
+                iisSite.ApplicationDefaults.ApplicationPoolName = info.AppPoolName;
+            }
         }
 
-        public bool VirtualDirectoryIsExist(string siteName, string path)
+        public bool VirtualDirectoryIsExist(string directoryName, string siteName, string path)
         {
-            var parentSite = _storage.Get().Sites[siteName];
-            return parentSite?.Applications[0].VirtualDirectories.FirstOrDefault(x => x.Path == path) != null;
+            return GetApplication(siteName, path)?.VirtualDirectories.FirstOrDefault(x => x.Path == $"/{directoryName}") != null;
         }
 
         public void CreateVirtualDirectory(IApplicationInfo info, string siteName, string path)
         {
-            _storage.Get().Sites[siteName].Applications[0].VirtualDirectories.Add($"{path}{info.Name}", Path.GetFullPath(info.Path));
+            GetApplication(siteName, path)?.VirtualDirectories.Add($"{GetVirtualDirectoryPath(path)}{info.Name}", Path.GetFullPath(info.Path));
+        }
+
+        private Application GetApplication(string siteName, string path)
+        {
+            var parentSite = _storage.Get().Sites[siteName];
+            var appName = path.Split('/')[1];
+            return string.IsNullOrEmpty(appName) ? parentSite?.Applications[0] : parentSite?.Applications[$"/{appName}"];
+        }
+
+        private string GetVirtualDirectoryPath(string path)
+        {
+            var appName = path.Split('/')[1];
+
+            if (string.IsNullOrEmpty(appName))
+            {
+                return path;
+            }
+
+            return path.Substring(appName.Length + 1, path.Length - appName.Length - 1);
         }
     }
 }

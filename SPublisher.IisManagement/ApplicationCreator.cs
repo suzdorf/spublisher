@@ -53,7 +53,7 @@ namespace SPublisher.IisManagement
             }
             else
             {
-                if (!_serverManagerDataProvider.VirtualDirectoryIsExist(siteName, $"{path}{application.Name}"))
+                if (!_serverManagerDataProvider.VirtualDirectoryIsExist(application.Name, siteName, path))
                 {
                     _serverManagerDataProvider.CreateVirtualDirectory(application, siteName, path);
                     _logger.LogEvent(SPublisherEvent.VirtualDirectoryCreated, application);
@@ -73,6 +73,8 @@ namespace SPublisher.IisManagement
 
         private void CreateAppPool(IAppPoolInfo info)
         {
+            if (string.IsNullOrEmpty(info.AppPoolName)) return;
+
             if (!_serverManagerDataProvider.PoolIsExist(info.AppPoolName))
             {
                 _serverManagerDataProvider.CreateAppPool(info);

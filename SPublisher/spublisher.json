@@ -17,7 +17,6 @@
             {
               "Name": "test2",
               "Path": "C:\\Temp",
-              "AppPoolName": "testAppPool",
               "Applications": [
                 {
                   "Name": "test1",
@@ -26,8 +25,7 @@
                 },
                 {
                   "Name": "test2",
-                  "Path": "C:\\Temp",
-                  "AppPoolName": "testAppPool"
+                  "Path": "C:\\Temp"
                 }
               ]
             }
