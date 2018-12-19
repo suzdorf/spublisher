@@ -33,7 +33,6 @@ namespace SPublisher.Configuration
         private static readonly IDictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>> MessageDictionary =
             new Dictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>>
             {
-                {ValidationErrorType.ApplicationPoolForTheSiteIsRequired, (step, data) => $"'AppPoolName' value is missing in one of the sites in the build step '{step.Name}'." },
                 {ValidationErrorType.PathValueIsRequired, (step, data) => $"'Path' value is missing in one of the applications in the build step '{step.Name}'." },
                 {ValidationErrorType.NameValueIsRequired, (step, data) => $"'Name' value is missing in one of the applications in the build step '{step.Name}'." },
                 {ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames, (step, data) => $"Non unique 'Name' values have been found in application array of the build step '{step.Name}'." }

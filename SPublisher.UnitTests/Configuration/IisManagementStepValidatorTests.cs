@@ -37,31 +37,6 @@ namespace SPublisher.UnitTests.Configuration
             }
         }
 
-        [Theory]
-        [InlineData(AppPoolName, true)]
-        [InlineData("", false)]
-        public void ShouldValidateAppPoolValueForSite(string appPoolName, bool isValid)
-        {
-            var applicationMock = new Mock<IApplication>();
-            applicationMock.As<IApplicationInfo>().Setup(x => x.AppPoolName).Returns(appPoolName);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(new []
-            {
-                applicationMock.Object
-            });
-
-            var validator = new IisManagementStepValidator(true);
-
-            var result = validator.Validate(_buildStepMock.Object);
-
-            if (isValid)
-            {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.ApplicationPoolForTheSiteIsRequired);
-            }
-            else
-            {
-                result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationPoolForTheSiteIsRequired);
-            }
-        }
 
         [Theory]
         [InlineData(Name, true)]

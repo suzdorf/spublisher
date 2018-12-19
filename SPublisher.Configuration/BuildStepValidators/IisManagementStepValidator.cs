@@ -24,11 +24,6 @@ namespace SPublisher.Configuration.BuildStepValidators
                 throw new ShouldRunAsAdministratorException();
             }
 
-            if (iisManagementStep.Applications.Any(x => string.IsNullOrEmpty(((IApplicationInfo)x).AppPoolName)))
-            {
-                errors.Add(new ValidationError(ValidationErrorType.ApplicationPoolForTheSiteIsRequired));
-            }
-
             ValidateApplications(iisManagementStep.Applications, errors);
 
             return errors.ToArray();

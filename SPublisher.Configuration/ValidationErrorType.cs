@@ -2,7 +2,6 @@
 {
     public enum ValidationErrorType
     {
-        ApplicationPoolForTheSiteIsRequired,
         PathValueIsRequired,
         NameValueIsRequired,
         ApplicationChildrenShouldHaveUniqueNames

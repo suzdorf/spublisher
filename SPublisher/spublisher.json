@@ -6,7 +6,6 @@
       "Applications": [
         {
           "Name": "test",
-          "AppPoolName": "testAppPool",
           "Path": "C:\\Temp",
           "Applications": [
             {
