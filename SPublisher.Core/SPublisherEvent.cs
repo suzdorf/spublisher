@@ -27,6 +27,7 @@
         BuildStepTypeNotFound,
         BuildStepTypeIsMissing,
         CommandLineCouldNotStart,
-        ShouldRunAsAdministrator
+        ShouldRunAsAdministrator,
+        ValidationErrors
     }
 }

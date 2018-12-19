@@ -2,8 +2,8 @@
 
 namespace SPublisher.Core.Exceptions
 {
-    public class SPublisherException : Exception
+    public abstract class SPublisherException : Exception
     {
-        
+        public abstract SPublisherEvent SPublisherEvent { get; }
     }
 }

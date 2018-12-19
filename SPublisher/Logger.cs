@@ -52,7 +52,7 @@ namespace SPublisher
                 {SPublisherEvent.ApplicationPoolExists, message => $"application pool with name '{((IAppPoolInfo) message).AppPoolName}' already exists"},
                 {SPublisherEvent.ApplicationPoolCreated, message => $"application pool '{((IAppPoolInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.SiteExists, message => $"Site with name '{((IApplicationInfo) message).Name}' already exists"},
-                {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).AppPoolName}' created"},
+                {SPublisherEvent.SiteCreated, message => $"Site '{((IApplicationInfo) message).Name}' created"},
                 {SPublisherEvent.ApplicationExists, message => $"Application with name '{((IApplicationInfo) message).Name}' already exists"},
                 {SPublisherEvent.ApplicationCreated, message =>$"Application '{((IApplicationInfo) message).Name}' created"},
                 {SPublisherEvent.VirtualDirectoryExists, message => $"Virtual directory with name '{((IApplicationInfo) message).Name}' already exists"},

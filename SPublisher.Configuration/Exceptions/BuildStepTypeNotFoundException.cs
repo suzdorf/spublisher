@@ -1,4 +1,5 @@
-﻿using SPublisher.Core.Exceptions;
+﻿using SPublisher.Core;
+using SPublisher.Core.Exceptions;
 
 namespace SPublisher.Configuration.Exceptions
 {
@@ -10,5 +11,6 @@ namespace SPublisher.Configuration.Exceptions
         }
 
         public string Type { get; }
+        public override SPublisherEvent SPublisherEvent => SPublisherEvent.BuildStepTypeNotFound;
     }
 }

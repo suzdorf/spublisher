@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using SPublisher.BuildExecutor;
-using SPublisher.BuildExecutor.Exceptions;
 using SPublisher.Configuration;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
+using SPublisher.Core.Exceptions;
 
 namespace SPublisher
 {
@@ -39,33 +39,24 @@ namespace SPublisher
 
                 Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
             }
-            catch (ShouldRunAsAdministratorException)
+            catch (SPublisherException ex)
             {
-                Logger.LogError(SPublisherEvent.ShouldRunAsAdministrator);
-            }
-            catch (BuildStepTypeNotFoundException ex)
-            {
-                Logger.LogError(SPublisherEvent.BuildStepTypeNotFound, new BuildStepTypeNotFoundMessage(ex.Type));
-            }
-            catch (BuildStepTypeIsMissingException)
-            {
-                Logger.LogError(SPublisherEvent.BuildStepTypeIsMissing);
+                switch (ex)
+                {
+                    case BuildStepTypeNotFoundException buildStepTypeNotFoundException:
+                        Logger.LogError(SPublisherEvent.BuildStepTypeNotFound, new BuildStepTypeNotFoundMessage(buildStepTypeNotFoundException.Type));
+                        break;
+                    case ValidationException validationException:
+                        Logger.LogValidationError(validationException.ValidationInfo);
+                        break;
+                    default:
+                        Logger.LogError(ex.SPublisherEvent);
+                        break;
+                }
             }
             catch (FileNotFoundException)
             {
                 Logger.LogError(SPublisherEvent.SpublisherJsonNotFound);
-            }
-            catch (ValidationException ex)
-            {
-                Logger.LogValidationError(ex.ValidationInfo);
-            }
-            catch (CommandLineStartException)
-            {
-                Logger.LogError(SPublisherEvent.CommandLineCouldNotStart);
-            }
-            catch (InvalidJsonException)
-            {
-                Logger.LogError(SPublisherEvent.InvalidJson);
             }
             catch (Exception)
             {

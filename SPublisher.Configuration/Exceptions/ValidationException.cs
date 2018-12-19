@@ -14,5 +14,6 @@ namespace SPublisher.Configuration.Exceptions
         }
 
         public IValidationInfo ValidationInfo => new ValidationInfo(ValidationResults);
+        public override SPublisherEvent SPublisherEvent => SPublisherEvent.ValidationErrors;
     }
 }
