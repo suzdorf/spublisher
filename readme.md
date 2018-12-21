@@ -5,21 +5,28 @@ An application which provides you to automatically build and deploy your applica
 ## Getting started
 
 * Get the latest installer from the [releases](https://github.com/suzdorf/spublisher/releases) page
-* Proceed with installing and reboot.
+* Proceed with the installing and reboot.
 * Enable IIS and required IIS components on Windows.
-* Now you can run your configurations from command prompt with Administrator permissions by command
+* Now you can run your configurations from the command prompt with Administrator permissions by command
 
 ```
 spublisher
 
 ```
 
-## Your first configuration
+## "Hello world" configuration
 
-In our first configuration we will create an IIS site with name "test"
-* Create an empty folder e.g. C:\Temp
-* Add to that folder an empty html file index.html
-* Add to that folder a spublisher.json file with content:
+In our first configuration we will create an IIS site with the name "helloworld"
+* Create an empty folder C:\SrcFolder
+* Add to that folder an empty html file index.html with the content
+
+```
+
+ <h2>Hello world!</h2>
+ 
+```
+
+* Add to some folder a spublisher.json file with the content:
 
 ```
 {
@@ -29,11 +36,8 @@ In our first configuration we will create an IIS site with name "test"
       "Type": "iis",
       "Applications": [
         {
-          "Name": "test",
-          "AppPoolName": "testAppPool",
-          "ManagedRuntimeVersion": "No Managed Code",
-          "Path": "C:\\Temp",
-          "Applications": []
+          "Name": "helloworld",
+          "Path": "C:\\SrcFolder"
         }
       ]
     }
@@ -42,26 +46,27 @@ In our first configuration we will create an IIS site with name "test"
 
 ```
 
-* Run cmd with Administrator permissions and execute the following commands:
+* Run cmd within the folder with spublisher.json file with Administrator permissions and execute the following command:
+
 ```
-cd C:\Temp
+
 spublisher
 
 ```
 
-* spublisher created for you a site in IIS with the name "test" and an application pool with the name "testAppPool"
+* spublisher has created for you a site in IIS with the name "helloworld"
 
 * Add to the hosts file the following line:
 
 ```
-127.0.0.1 test
+127.0.0.1 helloworld
 
 ```
 
-* Your site is available in browser by the address 
+* Your site is available in the browser by the address 
 
 ```
-http:\\test
+http:\\helloworld
 
 ```
 
@@ -126,9 +131,7 @@ By deafult this parameter is set to **"false"**. When you enable this parameter 
 
 ### IIS management build step
 
-IIS management build step allows you to create an application tree in IIS.
-
-In the example below a site with two applications within will be created. During creation application pools with the specific names will  also be created:
+IIS management build step allows you to create an application tree in IIS. The configuration below would deploy a web site with two applications withing "FileServer" and "Api". And also two virutal directories within "FileServer".
 
 ```
 
@@ -139,26 +142,63 @@ In the example below a site with two applications within will be created. During
       "Type": "iis",
       "Applications": [
         {
-          "Name": "site", // Site name. The site will be available at http://site
-          "AppPoolName": "siteAppPool", // Apppool with that name will be created
-          "ManagedRuntimeVersion": "No Managed Code", // CLR version 
-          "Path": "C:\\site", // Path to the directory with application
+          "Name": "site",
+          "Path": "C:\\sitesrc",
           "Applications": [
-			{
-			  "Name": "firstapplication", // First application name. The application will be available at http://site/firstapplication
-			  "AppPoolName": "firstApplicationPool", // Apppool with that name will be crated
-			  "ManagedRuntimeVersion": "No Managed Code",
-			  "Path": "C:\\firstapplication",
-			  "Applications": []
-			},
-			{
-			  "Name": "secondappliaction", // Second application name. The application will be available at http://site/secondappliaction
-			  "AppPoolName": "secondAppliactionPool", // Apppool with that name will be crated
-			  "ManagedRuntimeVersion": "No Managed Code",
-			  "Path": "C:\\secondappliaction",
-			  "Applications": []
-			}
-		  ]
+            {
+              "Name": "api",
+              "Path": "..\\ApiSrc"
+            },
+            {
+              "Name": "files",
+              "Path": "..\\FileServerSrc",
+              "Applications": [
+                {
+                  "Name": "images",
+                  "Path": "..\\ImagesFolder",
+                  "IsVirtualDirectory": true
+                },
+                {
+                  "Name": "videos",
+                  "Path": "..\\VideosFolder",
+                  "IsVirtualDirectory": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Applications would be available by the urls:
+
+```
+
+http:\\site
+http:\\site\api
+http:\\site\files
+http:\\site\files\images
+http:\\site\files\videos
+
+```
+- **"Name"** parameter
+
+In this parameter you provide an application name which will be used as an application name and its url binding.
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "Name": "yourappname",
+          ...
         }
       ]
     }
@@ -166,3 +206,141 @@ In the example below a site with two applications within will be created. During
 }
 
 ```
+
+This parameter is required. 
+
+- **"Path"** parameter
+
+In this parameter you provide a storage path to the folder of you application. You can specify a relative path. 
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "Path": "..\\SrcPath",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+This parameter is required. 
+
+- **"Applications"** parameter
+
+In this parameter you provide an array of the appilications which application, site or virtual directory contains.
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "Applications": [
+            {...},
+            {...},
+            {
+              ...
+              "Applications": [
+              ]
+            }
+          ]
+          ...
+        }
+      ],
+      ...
+    }
+  ]
+}
+
+
+```
+
+This parameter is not required. 
+
+
+- **"AppPoolName"** parameter
+
+In this parameter you provide an application pool name which you want to use for an application. If an application pool with the provided name does not exists spublisher will create apppool with that name.
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "AppPoolName": "YourAppPoolName",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+This parameter is not required. If you do not provide it for a root appilication "DefaultAppPool" will be used. If you don't provide it for a nested application site level application pool will be used.
+
+- **"ManagedRuntimeVersion"** parameter
+
+You should specify this parameter in case you want to deploy a .NET Framework asp.net application. Add "v4.0" or "v2.0" values to that parameter depending on .NET Framework version you want to use. 
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "ManagedRuntimeVersion": "v4.0",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+This parameter is not required. In case you provide it AppPool with that version will be created and assigned to your application. Otherwise "No Managed Code" value will be used.
+
+- **"IsVirtualDirectory"** parameter
+
+You should specify this parameter in case you want to create a virtual directory.
+
+```
+
+{
+  "BuildSteps": [
+    {
+      ...
+      "Applications": [
+        {
+          ...
+          "IsVirtualDirectory": true,
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+This parameter is not required. By default the value is "false".
