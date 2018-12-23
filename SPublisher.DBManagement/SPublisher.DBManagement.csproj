@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5928CA43-C7B7-425E-9376-61C7C1FC6D4A}</ProjectGuid>
+    <ProjectGuid>{C8F74582-9091-4F13-A8D3-A46ED0D497DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPublisher.BuildExecutor</RootNamespace>
-    <AssemblyName>SPublisher.BuildExecutor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>SPublisher.DBManagement</RootNamespace>
+    <AssemblyName>SPublisher.DBManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,17 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildExecutor.cs" />
-    <Compile Include="BuildStepExecutorFactory.cs" />
-    <Compile Include="BuildStepExecutors\BatchFileExecutor.cs" />
-    <Compile Include="BuildStepExecutors\CommandLineExecutor.cs" />
-    <Compile Include="BuildStepExecutors\IisManagementExecutor.cs" />
-    <Compile Include="BuildStepExecutors\SqlExecutor.cs" />
-    <Compile Include="Exceptions\CommandLineStartException.cs" />
-    <Compile Include="ExecutionResult.cs" />
-    <Compile Include="IBuildStepExecutor.cs" />
-    <Compile Include="IBuildStepExecutorFactory.cs" />
+    <Compile Include="DatabaseCreator.cs" />
+    <Compile Include="DbConnection.cs" />
+    <Compile Include="IConnectionAccessor.cs" />
+    <Compile Include="ISqlServerDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPublisher.Core\SPublisher.Core.csproj">
@@ -58,13 +53,5 @@
       <Name>SPublisher.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

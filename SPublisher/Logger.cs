@@ -49,6 +49,8 @@ namespace SPublisher
                 },
                 {SPublisherEvent.IisManagementStarted, message => "iis site creation started"},
                 {SPublisherEvent.IisManagementCompleted, message => "iis site creation completed"},
+                {SPublisherEvent.DatabaseCreationStarted, message => "database creation started"},
+                {SPublisherEvent.DatabaseCreationCompleted, message => "database creation completed"},
                 {SPublisherEvent.ApplicationPoolExists, message => $"application pool with name '{((IAppPoolInfo) message).AppPoolName}' already exists"},
                 {SPublisherEvent.ApplicationPoolCreated, message => $"application pool '{((IAppPoolInfo) message).AppPoolName}' created"},
                 {SPublisherEvent.SiteExists, message => $"Site with name '{((IApplicationInfo) message).Name}' already exists"},
@@ -60,11 +62,14 @@ namespace SPublisher
                 {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"},
                 {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
                 {SPublisherEvent.SpublisherJsonNotFound, message => "Application exited with error because 'spublisher.json' was not found."},
-                {SPublisherEvent.UnknownError, message => "Application exited due to uknown error."},
+                {SPublisherEvent.UnknownError, message => "Application exited due to unknown error."},
                 {SPublisherEvent.BuildStepTypeNotFound, message => $"spublisher.json contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
                 {SPublisherEvent.BuildStepTypeIsMissing, message => "spublisher.json contains build step which misses the 'Type' field."},
                 {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." },
-                {SPublisherEvent.ShouldRunAsAdministrator, message => "You should run spublisher as administrator in order to execute some of the build steps" }
+                {SPublisherEvent.ShouldRunAsAdministrator, message => "You should run spublisher as administrator in order to execute some of the build steps" },
+                {SPublisherEvent.DatabaseExists, message => $"Database with the name '{((IDatabaseCreate) message).DbName}' already exists"},
+                {SPublisherEvent.DatabaseCreated, message => $"Database with the name '{((IDatabaseCreate) message).DbName}' created" }
+
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

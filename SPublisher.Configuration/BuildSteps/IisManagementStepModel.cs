@@ -1,4 +1,4 @@
-﻿using SPublisher.Configuration.IISObjects;
+﻿using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 

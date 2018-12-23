@@ -1,7 +1,8 @@
 ﻿using SPublisher.Core;
+
 // ReSharper disable CoVariantArrayConversion
 
-namespace SPublisher.Configuration.IISObjects
+namespace SPublisher.Configuration.Models
 {
     public class ApplicationModel : IApplication
     {

@@ -4,6 +4,9 @@
     {
         PathValueIsRequired,
         NameValueIsRequired,
-        ApplicationChildrenShouldHaveUniqueNames
+        ApplicationChildrenShouldHaveUniqueNames,
+        ConnectionStringIsRequired,
+        DbNamesShouldBeUnique,
+        DbNameIsRequired
     }
 }

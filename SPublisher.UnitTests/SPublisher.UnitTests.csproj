@@ -86,9 +86,12 @@
   <ItemGroup>
     <Compile Include="BuildExecutor\BuildExecutorTests.cs" />
     <Compile Include="BuildExecutor\IisManagementExecutorTests.cs" />
+    <Compile Include="BuildExecutor\SqlExecutorTests.cs" />
     <Compile Include="Configuration\CommandLineStepValidatorTests.cs" />
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
     <Compile Include="Configuration\IisManagementStepValidatorTests.cs" />
+    <Compile Include="Configuration\SqlStepValidatorTests.cs" />
+    <Compile Include="DBManagement\DatabaseCreatorTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +108,10 @@
     <ProjectReference Include="..\SPublisher.Core\SPublisher.Core.csproj">
       <Project>{8AE01366-9A0E-4349-9FB9-29841E0D5126}</Project>
       <Name>SPublisher.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPublisher.DBManagement\SPublisher.DBManagement.csproj">
+      <Project>{C8F74582-9091-4F13-A8D3-A46ED0D497DF}</Project>
+      <Name>SPublisher.DBManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPublisher.IisManagement\SPublisher.IisManagement.csproj">
       <Project>{7a578b14-e2dc-4b71-92e7-5aafb3e4cba0}</Project>

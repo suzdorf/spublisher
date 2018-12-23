@@ -70,6 +70,10 @@
       <Project>{8AE01366-9A0E-4349-9FB9-29841E0D5126}</Project>
       <Name>SPublisher.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPublisher.DBManagement\SPublisher.DBManagement.csproj">
+      <Project>{C8F74582-9091-4F13-A8D3-A46ED0D497DF}</Project>
+      <Name>SPublisher.DBManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPublisher.IisManagement\SPublisher.IisManagement.csproj">
       <Project>{7A578B14-E2DC-4B71-92E7-5AAFB3E4CBA0}</Project>
       <Name>SPublisher.IisManagement</Name>

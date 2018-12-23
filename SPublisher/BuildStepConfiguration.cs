@@ -6,6 +6,7 @@ using SPublisher.Configuration;
 using SPublisher.Configuration.BuildSteps;
 using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Core;
+using SPublisher.DBManagement;
 using SPublisher.IisManagement;
 
 namespace SPublisher
@@ -19,18 +20,23 @@ namespace SPublisher
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
         private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
+        private static readonly DbConnection DbConnection = new DbConnection();
         private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
+        private static readonly ISqlServerDataProvider SqlServerDataProvider =  new SqlServerDataProvider(DbConnection);
+        private static readonly IDatabaseCreator DatabaseCreator = new DatabaseCreator(SqlServerDataProvider);
 
         private const string CommandLineBuildStep = "cmd";
         private const string BatchFileBuildStep = "bat";
         private const string IisManagementBuildStep = "iis";
+        private const string SqlBuildStep = "sql";
 
         public static readonly IDictionary<string, IBuildStepExecutor> BuildStepExecutors =
             new Dictionary<string, IBuildStepExecutor>
             {
                 {CommandLineBuildStep, new CommandLineExecutor(Logger)},
                 {BatchFileBuildStep, new BatchFileExecutor()},
-                {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)}
+                {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
+                {SqlBuildStep, new SqlExecutor(DatabaseCreator, Logger, DbConnection)}
             };
 
         public static readonly IDictionary<string, Func<BuildStepModel>> BuildStepModelCreators =
@@ -38,7 +44,8 @@ namespace SPublisher
             {
                 {CommandLineBuildStep, () => new CommandLineStepModel()},
                 {BatchFileBuildStep, () => new BatchFileStepModel()},
-                {IisManagementBuildStep, () => new IisManagementStepModel()}
+                {IisManagementBuildStep, () => new IisManagementStepModel()},
+                {SqlBuildStep, () => new SqlStepModel()}
             };
 
         public static readonly IDictionary<string, IBuildStepValidator> BuildStepValidators =
@@ -46,7 +53,8 @@ namespace SPublisher
             {
                 {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode()) },
                 {BatchFileBuildStep, null},
-                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode())}
+                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode())},
+                {SqlBuildStep, new SqlStepValidator()}
             };
     }
 }
