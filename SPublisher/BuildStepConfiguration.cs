@@ -20,10 +20,13 @@ namespace SPublisher
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
         private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
-        private static readonly DbConnection DbConnection = new DbConnection();
         private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
+
+        // DB Management
+        private static readonly DbConnection DbConnection = new DbConnection();
         private static readonly ISqlServerDataProvider SqlServerDataProvider =  new SqlServerDataProvider(DbConnection);
         private static readonly IDatabaseCreator DatabaseCreator = new DatabaseCreator(SqlServerDataProvider);
+        private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProvider, StorageAccessor, Logger);
 
         private const string CommandLineBuildStep = "cmd";
         private const string BatchFileBuildStep = "bat";
@@ -36,7 +39,7 @@ namespace SPublisher
                 {CommandLineBuildStep, new CommandLineExecutor(Logger)},
                 {BatchFileBuildStep, new BatchFileExecutor()},
                 {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
-                {SqlBuildStep, new SqlExecutor(DatabaseCreator, Logger, DbConnection)}
+                {SqlBuildStep, new SqlExecutor(DatabaseCreator, Logger, DbConnection, ScriptsExecutor)}
             };
 
         public static readonly IDictionary<string, Func<BuildStepModel>> BuildStepModelCreators =

@@ -6,11 +6,8 @@ namespace SPublisher.Configuration.BuildSteps
 {
     public class IisManagementStepModel : BuildStepModel, IIisManagementStep
     {
-        public ApplicationModel[] Applications { get; set; }
+        public ApplicationModel[] Applications { get; set; } = new ApplicationModel[0];
 
-        IApplication[] IIisManagementStep.Applications
-        {
-            get { return Applications; }
-        }
+        IApplication[] IIisManagementStep.Applications => Applications;
     }
 }

@@ -14,6 +14,8 @@
         IisManagementCompleted,
         DatabaseCreationStarted,
         DatabaseCreationCompleted,
+        ScriptsExecutionStarted,
+        ScriptsExecutionCompleted,
         ApplicationPoolExists,
         ApplicationPoolCreated,
         DatabaseExists,
@@ -26,12 +28,13 @@
         VirtualDirectoryCreated,
         ApplicationListIsEmpty,
         InvalidJson,
-        SpublisherJsonNotFound,
         UnknownError,
         BuildStepTypeNotFound,
         BuildStepTypeIsMissing,
         CommandLineCouldNotStart,
         ShouldRunAsAdministrator,
-        ValidationErrors
+        ValidationErrors,
+        FileNotFound,
+        SqlScriptExecuted
     }
 }

@@ -37,9 +37,9 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldValidateUniqueDbNames()
         {
-            var dbCreateMock = new Mock<IDatabaseCreate>();
-            dbCreateMock.SetupGet(x => x.DbName).Returns(DataBaseName);
-            _buildStepMock.As<ISqlStep>().Setup(x => x.DatabaseCreate).Returns(new[]
+            var dbCreateMock = new Mock<IDatabase>();
+            dbCreateMock.SetupGet(x => x.DatabaseName).Returns(DataBaseName);
+            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new[]
             {
                 dbCreateMock.Object,
                 dbCreateMock.Object
@@ -54,9 +54,9 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", false)]
         public void ShouldValidateDbName(string dbName, bool isValid)
         {
-            var dbCreateMock = new Mock<IDatabaseCreate>();
-            dbCreateMock.SetupGet(x => x.DbName).Returns(dbName);
-            _buildStepMock.As<ISqlStep>().Setup(x => x.DatabaseCreate).Returns(new[]
+            var dbCreateMock = new Mock<IDatabase>();
+            dbCreateMock.SetupGet(x => x.DatabaseName).Returns(dbName);
+            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new[]
             {
                 dbCreateMock.Object
             });

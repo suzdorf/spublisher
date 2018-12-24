@@ -14,15 +14,19 @@ namespace SPublisher.UnitTests.BuildExecutor
         private const string SecondDbName = "SecondDbName";
         private const string ConnectionString = "ConnectionString";
         private readonly Mock<IDatabaseCreator> _databaseCreatorMock = new Mock<IDatabaseCreator>();
-        private readonly IDatabaseCreate _firstDatabaseCreate = new DatabaseCreateModel {DbName = FirstDbName};
-        private readonly IDatabaseCreate _secondDatabaseCreate = new DatabaseCreateModel { DbName = SecondDbName };
+        private readonly IDatabase _firstDatabase = new DatabaseModel {DatabaseName = FirstDbName, Scripts = new []
+        {
+            new ScriptsModel()
+        }};
+        private readonly IDatabase _secondDatabase = new DatabaseModel { DatabaseName = SecondDbName };
         private readonly Mock<IConnectionSetter> _connectionSetter = new Mock<IConnectionSetter>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
+        private readonly Mock<IScriptsExecutor> _scriptsExecutorMock = new Mock<IScriptsExecutor>();
         private readonly IBuildStepExecutor _buildStepExecutor;
 
         public SqlExecutorTests()
         {
-            _buildStepExecutor = new SqlExecutor(_databaseCreatorMock.Object, _loggerMock.Object, _connectionSetter.Object);
+            _buildStepExecutor = new SqlExecutor(_databaseCreatorMock.Object, _loggerMock.Object, _connectionSetter.Object, _scriptsExecutorMock.Object);
         }
 
         [Fact]
@@ -39,23 +43,52 @@ namespace SPublisher.UnitTests.BuildExecutor
         public void ShouldCreateDatabaseIfNotExist()
         {
             var buildStep = new Mock<IBuildStep>();
-            buildStep.As<ISqlStep>().SetupGet(x => x.DatabaseCreate).Returns(new[]
+            buildStep.As<ISqlStep>().SetupGet(x => x.Databases).Returns(new[]
             {
-                _firstDatabaseCreate,
-                _secondDatabaseCreate
+                _firstDatabase,
+                _secondDatabase
             });
 
-            _databaseCreatorMock.Setup(x => x.Create(_firstDatabaseCreate)).Returns(DatabaseCreateResult.Success);
-            _databaseCreatorMock.Setup(x => x.Create(_secondDatabaseCreate)).Returns(DatabaseCreateResult.AlreadyExists);
+            _databaseCreatorMock.Setup(x => x.Create(_firstDatabase)).Returns(DatabaseCreateResult.Success);
+            _databaseCreatorMock.Setup(x => x.Create(_secondDatabase)).Returns(DatabaseCreateResult.AlreadyExists);
 
             _buildStepExecutor.Execute(buildStep.Object);
 
-            _databaseCreatorMock.Verify(x=>x.Create(_firstDatabaseCreate), Times.Once);
-            _databaseCreatorMock.Verify(x => x.Create(_secondDatabaseCreate), Times.Once);
-            _loggerMock.Verify(x=>x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Once);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationCompleted, null), Times.Once);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreated, _firstDatabaseCreate), Times.Once);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseExists, _secondDatabaseCreate), Times.Once);
+            _databaseCreatorMock.Verify(x => x.Create(_firstDatabase), Times.Once);
+            _databaseCreatorMock.Verify(x => x.Create(_secondDatabase), Times.Once);
+            _loggerMock.Verify(x=>x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Exactly(2));
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationCompleted, null), Times.Exactly(2));
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreated, _firstDatabase), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseExists, _secondDatabase), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldExecuteScriptsIfThereAreAny()
+        {
+            var buildStep = new Mock<IBuildStep>();
+            buildStep.As<ISqlStep>().SetupGet(x => x.Databases).Returns(new[]
+            {
+                _firstDatabase
+            });
+
+            _buildStepExecutor.Execute(buildStep.Object);
+            _scriptsExecutorMock.Verify(x => x.ExecuteScripts(_firstDatabase), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ScriptsExecutionStarted, _firstDatabase), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ScriptsExecutionCompleted, _firstDatabase), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldNotCreateDatabaseIfNullOrEmpty()
+        {
+            var buildStep = new Mock<IBuildStep>();
+            buildStep.As<ISqlStep>().SetupGet(x => x.Databases).Returns(new IDatabase[]
+            {
+                new DatabaseModel()
+            });
+
+            _buildStepExecutor.Execute(buildStep.Object);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Never);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationCompleted, null), Times.Never);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace SPublisher.DBManagement
             _sqlServerDataProvider = sqlServerDataProvider;
         }
 
-        public DatabaseCreateResult Create(IDatabaseCreate databaseCreate)
+        public DatabaseCreateResult Create(IDatabase databaseCreate)
         {
-            if (_sqlServerDataProvider.DataBaseExists(databaseCreate.DbName))
+            if (_sqlServerDataProvider.DataBaseExists(databaseCreate.DatabaseName))
             {
                 return DatabaseCreateResult.AlreadyExists;
             }

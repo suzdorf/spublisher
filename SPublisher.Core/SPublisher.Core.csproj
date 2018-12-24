@@ -46,6 +46,8 @@
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="BuildSteps\ISqlStep.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
+    <Compile Include="ExceptionMessages\IFileNotFoundMessage.cs" />
+    <Compile Include="Exceptions\FileNotFoundException.cs" />
     <Compile Include="Exceptions\SPublisherException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IApplication.cs" />
@@ -55,11 +57,13 @@
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IConfigurationFactory.cs" />
     <Compile Include="IConnectionSetter.cs" />
-    <Compile Include="IDatabaseCreate.cs" />
+    <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseCreator.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
     <Compile Include="IProcessOutputLogger.cs" />
+    <Compile Include="IScripts.cs" />
+    <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />
     <Compile Include="IStorageAccessor.cs" />
     <Compile Include="IValidationInfo.cs" />

@@ -3,6 +3,6 @@
     public interface ISqlStep : IBuildStep
     {
         string ConnectionString { get; }
-        IDatabaseCreate[] DatabaseCreate { get; }
+        IDatabase[] Databases { get; }
     }
 }

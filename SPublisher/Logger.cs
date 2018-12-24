@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using SPublisher.Configuration;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.ExceptionMessages;
+using SPublisher.DBManagement;
 
 namespace SPublisher
 {
@@ -61,15 +63,17 @@ namespace SPublisher
                 {SPublisherEvent.VirtualDirectoryCreated, message =>$"Virtual directory '{((IApplicationInfo) message).Name}' created"},
                 {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty"},
                 {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
-                {SPublisherEvent.SpublisherJsonNotFound, message => "Application exited with error because 'spublisher.json' was not found."},
+                {SPublisherEvent.FileNotFound, message => $"Application exited with error because '{((IFileNotFoundMessage) message).Path}' was not found."},
                 {SPublisherEvent.UnknownError, message => "Application exited due to unknown error."},
                 {SPublisherEvent.BuildStepTypeNotFound, message => $"spublisher.json contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
                 {SPublisherEvent.BuildStepTypeIsMissing, message => "spublisher.json contains build step which misses the 'Type' field."},
                 {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." },
                 {SPublisherEvent.ShouldRunAsAdministrator, message => "You should run spublisher as administrator in order to execute some of the build steps" },
-                {SPublisherEvent.DatabaseExists, message => $"Database with the name '{((IDatabaseCreate) message).DbName}' already exists"},
-                {SPublisherEvent.DatabaseCreated, message => $"Database with the name '{((IDatabaseCreate) message).DbName}' created" }
-
+                {SPublisherEvent.DatabaseExists, message => $"Database with the name '{((IDatabase) message).DatabaseName}' already exists"},
+                {SPublisherEvent.DatabaseCreated, message => $"Database with the name '{((IDatabase) message).DatabaseName}' created" },
+                {SPublisherEvent.ScriptsExecutionStarted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' started"},
+                {SPublisherEvent.ScriptsExecutionCompleted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' completed" },
+                {SPublisherEvent.SqlScriptExecuted, message => $"Sql script '{((ISqlScriptInfo) message).Path}' executed  " }
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {

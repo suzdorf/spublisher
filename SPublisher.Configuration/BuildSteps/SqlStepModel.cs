@@ -8,7 +8,7 @@ namespace SPublisher.Configuration.BuildSteps
     {
         public string ConnectionString { get; set; }
 
-        public DatabaseCreateModel[] DatabaseCreate { get; set; }
-        IDatabaseCreate[] ISqlStep.DatabaseCreate => DatabaseCreate;
+        public DatabaseModel[] Databases { get; set; }
+        IDatabase[] ISqlStep.Databases => Databases;
     }
 }

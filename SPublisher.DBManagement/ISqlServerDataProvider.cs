@@ -4,8 +4,10 @@ namespace SPublisher.DBManagement
 {
     public interface ISqlServerDataProvider
     {
-        bool DataBaseExists(string dbName);
+        bool DataBaseExists(string databaseName);
 
-        void CreateDataBase(IDatabaseCreate databaseCreate);
+        void CreateDataBase(IDatabase database);
+
+        void ExecuteScript(string script, string databaseName);
     }
 }

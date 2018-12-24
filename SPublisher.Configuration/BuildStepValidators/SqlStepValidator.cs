@@ -17,22 +17,22 @@ namespace SPublisher.Configuration.BuildStepValidators
                 errors.Add(new ValidationError(ValidationErrorType.ConnectionStringIsRequired));
             }
 
-            ValidateDatabaseCreate(sqlStep.DatabaseCreate, errors);
+            ValidateDatabaseCreate(sqlStep.Databases, errors);
 
             return errors.ToArray();
         }
 
-        private static void ValidateDatabaseCreate(IDatabaseCreate[] databaseCreate, List<IValidationError> errors)
+        private static void ValidateDatabaseCreate(IDatabase[] databaseCreate, List<IValidationError> errors)
         {
             if (databaseCreate != null)
             {
-                if (databaseCreate.DistinctBy(x=>x.DbName).Count() != databaseCreate.Length)
+                if (databaseCreate.DistinctBy(x=>x.DatabaseName).Count() != databaseCreate.Length)
                 {
                     if (errors.All(x => x.Type != ValidationErrorType.DbNamesShouldBeUnique))
                         errors.Add(new ValidationError(ValidationErrorType.DbNamesShouldBeUnique));
                 }
 
-                if (databaseCreate.Any(x => string.IsNullOrEmpty(x.DbName)))
+                if (databaseCreate.Any(x => string.IsNullOrEmpty(x.DatabaseName)))
                 {
                     errors.Add(new ValidationError(ValidationErrorType.DbNameIsRequired));
                 }

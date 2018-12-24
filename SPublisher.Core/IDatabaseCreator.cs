@@ -2,6 +2,6 @@
 {
     public interface IDatabaseCreator
     {
-        DatabaseCreateResult Create(IDatabaseCreate databaseCreate);
+        DatabaseCreateResult Create(IDatabase databaseCreate);
     }
 }
