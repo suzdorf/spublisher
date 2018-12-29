@@ -43,20 +43,18 @@ namespace SPublisher
             {
                 switch (ex)
                 {
-                    case BuildStepTypeNotFoundException buildStepTypeNotFoundException:
-                        Logger.LogError(SPublisherEvent.BuildStepTypeNotFound, new BuildStepTypeNotFoundMessage(buildStepTypeNotFoundException.Type));
-                        break;
-                    case FileNotFoundException fileNotFoundException:
-                        Logger.LogError(SPublisherEvent.FileNotFound, fileNotFoundException);
-                        break;
-                    case DirectoryNotFoundException directoryNotFoundException:
-                        Logger.LogError(SPublisherEvent.FileNotFound, directoryNotFoundException);
-                        break;
                     case ValidationException validationException:
                         Logger.LogValidationError(validationException.ValidationInfo);
                         break;
                     default:
-                        Logger.LogError(ex.SPublisherEvent);
+                        if (ex is ILogMessage message)
+                        {
+                            Logger.LogError(ex.SPublisherEvent, message);
+                        }
+                        else
+                        {
+                            Logger.LogError(ex.SPublisherEvent);
+                        }
                         break;
                 }
             }

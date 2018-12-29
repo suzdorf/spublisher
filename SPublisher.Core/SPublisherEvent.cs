@@ -36,6 +36,7 @@
         ValidationErrors,
         FileNotFound,
         DirectoryNotFound,
-        SqlScriptExecuted
+        SqlScriptExecuted,
+        DatabaseError
     }
 }

@@ -3,7 +3,7 @@ using SPublisher.Core.Exceptions;
 
 namespace SPublisher.Configuration.Exceptions
 {
-    public class BuildStepTypeNotFoundException : SPublisherException
+    public class BuildStepTypeNotFoundException : SPublisherException, IBuildStepTypeNotFoundMessage
     {
         public BuildStepTypeNotFoundException(string type)
         {

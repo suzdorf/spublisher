@@ -46,6 +46,8 @@
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="BuildSteps\ISqlStep.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
+    <Compile Include="Exceptions\DatabaseException.cs" />
+    <Compile Include="IDatabaseErrorMessage.cs" />
     <Compile Include="ExceptionMessages\IDirectoryNotFoundMessage.cs" />
     <Compile Include="ExceptionMessages\IFileNotFoundMessage.cs" />
     <Compile Include="Exceptions\DirectoryNotFoundException.cs" />

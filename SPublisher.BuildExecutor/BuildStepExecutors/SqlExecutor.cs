@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.SqlClient;
+using System.Linq;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Exceptions;
 
 namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
@@ -25,39 +28,46 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 
         public ExecutionResult Execute(IBuildStep buildStep)
         {
-            var step = (ISqlStep) buildStep;
-            _connectionSetter.SetConnectionString(step.ConnectionString);
-
-            if (step.Databases != null && step.Databases.Any())
+            try
             {
-                foreach (var database in step.Databases)
+                var step = (ISqlStep)buildStep;
+                _connectionSetter.SetConnectionString(step.ConnectionString);
+
+                if (step.Databases != null && step.Databases.Any())
                 {
-                    if (!string.IsNullOrEmpty(database.DatabaseName))
+                    foreach (var database in step.Databases)
                     {
-                        _logger.LogEvent(SPublisherEvent.DatabaseCreationStarted);
-
-                        var result = _databaseCreator.Create(database);
-
-                        if (result == DatabaseCreateResult.AlreadyExists)
+                        if (!string.IsNullOrEmpty(database.DatabaseName))
                         {
-                            _logger.LogEvent(SPublisherEvent.DatabaseExists, database);
+                            _logger.LogEvent(SPublisherEvent.DatabaseCreationStarted);
+
+                            var result = _databaseCreator.Create(database);
+
+                            if (result == DatabaseCreateResult.AlreadyExists)
+                            {
+                                _logger.LogEvent(SPublisherEvent.DatabaseExists, database);
+                            }
+
+                            if (result == DatabaseCreateResult.Success)
+                            {
+                                _logger.LogEvent(SPublisherEvent.DatabaseCreated, database);
+                            }
+
+                            _logger.LogEvent(SPublisherEvent.DatabaseCreationCompleted);
                         }
 
-                        if (result == DatabaseCreateResult.Success)
-                        { 
-                            _logger.LogEvent(SPublisherEvent.DatabaseCreated, database);
+                        if (database.Scripts.Any())
+                        {
+                            _logger.LogEvent(SPublisherEvent.ScriptsExecutionStarted, database);
+                            _scriptsExecutor.ExecuteScripts(database);
+                            _logger.LogEvent(SPublisherEvent.ScriptsExecutionCompleted, database);
                         }
-
-                        _logger.LogEvent(SPublisherEvent.DatabaseCreationCompleted);
-                    }
-
-                    if (database.Scripts.Any())
-                    {
-                        _logger.LogEvent(SPublisherEvent.ScriptsExecutionStarted, database);
-                        _scriptsExecutor.ExecuteScripts(database);
-                        _logger.LogEvent(SPublisherEvent.ScriptsExecutionCompleted, database);
                     }
                 }
+            }
+            catch (SqlException e)
+            {
+                throw new DatabaseException(e.Message);
             }
 
             return ExecutionResult.Success;

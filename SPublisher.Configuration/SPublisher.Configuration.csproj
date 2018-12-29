@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="BuildSteps\IisManagementStepModel.cs" />
     <Compile Include="BuildSteps\SqlStepModel.cs" />
-    <Compile Include="BuildStepTypeNotFoundMessage.cs" />
     <Compile Include="BuildStepValidationResult.cs" />
     <Compile Include="BuildStepValidatorFactory.cs" />
     <Compile Include="BuildStepValidators\CommandLineStepValidator.cs" />

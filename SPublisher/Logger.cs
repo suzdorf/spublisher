@@ -74,7 +74,8 @@ namespace SPublisher
                 {SPublisherEvent.DatabaseCreated, message => $"Database with the name '{((IDatabase) message).DatabaseName}' created" },
                 {SPublisherEvent.ScriptsExecutionStarted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' started"},
                 {SPublisherEvent.ScriptsExecutionCompleted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' completed" },
-                {SPublisherEvent.SqlScriptExecuted, message => $"Sql script '{((ISqlScriptInfo) message).Path}' executed  " }
+                {SPublisherEvent.SqlScriptExecuted, message => $"Sql script '{((ISqlScriptInfo) message).Path}' executed  " },
+                {SPublisherEvent.DatabaseError, message => $"Application exited with error because SqlException was thrown with message:{Environment.NewLine} {((IDatabaseErrorMessage) message).ErrorMessage}'" }
             };
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
