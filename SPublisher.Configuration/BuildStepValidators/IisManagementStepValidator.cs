@@ -48,8 +48,8 @@ namespace SPublisher.Configuration.BuildStepValidators
         {
             if (string.IsNullOrEmpty(path))
             {
-                if (errors.All(x => x.Type != ValidationErrorType.PathValueIsRequired))
-                    errors.Add(new ValidationError(ValidationErrorType.PathValueIsRequired));
+                if (errors.All(x => x.Type != ValidationErrorType.ApplicationPathValueIsRequired))
+                    errors.Add(new ValidationError(ValidationErrorType.ApplicationPathValueIsRequired));
             }
         }
 
@@ -57,8 +57,8 @@ namespace SPublisher.Configuration.BuildStepValidators
         {
             if (applications.Any(x=>string.IsNullOrEmpty(x.Name)))
             {
-                if (errors.All(x => x.Type != ValidationErrorType.NameValueIsRequired))
-                    errors.Add(new ValidationError(ValidationErrorType.NameValueIsRequired));
+                if (errors.All(x => x.Type != ValidationErrorType.ApplicationNameValueIsRequired))
+                    errors.Add(new ValidationError(ValidationErrorType.ApplicationNameValueIsRequired));
             }
 
             var applicationNames = applications.Where(x => !string.IsNullOrEmpty(x.Name)).Select(x => x.Name).ToArray();

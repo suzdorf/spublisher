@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
-using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
@@ -56,11 +55,11 @@ namespace SPublisher.UnitTests.Configuration
 
             if (isValid)
             {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.NameValueIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.ApplicationNameValueIsRequired);
             }
             else
             {
-                result.Should().Contain(x => x.Type == ValidationErrorType.NameValueIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationNameValueIsRequired);
             }
         }
 
@@ -82,11 +81,11 @@ namespace SPublisher.UnitTests.Configuration
 
             if (isValid)
             {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.PathValueIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.ApplicationPathValueIsRequired);
             }
             else
             {
-                result.Should().Contain(x => x.Type == ValidationErrorType.PathValueIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationPathValueIsRequired);
             }
         }
 
@@ -136,13 +135,13 @@ namespace SPublisher.UnitTests.Configuration
 
             if (isValid)
             {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.PathValueIsRequired);
-                result.Should().NotContain(x => x.Type == ValidationErrorType.NameValueIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.ApplicationPathValueIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.ApplicationNameValueIsRequired);
             }
             else
             {
-                result.Should().Contain(x => x.Type == ValidationErrorType.PathValueIsRequired);
-                result.Should().Contain(x => x.Type == ValidationErrorType.NameValueIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationPathValueIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationNameValueIsRequired);
             }
         }
     }

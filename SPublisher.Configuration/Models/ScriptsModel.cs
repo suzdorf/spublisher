@@ -4,7 +4,7 @@ namespace SPublisher.Configuration.Models
 {
     public class ScriptsModel : IScripts
     {
-        public string Type { get; set; } = "file";
+        public bool IsFolder { get; set; }
         public string Path { get; set; }
     }
 }

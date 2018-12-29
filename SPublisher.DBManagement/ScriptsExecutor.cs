@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using SPublisher.Core;
 
 namespace SPublisher.DBManagement
@@ -20,7 +20,22 @@ namespace SPublisher.DBManagement
         {
             var databaseName = string.IsNullOrEmpty(database.DatabaseName) ? SqlHelpers.MasterDatabaseName : database.DatabaseName;
 
-            var scripts = database.Scripts.ToDictionary(x => x.Path, x => _storageAccessor.ReadAllText(x.Path));
+            var scripts = new Dictionary<string, string>();
+
+            foreach (var script in database.Scripts)
+            {
+                if (!script.IsFolder)
+                {
+                    scripts.Add(script.Path, _storageAccessor.ReadAllText(script.Path));
+                }
+                else
+                {
+                    foreach (var keyValuePair in _storageAccessor.ReadAllText(script.Path, SqlHelpers.SqlFileExtension))
+                    {
+                        scripts.Add(keyValuePair.Key, keyValuePair.Value);
+                    }
+                }
+            }
 
             foreach (var script in scripts)
             {

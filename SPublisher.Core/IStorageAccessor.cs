@@ -1,9 +1,11 @@
-﻿namespace SPublisher.Core
+﻿using System.Collections.Generic;
+
+namespace SPublisher.Core
 {
     public interface IStorageAccessor
     {
-        bool CheckDirectoryExists(string path);
-
         string ReadAllText(string path);
+
+        IDictionary<string, string> ReadAllText(string folderPath, string extension);
     }
 }

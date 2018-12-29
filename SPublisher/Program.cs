@@ -49,6 +49,9 @@ namespace SPublisher
                     case FileNotFoundException fileNotFoundException:
                         Logger.LogError(SPublisherEvent.FileNotFound, fileNotFoundException);
                         break;
+                    case DirectoryNotFoundException directoryNotFoundException:
+                        Logger.LogError(SPublisherEvent.FileNotFound, directoryNotFoundException);
+                        break;
                     case ValidationException validationException:
                         Logger.LogValidationError(validationException.ValidationInfo);
                         break;

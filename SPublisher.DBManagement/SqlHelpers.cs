@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace SPublisher.DBManagement
+﻿namespace SPublisher.DBManagement
 {
     public static class SqlHelpers
     {
-        public static string MasterDatabaseName = "master";
+        public const string MasterDatabaseName = "master";
+        public const string SqlFileExtension = ".sql";
+
         public static string UseDatabaseScript(string script, string databaseName)
         {
             return $"USE {databaseName} {script}";

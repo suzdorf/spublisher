@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Moq;
 using SPublisher.Core;
 using SPublisher.DBManagement;
@@ -43,6 +43,26 @@ namespace SPublisher.UnitTests.DBManagement
             _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(Script, SqlHelpers.MasterDatabaseName), Times.Once);
             _loggerMock.Verify(x =>
                 x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == ScriptPath)), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldExecuteFilesInFolder()
+        {
+            var scriptsFromFolder = new Dictionary<string, string>
+            {
+                {"firstScriptPath", "firstScriptText" },
+                {"secondScriptPath", "secondScriptText" }
+            };
+            _scriptsMock.SetupGet(x => x.IsFolder).Returns(true);
+            _storageAccessorMock.Setup(x => x.ReadAllText(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
+            _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
+
+            foreach (var keyValuePair in scriptsFromFolder)
+            {
+                _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(keyValuePair.Value, SqlHelpers.MasterDatabaseName), Times.Once);
+                _loggerMock.Verify(x =>
+                    x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == keyValuePair.Key)), Times.Once);
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
-using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core.BuildSteps;

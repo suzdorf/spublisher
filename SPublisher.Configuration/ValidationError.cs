@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Configuration
+﻿using SPublisher.Core;
+
+namespace SPublisher.Configuration
 {
     public class ValidationError : IValidationError
     {

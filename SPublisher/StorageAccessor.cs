@@ -1,15 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using SPublisher.Core;
 
 namespace SPublisher
 {
     public class StorageAccessor : IStorageAccessor
     {
-        public bool CheckDirectoryExists(string path)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public string ReadAllText(string path)
         {
             try
@@ -20,6 +17,17 @@ namespace SPublisher
             {
                 throw new Core.Exceptions.FileNotFoundException(path);
             }
+        }
+
+        public IDictionary<string, string> ReadAllText(string folderPath, string extension)
+        {
+            var path = Path.GetFullPath(folderPath);
+            if (Directory.Exists(path))
+            {
+                return Directory.EnumerateFiles(path, $"*{extension}").ToDictionary(x => x, File.ReadAllText);
+            }
+
+            throw new Core.Exceptions.DirectoryNotFoundException(folderPath);
         }
     }
 }

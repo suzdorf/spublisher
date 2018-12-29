@@ -46,7 +46,9 @@
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="BuildSteps\ISqlStep.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
+    <Compile Include="ExceptionMessages\IDirectoryNotFoundMessage.cs" />
     <Compile Include="ExceptionMessages\IFileNotFoundMessage.cs" />
+    <Compile Include="Exceptions\DirectoryNotFoundException.cs" />
     <Compile Include="Exceptions\FileNotFoundException.cs" />
     <Compile Include="Exceptions\SPublisherException.cs" />
     <Compile Include="Extensions.cs" />
@@ -66,9 +68,12 @@
     <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />
     <Compile Include="IStorageAccessor.cs" />
+    <Compile Include="IValidationError.cs" />
+    <Compile Include="IValidationErrorData.cs" />
     <Compile Include="IValidationInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPublisherEvent.cs" />
+    <Compile Include="ValidationErrorType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

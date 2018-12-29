@@ -11,9 +11,9 @@ namespace SPublisher.UnitTests.Configuration
     public class SqlStepValidatorTests
     {
         private const string ConnectionString = "ConnectionString";
-        private const string DataBaseName = "DataBaseName";
+        private const string Path = "Path";
         private readonly Mock<IBuildStep> _buildStepMock = new Mock<IBuildStep>();
-        private readonly IBuildStepValidator _validator = new SqlStepValidator(); 
+        private readonly IBuildStepValidator _validator = new SqlStepValidator();
 
         [Theory]
         [InlineData(ConnectionString, true)]
@@ -26,51 +26,39 @@ namespace SPublisher.UnitTests.Configuration
 
             if (isValid)
             {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.ConnectionStringIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SqlStepConnectionStringIsRequired);
             }
             else
             {
-                result.Should().Contain(x => x.Type == ValidationErrorType.ConnectionStringIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.SqlStepConnectionStringIsRequired);
             }
         }
 
-        [Fact]
-        public void ShouldValidateUniqueDbNames()
-        {
-            var dbCreateMock = new Mock<IDatabase>();
-            dbCreateMock.SetupGet(x => x.DatabaseName).Returns(DataBaseName);
-            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new[]
-            {
-                dbCreateMock.Object,
-                dbCreateMock.Object
-            });
-
-            var result = _validator.Validate(_buildStepMock.Object);
-            result.Should().Contain(x => x.Type == ValidationErrorType.DbNamesShouldBeUnique);
-        }
-
         [Theory]
-        [InlineData(DataBaseName, true)]
+        [InlineData(Path, true)]
         [InlineData("", false)]
-        public void ShouldValidateDbName(string dbName, bool isValid)
+        public void ShouldValidatePath(string path, bool isValid)
         {
-            var dbCreateMock = new Mock<IDatabase>();
-            dbCreateMock.SetupGet(x => x.DatabaseName).Returns(dbName);
-            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new[]
+            var scripts = new Mock<IScripts>();
+            var database = new Mock<IDatabase>();
+            scripts.SetupGet(x => x.Path).Returns(path);
+            database.Setup(x => x.Scripts).Returns(new[]
             {
-                dbCreateMock.Object
+                scripts.Object
             });
-
-
+            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new []
+            {
+                database.Object
+            });
             var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
-                result.Should().NotContain(x => x.Type == ValidationErrorType.DbNameIsRequired);
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SqlStepPathValueIsRequired);
             }
             else
             {
-                result.Should().Contain(x => x.Type == ValidationErrorType.DbNameIsRequired);
+                result.Should().Contain(x => x.Type == ValidationErrorType.SqlStepPathValueIsRequired);
             }
         }
     }

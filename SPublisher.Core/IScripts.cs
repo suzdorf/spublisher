@@ -2,7 +2,7 @@
 {
     public interface IScripts
     {
-        string Type { get; }
+        bool IsFolder { get; }
         string Path { get; }
     }
 }

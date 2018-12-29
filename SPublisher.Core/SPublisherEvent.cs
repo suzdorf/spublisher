@@ -35,6 +35,7 @@
         ShouldRunAsAdministrator,
         ValidationErrors,
         FileNotFound,
+        DirectoryNotFound,
         SqlScriptExecuted
     }
 }

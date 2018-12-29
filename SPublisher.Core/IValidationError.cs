@@ -1,4 +1,5 @@
-﻿namespace SPublisher.Configuration
+﻿
+namespace SPublisher.Core
 {
     public interface IValidationError
     {

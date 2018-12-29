@@ -33,12 +33,11 @@ namespace SPublisher.Configuration
         private static readonly IDictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>> MessageDictionary =
             new Dictionary<ValidationErrorType, Func<IBuildStep, IValidationErrorData, string>>
             {
-                {ValidationErrorType.PathValueIsRequired, (step, data) => $"'Path' value is missing in one of the applications in the build step '{step.Name}'." },
-                {ValidationErrorType.DbNameIsRequired, (step, data) => $"'DbName' value is missing in one of the db creation array element in the build step '{step.Name}'." },
-                {ValidationErrorType.NameValueIsRequired, (step, data) => $"'Name' value is missing in one of the applications in the build step '{step.Name}'." },
+                {ValidationErrorType.ApplicationPathValueIsRequired, (step, data) => $"'Path' value is missing in one of the applications in the build step '{step.Name}'." },
+                {ValidationErrorType.ApplicationNameValueIsRequired, (step, data) => $"'Name' value is missing in one of the applications in the build step '{step.Name}'." },
                 {ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames, (step, data) => $"Non unique 'Name' values have been found in application array of the build step '{step.Name}'." },
-                {ValidationErrorType.ConnectionStringIsRequired, (step, data) => $"'ConnectionString' value is missing or empty in the build step '{step.Name}'." },
-                {ValidationErrorType.DbNamesShouldBeUnique, (step, data) => $"'DbName' is not unique in the db creation array of the build step '{step.Name}'." }
+                {ValidationErrorType.SqlStepConnectionStringIsRequired, (step, data) => $"'ConnectionString' value is missing or empty in the build step '{step.Name}'." },
+                {ValidationErrorType.SqlStepPathValueIsRequired, (step, data) => $"Some of the 'Path' values are null or empty in the build step '{step.Name}'. You should provide them." }
             };
     }
 }
