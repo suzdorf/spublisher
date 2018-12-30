@@ -57,7 +57,6 @@ namespace SPublisher.UnitTests.BuildExecutor
             _databaseCreatorMock.Verify(x => x.Create(_firstDatabase), Times.Once);
             _databaseCreatorMock.Verify(x => x.Create(_secondDatabase), Times.Once);
             _loggerMock.Verify(x=>x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Exactly(2));
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationCompleted, null), Times.Exactly(2));
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreated, _firstDatabase), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseExists, _secondDatabase), Times.Once);
         }
@@ -88,7 +87,6 @@ namespace SPublisher.UnitTests.BuildExecutor
 
             _buildStepExecutor.Execute(buildStep.Object);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Never);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationCompleted, null), Times.Never);
         }
     }
 }

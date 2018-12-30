@@ -52,8 +52,6 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
                             {
                                 _logger.LogEvent(SPublisherEvent.DatabaseCreated, database);
                             }
-
-                            _logger.LogEvent(SPublisherEvent.DatabaseCreationCompleted);
                         }
 
                         if (database.Scripts.Any())

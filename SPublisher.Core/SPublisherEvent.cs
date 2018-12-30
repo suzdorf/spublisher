@@ -13,7 +13,6 @@
         IisManagementStarted,
         IisManagementCompleted,
         DatabaseCreationStarted,
-        DatabaseCreationCompleted,
         ScriptsExecutionStarted,
         ScriptsExecutionCompleted,
         ApplicationPoolExists,

@@ -7,17 +7,17 @@
 
         public static string UseDatabaseScript(string script, string databaseName)
         {
-            return $"USE {databaseName} {script}";
+            return $"USE {databaseName}; {script}";
         }
 
         public static string CreateDatabaseScript(string databaseName)
         {
-            return $"CREATE DATABASE {databaseName}";
+            return $"CREATE DATABASE {databaseName};";
         }
 
         public static string FindDatabaseScript(string databaseName)
         {
-            return $"SELECT db_id('{databaseName}')";
+            return $"SELECT db_id('{databaseName}');";
         }
     }
 }
