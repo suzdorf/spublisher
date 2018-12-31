@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="BuildExecutor.cs" />
     <Compile Include="BuildStepExecutorFactory.cs" />
-    <Compile Include="BuildStepExecutors\BatchFileExecutor.cs" />
     <Compile Include="BuildStepExecutors\CommandLineExecutor.cs" />
     <Compile Include="BuildStepExecutors\IisManagementExecutor.cs" />
     <Compile Include="BuildStepExecutors\SqlExecutor.cs" />

@@ -65,7 +65,6 @@
     <Compile Include="IConfigurationValidator.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
     <Compile Include="JsonConversion\BuildStepsConverter.cs" />
-    <Compile Include="BuildSteps\BatchFileStepModel.cs" />
     <Compile Include="BuildSteps\BuildStepModel.cs" />
     <Compile Include="BuildSteps\CommandLineStepModel.cs" />
     <Compile Include="JsonConversion\CustomConverter.cs" />

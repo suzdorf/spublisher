@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildSteps\IBatchFileStep.cs" />
     <Compile Include="BuildSteps\IBuildStep.cs" />
     <Compile Include="BuildSteps\ICommandLineStep.cs" />
     <Compile Include="BuildSteps\IIisManagementStep.cs" />

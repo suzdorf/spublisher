@@ -29,7 +29,6 @@ namespace SPublisher
         private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProvider, StorageAccessor, Logger);
 
         private const string CommandLineBuildStep = "cmd";
-        private const string BatchFileBuildStep = "bat";
         private const string IisManagementBuildStep = "iis";
         private const string SqlBuildStep = "sql";
 
@@ -37,7 +36,6 @@ namespace SPublisher
             new Dictionary<string, IBuildStepExecutor>
             {
                 {CommandLineBuildStep, new CommandLineExecutor(Logger)},
-                {BatchFileBuildStep, new BatchFileExecutor()},
                 {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
                 {SqlBuildStep, new SqlExecutor(DatabaseCreator, Logger, DbConnection, ScriptsExecutor)}
             };
@@ -46,7 +44,6 @@ namespace SPublisher
             new Dictionary<string, Func<BuildStepModel>>
             {
                 {CommandLineBuildStep, () => new CommandLineStepModel()},
-                {BatchFileBuildStep, () => new BatchFileStepModel()},
                 {IisManagementBuildStep, () => new IisManagementStepModel()},
                 {SqlBuildStep, () => new SqlStepModel()}
             };
@@ -55,7 +52,6 @@ namespace SPublisher
             new Dictionary<string, IBuildStepValidator>
             {
                 {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode()) },
-                {BatchFileBuildStep, null},
                 {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode())},
                 {SqlBuildStep, new SqlStepValidator()}
             };
