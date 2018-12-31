@@ -96,6 +96,7 @@
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPublisher.BuildExecutor\SPublisher.BuildExecutor.csproj">
@@ -117,6 +118,10 @@
     <ProjectReference Include="..\SPublisher.IisManagement\SPublisher.IisManagement.csproj">
       <Project>{7a578b14-e2dc-4b71-92e7-5aafb3e4cba0}</Project>
       <Name>SPublisher.IisManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPublisher\SPublisher.csproj">
+      <Project>{2EA994B3-D684-4ECC-AC1A-102DB5CDF83B}</Project>
+      <Name>SPublisher</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

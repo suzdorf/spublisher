@@ -13,14 +13,15 @@ namespace SPublisher
 {
     public static class BuildStepConfiguration
     {
-        private static readonly ILogger Logger = new Logger();
+        private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
+        private static readonly IStorageLogger StorageLogger = new StorageLogger(StorageAccessor, Program.LocalFolderPath);
+        private static readonly ILogger Logger = new Logger(StorageLogger);
 
         // IIS Management
         private static readonly ServerManagerAccessor ServerManagerAccessor = new ServerManagerAccessor();
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
         private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
-        private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
 
         // DB Management
         private static readonly DbConnection DbConnection = new DbConnection();
@@ -51,8 +52,8 @@ namespace SPublisher
         public static readonly IDictionary<string, IBuildStepValidator> BuildStepValidators =
             new Dictionary<string, IBuildStepValidator>
             {
-                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode()) },
-                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode())},
+                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode) },
+                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode)},
                 {SqlBuildStep, new SqlStepValidator()}
             };
     }

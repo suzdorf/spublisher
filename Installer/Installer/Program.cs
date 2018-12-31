@@ -20,6 +20,7 @@ namespace Installer
                     new DirFiles(@"spublisher\*.dll*"),
                     new File(@"spublisher\SPublisher.exe"),
                     new File(@"spublisher\SPublisher.exe.config")),
+                new Dir(@"%LocalAppData%\spublisher"),
                 pathVariable);
 
             project.SetVersionFromFile(@"spublisher\SPublisher.exe");

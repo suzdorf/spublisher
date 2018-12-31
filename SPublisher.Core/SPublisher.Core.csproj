@@ -69,6 +69,7 @@
     <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />
     <Compile Include="IStorageAccessor.cs" />
+    <Compile Include="IStorageLogger.cs" />
     <Compile Include="IValidationError.cs" />
     <Compile Include="IValidationErrorData.cs" />
     <Compile Include="IValidationInfo.cs" />
