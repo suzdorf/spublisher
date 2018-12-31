@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Principal;
 using SPublisher.BuildExecutor;
 using SPublisher.Configuration;
-using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
-using SPublisher.Core.Exceptions;
 
 namespace SPublisher
 {
@@ -17,51 +14,25 @@ namespace SPublisher
         // Build executor
         private static readonly IBuildStepExecutorFactory BuildStepExecutorFactory = new BuildStepExecutorFactory(BuildStepConfiguration.BuildStepExecutors);
         private static readonly IBuildExecutor BuildExecutor = new BuildExecutor.BuildExecutor(BuildStepExecutorFactory, Logger);
-        private static readonly IBuildStepValidatorFactory BuildStepValidatorFactory = new BuildStepValidatorFactory(BuildStepConfiguration.BuildStepValidators);
-        private static readonly IConfigurationValidator ConfigurationValidator = new ConfigurationValidator(BuildStepValidatorFactory);
 
         // Configuration
+        private static readonly IBuildStepValidatorFactory BuildStepValidatorFactory = new BuildStepValidatorFactory(BuildStepConfiguration.BuildStepValidators);
+        private static readonly IConfigurationValidator ConfigurationValidator = new ConfigurationValidator(BuildStepValidatorFactory);
+        private static readonly IRunOptionsFactory RunOptionsFactory = new RunOptionsFactory();
         private static readonly IConfigurationFactory ConfigurationFactory = new ConfigurationFactory(BuildStepConfiguration.BuildStepModelCreators, ConfigurationValidator);
+
+        private static readonly SPublisherRunner Spublisher = new SPublisherRunner(
+            RunOptionsFactory,
+            Logger,
+            StorageAccessor,
+            BuildExecutor,
+            ConfigurationFactory);
+
         static void Main(string[] args)
         {
-            try
-            {
-                Logger.LogEvent(SPublisherEvent.SPublisherStarted);
-                var json = StorageAccessor.ReadAllText("spublisher.json");
-                var model = ConfigurationFactory.Get(json);
-
-                if (model.BuildSteps.Any())
-                {
-                    Logger.LogEvent(SPublisherEvent.BuildExecutionStarted);
-                    BuildExecutor.Execute(model.BuildSteps);
-                    Logger.LogEvent(SPublisherEvent.BuildExecutionCompleted);
-                }
-
-                Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
-            }
-            catch (SPublisherException ex)
-            {
-                switch (ex)
-                {
-                    case ValidationException validationException:
-                        Logger.LogValidationError(validationException.ValidationInfo);
-                        break;
-                    default:
-                        if (ex is ILogMessage message)
-                        {
-                            Logger.LogError(ex.SPublisherEvent, message);
-                        }
-                        else
-                        {
-                            Logger.LogError(ex.SPublisherEvent);
-                        }
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-            }
+            Logger.LogEvent(SPublisherEvent.SPublisherStarted);
+            Spublisher.Run(args);
+            Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
         }
 
         public static bool IsAdministratorMode

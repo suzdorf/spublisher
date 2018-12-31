@@ -65,6 +65,8 @@
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
     <Compile Include="IProcessOutputLogger.cs" />
+    <Compile Include="IRunOptions.cs" />
+    <Compile Include="IRunOptionsFactory.cs" />
     <Compile Include="IScripts.cs" />
     <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />

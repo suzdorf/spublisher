@@ -90,12 +90,14 @@
     <Compile Include="Configuration\CommandLineStepValidatorTests.cs" />
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
     <Compile Include="Configuration\IisManagementStepValidatorTests.cs" />
+    <Compile Include="Configuration\RunOptionsFactoryTests.cs" />
     <Compile Include="Configuration\SqlStepValidatorTests.cs" />
     <Compile Include="DBManagement\DatabaseCreatorTests.cs" />
     <Compile Include="DBManagement\ScriptsExecutorTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpublisherRunnerTests.cs" />
     <Compile Include="StorageLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
