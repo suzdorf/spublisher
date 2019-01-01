@@ -84,6 +84,7 @@ namespace SPublisher.UnitTests
             Action action = () => { _sPublisherRunner.Run(_args); };
             action.Should().NotThrow();
             _loggerMock.Verify(x => x.LogError(exception), Times.Once);
+            _loggerMock.Verify(x => x.LogError(SPublisherEvent.UnknownError, null), Times.Once);
         }
 
         [Fact]
@@ -116,7 +117,7 @@ namespace SPublisher.UnitTests
 
             Action action = () => { _sPublisherRunner.Run(_args); };
             action.Should().NotThrow();
-            _loggerMock.Verify(x => x.LogValidationError(exception.ValidationInfo), Times.Once);
+            _loggerMock.Verify(x => x.LogValidationError(It.IsAny<IValidationInfo>()), Times.Once);
         }
 
         private class SpublisherExceptionStab : SPublisherException

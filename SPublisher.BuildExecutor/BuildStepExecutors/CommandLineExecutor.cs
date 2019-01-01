@@ -10,9 +10,9 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
     public class CommandLineExecutor : IBuildStepExecutor
     {
-        private readonly IProcessOutputLogger _logger;
+        private readonly ILogger _logger;
 
-        public CommandLineExecutor(IProcessOutputLogger logger)
+        public CommandLineExecutor(ILogger logger)
         {
             _logger = logger;
         }
@@ -46,8 +46,9 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
             {
                 process.Start();
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
+                _logger.LogError(ex);
                 throw new CommandLineStartException();
             }
 

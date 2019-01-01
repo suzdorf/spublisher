@@ -64,6 +64,7 @@ namespace SPublisher
             }
             catch (Exception ex)
             {
+                _logger.LogError(SPublisherEvent.UnknownError);
                 _logger.LogError(ex);
             }
         }

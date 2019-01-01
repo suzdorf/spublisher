@@ -12,11 +12,13 @@ namespace SPublisher.Configuration
     {
         private readonly IDictionary<string, Func<BuildStepModel>> _buildStepModelCreators;
         private readonly IConfigurationValidator _validator;
+        private readonly ILogger _logger;
 
-        public ConfigurationFactory(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators, IConfigurationValidator validator)
+        public ConfigurationFactory(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators, IConfigurationValidator validator, ILogger logger)
         {
             _buildStepModelCreators = buildStepModelCreators;
             _validator = validator;
+            _logger = logger;
         }
 
         public IConfiguration Get(string json)
@@ -27,8 +29,9 @@ namespace SPublisher.Configuration
                 _validator.Validate(configuration);
                 return configuration;
             }
-            catch (JsonReaderException)
+            catch (JsonReaderException ex)
             {
+                _logger.LogError(ex);
                 throw new InvalidJsonException();
             }
         }

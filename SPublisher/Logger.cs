@@ -62,12 +62,12 @@ namespace SPublisher
                 {SPublisherEvent.VirtualDirectoryExists, message => $"Virtual directory with name '{((IApplicationInfo) message).Name}' already exists."},
                 {SPublisherEvent.VirtualDirectoryCreated, message =>$"Virtual directory '{((IApplicationInfo) message).Name}' created."},
                 {SPublisherEvent.ApplicationListIsEmpty, message => "'Applications' parameter is empty."},
-                {SPublisherEvent.InvalidJson, message => "Application exited with error because 'spublisher.json' has invalid json format."},
+                {SPublisherEvent.InvalidJson, message => "Application exited with error because the file with your configuration has invalid json format."},
                 {SPublisherEvent.FileNotFound, message => $"Application exited with error because file '{Path.GetFullPath(((IFileNotFoundMessage) message).Path)}' has not been found."},
                 {SPublisherEvent.DirectoryNotFound, message => $"Application exited with error because directory '{Path.GetFullPath(((IDirectoryNotFoundMessage) message).Path)}' has not been found."},
                 {SPublisherEvent.UnknownError, message => $"Application exited due to unknown error. For more information check logs in '{Program.LocalFolderPath}'"},
-                {SPublisherEvent.BuildStepTypeNotFound, message => $"File 'spublisher.json' contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
-                {SPublisherEvent.BuildStepTypeIsMissing, message => "File 'spublisher.json' contains build step which misses the 'Type' field."},
+                {SPublisherEvent.BuildStepTypeNotFound, message => $"The file with your configuration contains build step with unknown type '{((IBuildStepTypeNotFoundMessage)message).Type}'. Change it to valid build step type." },
+                {SPublisherEvent.BuildStepTypeIsMissing, message => "The file with your configuration contains build step which misses the 'Type' field."},
                 {SPublisherEvent.CommandLineCouldNotStart, message => "Could not run cmd since it is unavailable. Check your system configuration." },
                 {SPublisherEvent.ShouldRunAsAdministrator, message => "You should run spublisher as administrator in order to execute some of the build steps." },
                 {SPublisherEvent.DatabaseExists, message => $"Database with the name '{((IDatabase) message).DatabaseName}' already exists."},
@@ -97,7 +97,6 @@ namespace SPublisher
 
         public void LogError(Exception exception)
         {
-            LogError(SPublisherEvent.UnknownError);
             _storageLogger.LogError(exception);
         }
 

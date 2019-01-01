@@ -19,7 +19,7 @@ namespace SPublisher
         private static readonly IBuildStepValidatorFactory BuildStepValidatorFactory = new BuildStepValidatorFactory(BuildStepConfiguration.BuildStepValidators);
         private static readonly IConfigurationValidator ConfigurationValidator = new ConfigurationValidator(BuildStepValidatorFactory);
         private static readonly IRunOptionsFactory RunOptionsFactory = new RunOptionsFactory();
-        private static readonly IConfigurationFactory ConfigurationFactory = new ConfigurationFactory(BuildStepConfiguration.BuildStepModelCreators, ConfigurationValidator);
+        private static readonly IConfigurationFactory ConfigurationFactory = new ConfigurationFactory(BuildStepConfiguration.BuildStepModelCreators, ConfigurationValidator, Logger);
 
         private static readonly SPublisherRunner Spublisher = new SPublisherRunner(
             RunOptionsFactory,
