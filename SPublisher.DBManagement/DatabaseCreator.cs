@@ -6,9 +6,9 @@ namespace SPublisher.DBManagement
     {
         private readonly ISqlServerDataProvider _sqlServerDataProvider;
 
-        public DatabaseCreator(ISqlServerDataProvider sqlServerDataProvider)
+        public DatabaseCreator(ISqlServerDataProviderFactory sqlServerDataProviderFactory)
         {
-            _sqlServerDataProvider = sqlServerDataProvider;
+            _sqlServerDataProvider = sqlServerDataProviderFactory.Get();
         }
 
         public DatabaseCreateResult Create(IDatabase databaseCreate)

@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using SPublisher.Core;
 
-namespace SPublisher.DBManagement
+namespace SPublisher.DBManagement.DataProviders
 {
     public class SqlServerDataProvider : ISqlServerDataProvider
     {

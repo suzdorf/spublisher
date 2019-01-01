@@ -12,6 +12,7 @@ namespace SPublisher.UnitTests.DBManagement
         private const string ScriptPath = "ScriptPath";
         private const string Script = "Script";
         private readonly Mock<ISqlServerDataProvider> _sqlServerDataProviderMock = new Mock<ISqlServerDataProvider>();
+        private readonly Mock<ISqlServerDataProviderFactory> _sqlServerDataProviderFactoryMock = new Mock<ISqlServerDataProviderFactory>();
         private readonly Mock<IStorageAccessor> _storageAccessorMock = new Mock<IStorageAccessor>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
         private readonly Mock<IDatabase> _databaseMock = new Mock<IDatabase>();
@@ -23,7 +24,8 @@ namespace SPublisher.UnitTests.DBManagement
             _scriptsMock.SetupGet(x => x.Path).Returns(ScriptPath);
             _storageAccessorMock.Setup(x => x.ReadAllText(ScriptPath)).Returns(Script);
             _databaseMock.SetupGet(x => x.Scripts).Returns(new[] {_scriptsMock.Object});
-            _scriptsExecutor = new ScriptsExecutor(_sqlServerDataProviderMock.Object, _storageAccessorMock.Object, _loggerMock.Object);
+            _sqlServerDataProviderFactoryMock.Setup(x => x.Get()).Returns(_sqlServerDataProviderMock.Object);
+            _scriptsExecutor = new ScriptsExecutor(_sqlServerDataProviderFactoryMock.Object, _storageAccessorMock.Object, _loggerMock.Object);
         }
 
         [Fact]

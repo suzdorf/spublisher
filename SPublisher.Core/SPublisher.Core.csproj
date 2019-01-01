@@ -44,6 +44,7 @@
     <Compile Include="BuildSteps\ICommandLineStep.cs" />
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="BuildSteps\ISqlStep.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="IDatabaseErrorMessage.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="IScripts.cs" />
     <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />
+    <Compile Include="ISqlConnectionSettings.cs" />
     <Compile Include="IStorageAccessor.cs" />
     <Compile Include="IStorageLogger.cs" />
     <Compile Include="IValidationError.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="IValidationInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPublisherEvent.cs" />
+    <Compile Include="SqlServerType.cs" />
     <Compile Include="ValidationErrorType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

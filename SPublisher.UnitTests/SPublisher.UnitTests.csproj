@@ -91,6 +91,7 @@
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
     <Compile Include="Configuration\IisManagementStepValidatorTests.cs" />
     <Compile Include="Configuration\RunOptionsFactoryTests.cs" />
+    <Compile Include="Configuration\SqlStepModelTests.cs" />
     <Compile Include="Configuration\SqlStepValidatorTests.cs" />
     <Compile Include="DBManagement\DatabaseCreatorTests.cs" />
     <Compile Include="DBManagement\ScriptsExecutorTests.cs" />

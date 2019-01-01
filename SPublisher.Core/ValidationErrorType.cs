@@ -6,6 +6,7 @@
         ApplicationNameValueIsRequired,
         ApplicationChildrenShouldHaveUniqueNames,
         SqlStepConnectionStringIsRequired,
-        SqlStepPathValueIsRequired
+        SqlStepPathValueIsRequired,
+        SqlServerTypeInvalidValue
     }
 }

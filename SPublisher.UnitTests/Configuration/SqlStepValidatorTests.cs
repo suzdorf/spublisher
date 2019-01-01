@@ -61,5 +61,25 @@ namespace SPublisher.UnitTests.Configuration
                 result.Should().Contain(x => x.Type == ValidationErrorType.SqlStepPathValueIsRequired);
             }
         }
+
+        [Theory]
+        [InlineData(SqlServerType.MsSql, true)]
+        [InlineData(SqlServerType.MySql, true)]
+        [InlineData(SqlServerType.Invalid, false)]
+        public void ShouldValidateSqlServerType(SqlServerType type, bool isValid)
+        {
+            _buildStepMock.As<ISqlStep>().Setup(x => x.ServerType).Returns(type);
+
+            var result = _validator.Validate(_buildStepMock.Object);
+
+            if (isValid)
+            {
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SqlServerTypeInvalidValue);
+            }
+            else
+            {
+                result.Should().Contain(x => x.Type == ValidationErrorType.SqlServerTypeInvalidValue);
+            }
+        }
     }
 }

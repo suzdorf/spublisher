@@ -30,7 +30,7 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
             try
             {
                 var step = (ISqlStep)buildStep;
-                _connectionSetter.SetConnectionString(step.ConnectionString);
+                _connectionSetter.Set(step);
 
                 if (step.Databases != null && step.Databases.Any())
                 {

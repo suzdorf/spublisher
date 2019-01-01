@@ -41,15 +41,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseCreator.cs" />
+    <Compile Include="DataProviders\MySqlDataProvider.cs" />
     <Compile Include="DbConnection.cs" />
     <Compile Include="ISqlScriptInfo.cs" />
+    <Compile Include="ISqlServerDataProviderFactory.cs" />
     <Compile Include="SqlHelpers.cs" />
     <Compile Include="IConnectionAccessor.cs" />
     <Compile Include="ISqlServerDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptsExecutor.cs" />
     <Compile Include="SqlScriptInfo.cs" />
-    <Compile Include="SqlServerDataProvider.cs" />
+    <Compile Include="DataProviders\SqlServerDataProvider.cs" />
+    <Compile Include="SqlServerDataProviderFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPublisher.Core\SPublisher.Core.csproj">

@@ -10,13 +10,15 @@ namespace SPublisher.UnitTests.DBManagement
     {
         private const string DatabaseName = "DatabaseName";
         private readonly Mock<ISqlServerDataProvider> _sqlServerDataProviderMock =  new Mock<ISqlServerDataProvider>();
+        private readonly Mock<ISqlServerDataProviderFactory> _sqlServerDataProviderFactoryMock = new Mock<ISqlServerDataProviderFactory>();
         private readonly Mock<IDatabase> _databaseCreateMock = new Mock<IDatabase>();
         private readonly IDatabaseCreator _databaseCreator;
 
         public DatabaseCreatorTests()
         {
             _databaseCreateMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
-            _databaseCreator = new DatabaseCreator(_sqlServerDataProviderMock.Object);
+            _sqlServerDataProviderFactoryMock.Setup(x => x.Get()).Returns(_sqlServerDataProviderMock.Object);
+            _databaseCreator = new DatabaseCreator(_sqlServerDataProviderFactoryMock.Object);
         }
 
         [Fact]

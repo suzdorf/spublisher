@@ -12,7 +12,6 @@ namespace SPublisher.UnitTests.BuildExecutor
     {
         private const string FirstDbName = "FirstDbName";
         private const string SecondDbName = "SecondDbName";
-        private const string ConnectionString = "ConnectionString";
         private readonly Mock<IDatabaseCreator> _databaseCreatorMock = new Mock<IDatabaseCreator>();
         private readonly IDatabase _firstDatabase = new DatabaseModel {DatabaseName = FirstDbName, Scripts = new []
         {
@@ -32,11 +31,10 @@ namespace SPublisher.UnitTests.BuildExecutor
         [Fact]
         public void ShouldSetConnection()
         {
-            var buildStep = new Mock<IBuildStep>();
-            buildStep.As<ISqlStep>().SetupGet(x => x.ConnectionString).Returns(ConnectionString);
+            var buildStep = new Mock<ISqlStep>();
             _buildStepExecutor.Execute(buildStep.Object);
 
-            _connectionSetter.Verify(x=>x.SetConnectionString(ConnectionString), Times.Once);
+            _connectionSetter.Verify(x=>x.Set(buildStep.Object), Times.Once);
         }
 
         [Fact]

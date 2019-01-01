@@ -17,6 +17,11 @@ namespace SPublisher.Configuration.BuildStepValidators
                 errors.Add(new ValidationError(ValidationErrorType.SqlStepConnectionStringIsRequired));
             }
 
+            if (sqlStep.ServerType == SqlServerType.Invalid)
+            {
+                errors.Add(new ValidationError(ValidationErrorType.SqlServerTypeInvalidValue));
+            }
+
             var scripts = sqlStep.Databases.SelectMany(x => x.Scripts).ToList();
 
             if (scripts.Any(x => string.IsNullOrEmpty(x.Path)))

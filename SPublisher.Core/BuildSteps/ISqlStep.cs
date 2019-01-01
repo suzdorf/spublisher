@@ -1,8 +1,7 @@
 ﻿namespace SPublisher.Core.BuildSteps
 {
-    public interface ISqlStep : IBuildStep
+    public interface ISqlStep : IBuildStep, ISqlConnectionSettings
     {
-        string ConnectionString { get; }
         IDatabase[] Databases { get; }
     }
 }

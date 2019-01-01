@@ -5,9 +5,12 @@ namespace SPublisher.DBManagement
     public class DbConnection : IConnectionAccessor, IConnectionSetter
     {
         public string ConnectionString { get; private set; }
-        public void SetConnectionString(string connectionString)
+        public void Set(ISqlConnectionSettings connectionSettings)
         {
-            ConnectionString = connectionString;
+            ConnectionString = connectionSettings.ConnectionString;
+            ServerType = connectionSettings.ServerType;
         }
+
+        public SqlServerType ServerType { get; private set; }
     }
 }

@@ -9,9 +9,9 @@ namespace SPublisher.DBManagement
         private readonly IStorageAccessor _storageAccessor;
         private readonly ILogger _logger;
 
-        public ScriptsExecutor(ISqlServerDataProvider sqlServerDataProvider, IStorageAccessor storageAccessor, ILogger logger)
+        public ScriptsExecutor(ISqlServerDataProviderFactory sqlServerDataProviderFactory, IStorageAccessor storageAccessor, ILogger logger)
         {
-            _sqlServerDataProvider = sqlServerDataProvider;
+            _sqlServerDataProvider = sqlServerDataProviderFactory.Get();
             _storageAccessor = storageAccessor;
             _logger = logger;
         }

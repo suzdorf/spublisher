@@ -25,9 +25,9 @@ namespace SPublisher
 
         // DB Management
         private static readonly DbConnection DbConnection = new DbConnection();
-        private static readonly ISqlServerDataProvider SqlServerDataProvider =  new SqlServerDataProvider(DbConnection);
-        private static readonly IDatabaseCreator DatabaseCreator = new DatabaseCreator(SqlServerDataProvider);
-        private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProvider, StorageAccessor, Logger);
+        private static readonly ISqlServerDataProviderFactory SqlServerDataProviderFactory =  new SqlServerDataProviderFactory(DbConnection);
+        private static readonly IDatabaseCreator DatabaseCreator = new DatabaseCreator(SqlServerDataProviderFactory);
+        private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProviderFactory, StorageAccessor, Logger);
 
         private const string CommandLineBuildStep = "cmd";
         private const string IisManagementBuildStep = "iis";

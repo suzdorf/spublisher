@@ -37,7 +37,8 @@ namespace SPublisher.Configuration
                 {ValidationErrorType.ApplicationNameValueIsRequired, (step, data) => $"'Name' value is missing in one of the applications in the build step '{step.Name}'." },
                 {ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames, (step, data) => $"Non unique 'Name' values have been found in application array of the build step '{step.Name}'." },
                 {ValidationErrorType.SqlStepConnectionStringIsRequired, (step, data) => $"'ConnectionString' value is missing or empty in the build step '{step.Name}'." },
-                {ValidationErrorType.SqlStepPathValueIsRequired, (step, data) => $"Some of the 'Path' values are null or empty in the build step '{step.Name}'. You should provide them." }
+                {ValidationErrorType.SqlStepPathValueIsRequired, (step, data) => $"Some of the 'Path' values are null or empty in the build step '{step.Name}'. You should provide them." },
+                {ValidationErrorType.SqlServerTypeInvalidValue, (step, data) => $"'ServerType' contains invalid value in the build step '{step.Name}'." }
             };
     }
 }

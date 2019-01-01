@@ -2,6 +2,6 @@
 {
     public interface IConnectionSetter
     {
-        void SetConnectionString(string connectionString);
+        void Set(ISqlConnectionSettings connectionString);
     }
 }
