@@ -5,21 +5,19 @@ namespace SPublisher.DBManagement
 {
     public class ScriptsExecutor : IScriptsExecutor
     {
-        private readonly ISqlServerDataProvider _sqlServerDataProvider;
+        private readonly ISqlServerDataProviderFactory _sqlServerDataProviderFactory;
         private readonly IStorageAccessor _storageAccessor;
         private readonly ILogger _logger;
 
         public ScriptsExecutor(ISqlServerDataProviderFactory sqlServerDataProviderFactory, IStorageAccessor storageAccessor, ILogger logger)
         {
-            _sqlServerDataProvider = sqlServerDataProviderFactory.Get();
+            _sqlServerDataProviderFactory = sqlServerDataProviderFactory;
             _storageAccessor = storageAccessor;
             _logger = logger;
         }
 
         public void ExecuteScripts(IDatabase database)
         {
-            var databaseName = string.IsNullOrEmpty(database.DatabaseName) ? SqlHelpers.MasterDatabaseName : database.DatabaseName;
-
             var scripts = new Dictionary<string, string>();
 
             foreach (var script in database.Scripts)
@@ -39,7 +37,7 @@ namespace SPublisher.DBManagement
 
             foreach (var script in scripts)
             {
-                _sqlServerDataProvider.ExecuteScript(script.Value, databaseName);
+                _sqlServerDataProviderFactory.Get().ExecuteScript(script.Value, database.DatabaseName);
                 _logger.LogEvent(SPublisherEvent.SqlScriptExecuted, new SqlScriptInfo(script.Key));
             }
         }

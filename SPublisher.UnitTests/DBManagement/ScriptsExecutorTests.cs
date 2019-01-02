@@ -39,15 +39,6 @@ namespace SPublisher.UnitTests.DBManagement
         }
 
         [Fact]
-        public void ShouldExecuteScriptUsingMasterIfDatabaseNameIsNull()
-        {
-            _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
-            _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(Script, SqlHelpers.MasterDatabaseName), Times.Once);
-            _loggerMock.Verify(x =>
-                x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == ScriptPath)), Times.Once);
-        }
-
-        [Fact]
         public void ShouldExecuteFilesInFolder()
         {
             var scriptsFromFolder = new Dictionary<string, string>

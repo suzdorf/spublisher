@@ -17,7 +17,7 @@ namespace SPublisher.DBManagement.DataProviders
         {
             using (var connection = new SqlConnection(_connectionAccessor.ConnectionString))
             {
-                using (var command = new SqlCommand(SqlHelpers.FindDatabaseScript(databaseName), connection))
+                using (var command = new SqlCommand(SqlHelpers.MsSql.FindDatabaseScript(databaseName), connection))
                 {
                     connection.Open();
                     return command.ExecuteScalar() != DBNull.Value;
@@ -32,7 +32,10 @@ namespace SPublisher.DBManagement.DataProviders
 
         public void ExecuteScript(string script, string databaseName)
         {
-            ExecuteNonQuery(SqlHelpers.UseDatabaseScript(script, databaseName));
+            ExecuteNonQuery(
+                string.IsNullOrEmpty(databaseName)
+                    ? SqlHelpers.UseDatabaseScript(script, SqlHelpers.MasterDatabaseName)
+                    : SqlHelpers.UseDatabaseScript(script, databaseName));
         }
 
         private void ExecuteNonQuery(string script)

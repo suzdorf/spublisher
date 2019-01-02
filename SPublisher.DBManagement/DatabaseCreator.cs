@@ -4,21 +4,21 @@ namespace SPublisher.DBManagement
 {
     public class DatabaseCreator : IDatabaseCreator
     {
-        private readonly ISqlServerDataProvider _sqlServerDataProvider;
+        private readonly ISqlServerDataProviderFactory _sqlServerDataProviderFactory;
 
         public DatabaseCreator(ISqlServerDataProviderFactory sqlServerDataProviderFactory)
         {
-            _sqlServerDataProvider = sqlServerDataProviderFactory.Get();
+            _sqlServerDataProviderFactory = sqlServerDataProviderFactory;
         }
 
         public DatabaseCreateResult Create(IDatabase databaseCreate)
         {
-            if (_sqlServerDataProvider.DataBaseExists(databaseCreate.DatabaseName))
+            if (_sqlServerDataProviderFactory.Get().DataBaseExists(databaseCreate.DatabaseName))
             {
                 return DatabaseCreateResult.AlreadyExists;
             }
 
-            _sqlServerDataProvider.CreateDataBase(databaseCreate);
+            _sqlServerDataProviderFactory.Get().CreateDataBase(databaseCreate);
             return DatabaseCreateResult.Success;
         }
     }

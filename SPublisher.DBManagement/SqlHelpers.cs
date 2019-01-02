@@ -15,9 +15,20 @@
             return $"CREATE DATABASE {databaseName};";
         }
 
-        public static string FindDatabaseScript(string databaseName)
+        public static class MySql
         {
-            return $"SELECT db_id('{databaseName}');";
+            public static string FindDatabaseScript(string databaseName)
+            {
+                return $"SHOW DATABASES LIKE '{databaseName}';";
+            }
+        }
+
+        public static class MsSql
+        {
+            public static string FindDatabaseScript(string databaseName)
+            {
+                return $"SELECT db_id('{databaseName}');";
+            }
         }
     }
 }
