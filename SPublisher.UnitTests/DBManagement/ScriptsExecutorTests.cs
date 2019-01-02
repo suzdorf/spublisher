@@ -46,13 +46,14 @@ namespace SPublisher.UnitTests.DBManagement
                 {"firstScriptPath", "firstScriptText" },
                 {"secondScriptPath", "secondScriptText" }
             };
+            _databaseMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
             _scriptsMock.SetupGet(x => x.IsFolder).Returns(true);
             _storageAccessorMock.Setup(x => x.ReadAllText(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
 
             foreach (var keyValuePair in scriptsFromFolder)
             {
-                _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(keyValuePair.Value, SqlHelpers.MasterDatabaseName), Times.Once);
+                _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(keyValuePair.Value, DatabaseName), Times.Once);
                 _loggerMock.Verify(x =>
                     x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == keyValuePair.Key)), Times.Once);
             }

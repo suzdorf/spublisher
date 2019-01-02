@@ -28,6 +28,7 @@ namespace SPublisher
         private static readonly ISqlServerDataProviderFactory SqlServerDataProviderFactory =  new SqlServerDataProviderFactory(DbConnection);
         private static readonly IDatabaseCreator DatabaseCreator = new DatabaseCreator(SqlServerDataProviderFactory);
         private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProviderFactory, StorageAccessor, Logger);
+        private static readonly IDatabaseActionsExecutor DatabaseActionsExecutor =  new DatabaseActionsExecutor(DatabaseCreator,ScriptsExecutor, Logger);
 
         private const string CommandLineBuildStep = "cmd";
         private const string IisManagementBuildStep = "iis";
@@ -38,7 +39,7 @@ namespace SPublisher
             {
                 {CommandLineBuildStep, new CommandLineExecutor(Logger)},
                 {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
-                {SqlBuildStep, new SqlExecutor(DatabaseCreator, Logger, DbConnection, ScriptsExecutor)}
+                {SqlBuildStep, new SqlExecutor(DbConnection, DatabaseActionsExecutor)}
             };
 
         public static readonly IDictionary<string, Func<BuildStepModel>> BuildStepModelCreators =

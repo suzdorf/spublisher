@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseActionsExecutor.cs" />
     <Compile Include="DatabaseCreator.cs" />
     <Compile Include="DataProviders\MySqlDataProvider.cs" />
     <Compile Include="DbConnection.cs" />
