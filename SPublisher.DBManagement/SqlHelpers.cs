@@ -1,4 +1,6 @@
-﻿namespace SPublisher.DBManagement
+﻿using System.Data.SqlClient;
+
+namespace SPublisher.DBManagement
 {
     public static class SqlHelpers
     {
@@ -28,6 +30,19 @@
             public static string FindDatabaseScript(string databaseName)
             {
                 return $"SELECT db_id('{databaseName}');";
+            }
+        }
+
+        public static class PostgreSql
+        {
+            public static string FindDatabaseScript(string databaseName)
+            {
+                return $"SELECT 1 FROM pg_database WHERE datname='{databaseName}';";
+            }
+
+            public static string SwitchConnectionStringToAnotherDatabase(string connectionString, string databaseName)
+            {
+                return System.Text.RegularExpressions.Regex.Replace(connectionString, "Database=([^=;]*)", $"Database={databaseName}");
             }
         }
     }

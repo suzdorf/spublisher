@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using Npgsql;
 using SPublisher.Core;
 using SPublisher.Core.Exceptions;
 
@@ -52,6 +53,10 @@ namespace SPublisher.DBManagement
                 throw new DatabaseException(ex.Message);
             }
             catch (MySqlException ex)
+            {
+                throw new DatabaseException(ex.Message);
+            }
+            catch (PostgresException ex)
             {
                 throw new DatabaseException(ex.Message);
             }

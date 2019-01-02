@@ -65,6 +65,7 @@ namespace SPublisher.UnitTests.Configuration
         [Theory]
         [InlineData(SqlServerType.MsSql, true)]
         [InlineData(SqlServerType.MySql, true)]
+        [InlineData(SqlServerType.PostgreSql, true)]
         [InlineData(SqlServerType.Invalid, false)]
         public void ShouldValidateSqlServerType(SqlServerType type, bool isValid)
         {

@@ -114,6 +114,7 @@
     <Compile Include="DBManagement\DatabaseActionsExecutorTests.cs" />
     <Compile Include="DBManagement\DatabaseCreatorTests.cs" />
     <Compile Include="DBManagement\ScriptsExecutorTests.cs" />
+    <Compile Include="DBManagement\SqlHelpersTests.cs" />
     <Compile Include="IIsManagement\ApplicationCreatorTests.cs" />
     <Compile Include="IIsManagement\SiteCreatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

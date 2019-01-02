@@ -6,6 +6,7 @@
         {
             public const string MsSql = "mssql";
             public const string MySql = "mysql";
+            public const string PostgreSql = "postgre";
         }
     }
 }

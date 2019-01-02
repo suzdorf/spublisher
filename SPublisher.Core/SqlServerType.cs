@@ -4,6 +4,7 @@
     {
         MsSql,
         MySql,
+        PostgreSql,
         Invalid
     }
 }

@@ -25,6 +25,11 @@ namespace SPublisher.Configuration.BuildSteps
                     return SqlServerType.MySql;
                 }
 
+                if (ServerType.ToLower() == Constants.SqlServerType.PostgreSql)
+                {
+                    return SqlServerType.PostgreSql;
+                }
+
                 return SqlServerType.Invalid;
             }
         }

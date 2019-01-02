@@ -23,7 +23,8 @@ namespace SPublisher.DBManagement
             new Dictionary<SqlServerType, Func<IConnectionAccessor, ISqlServerDataProvider>>
             {
                 {SqlServerType.MsSql, accessor => new SqlServerDataProvider(accessor) },
-                {SqlServerType.MySql, accessor => new MySqlDataProvider(accessor) }
+                {SqlServerType.MySql, accessor => new MySqlDataProvider(accessor) },
+                {SqlServerType.PostgreSql, accessor => new PostgreSqlDataProvider(accessor) }
             };
 
     }
