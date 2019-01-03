@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SPublisher.Core;
 
 namespace SPublisher.DBManagement
@@ -18,27 +19,39 @@ namespace SPublisher.DBManagement
 
         public void ExecuteScripts(IDatabase database)
         {
-            var scripts = new Dictionary<string, string>();
+            var hashingEnabled = !string.IsNullOrEmpty(database.DatabaseName);
+
+            var dataProvider = _sqlServerDataProviderFactory.Get();
+            if (hashingEnabled)
+            {
+                dataProvider.CreateHashInfoTableIfNotExists(database.DatabaseName);
+            }
+
+            var scripts = new List<IFile>();
+
+            var excludedScripts = hashingEnabled
+                ? dataProvider.GetHashInfoList(database.DatabaseName)
+                : new IScriptHashInfo[0];
 
             foreach (var script in database.Scripts)
             {
                 if (!script.IsFolder)
                 {
-                    scripts.Add(script.Path, _storageAccessor.ReadAllText(script.Path));
+                    scripts.Add(_storageAccessor.GetFile(script.Path));
                 }
                 else
                 {
-                    foreach (var keyValuePair in _storageAccessor.ReadAllText(script.Path, SqlHelpers.SqlFileExtension))
-                    {
-                        scripts.Add(keyValuePair.Key, keyValuePair.Value);
-                    }
+                   scripts.AddRange(_storageAccessor.GetFiles(script.Path, SqlHelpers.SqlFileExtension));
                 }
             }
 
-            foreach (var script in scripts)
+            foreach (var script in scripts.Where(x => !excludedScripts.Any() || excludedScripts.All(y => y.Hash != x.Hash)))
             {
-                _sqlServerDataProviderFactory.Get().ExecuteScript(script.Value, database.DatabaseName);
-                _logger.LogEvent(SPublisherEvent.SqlScriptExecuted, new SqlScriptInfo(script.Key));
+                dataProvider.ExecuteScript(script.Content, database.DatabaseName);
+                _logger.LogEvent(SPublisherEvent.SqlScriptExecuted, new SqlScriptInfo(script.Path));
+
+                if (hashingEnabled)
+                    dataProvider.SaveHashInfo(database.DatabaseName, script);
             }
         }
     }

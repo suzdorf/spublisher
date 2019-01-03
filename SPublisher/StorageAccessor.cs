@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using SPublisher.Configuration.Models;
 using SPublisher.Core;
 
 namespace SPublisher
@@ -44,15 +46,38 @@ namespace SPublisher
             File.AppendAllText(Path.GetFullPath(path), text);
         }
 
-        public IDictionary<string, string> ReadAllText(string folderPath, string extension)
+        public IFile GetFile(string path)
+        {
+            return new FileModel
+            {
+                Path = Path.GetFullPath(path),
+                Content = ReadAllText(path),
+                Hash = CalculateHash(path)
+            };
+        }
+
+        public IFile[] GetFiles(string folderPath, string extension)
         {
             var path = Path.GetFullPath(folderPath);
+
             if (Directory.Exists(path))
             {
-                return Directory.EnumerateFiles(path, $"*{extension}").ToDictionary(x => x, File.ReadAllText);
+                return Directory.EnumerateFiles(path, $"*{extension}").Select(GetFile).ToArray();
             }
 
             throw new Core.Exceptions.DirectoryNotFoundException(folderPath);
+        }
+
+        private static string CalculateHash(string path)
+        {
+            using (var md5 = SHA256.Create())
+            {
+                using (var stream = File.OpenRead(Path.GetFullPath(path)))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
         }
     }
 }

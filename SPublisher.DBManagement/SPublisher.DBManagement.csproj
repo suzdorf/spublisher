@@ -75,6 +75,7 @@
     <Compile Include="DbConnection.cs" />
     <Compile Include="ISqlScriptInfo.cs" />
     <Compile Include="ISqlServerDataProviderFactory.cs" />
+    <Compile Include="Models\ScriptHashModel.cs" />
     <Compile Include="SqlHelpers.cs" />
     <Compile Include="IConnectionAccessor.cs" />
     <Compile Include="ISqlServerDataProvider.cs" />

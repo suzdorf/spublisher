@@ -64,11 +64,13 @@
     <Compile Include="IConnectionSetter.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseCreator.cs" />
+    <Compile Include="IFile.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
     <Compile Include="IProcessOutputLogger.cs" />
     <Compile Include="IRunOptions.cs" />
     <Compile Include="IRunOptionsFactory.cs" />
+    <Compile Include="IScriptHashInfo.cs" />
     <Compile Include="IScripts.cs" />
     <Compile Include="IScriptsExecutor.cs" />
     <Compile Include="ISiteCreator.cs" />

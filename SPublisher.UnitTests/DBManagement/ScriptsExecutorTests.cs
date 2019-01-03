@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Moq;
+﻿using Moq;
+using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.DBManagement;
 using Xunit;
@@ -11,6 +11,7 @@ namespace SPublisher.UnitTests.DBManagement
         private const string DatabaseName = "DatabaseName";
         private const string ScriptPath = "ScriptPath";
         private const string Script = "Script";
+        private readonly IFile File = new FileModel {Path = ScriptPath, Content = Script};
         private readonly Mock<ISqlServerDataProvider> _sqlServerDataProviderMock = new Mock<ISqlServerDataProvider>();
         private readonly Mock<ISqlServerDataProviderFactory> _sqlServerDataProviderFactoryMock = new Mock<ISqlServerDataProviderFactory>();
         private readonly Mock<IStorageAccessor> _storageAccessorMock = new Mock<IStorageAccessor>();
@@ -22,7 +23,8 @@ namespace SPublisher.UnitTests.DBManagement
         public ScriptsExecutorTests()
         {
             _scriptsMock.SetupGet(x => x.Path).Returns(ScriptPath);
-            _storageAccessorMock.Setup(x => x.ReadAllText(ScriptPath)).Returns(Script);
+            _storageAccessorMock.Setup(x => x.GetFile(ScriptPath))
+                .Returns(File);
             _databaseMock.SetupGet(x => x.Scripts).Returns(new[] {_scriptsMock.Object});
             _sqlServerDataProviderFactoryMock.Setup(x => x.Get()).Returns(_sqlServerDataProviderMock.Object);
             _scriptsExecutor = new ScriptsExecutor(_sqlServerDataProviderFactoryMock.Object, _storageAccessorMock.Object, _loggerMock.Object);
@@ -32,7 +34,7 @@ namespace SPublisher.UnitTests.DBManagement
         public void ShouldExecuteScriptUsingDatabaseName()
         {
             _databaseMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
-            _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
+             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
             _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(Script, DatabaseName), Times.Once);
             _loggerMock.Verify(x =>
                 x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == ScriptPath)), Times.Once);
@@ -41,22 +43,67 @@ namespace SPublisher.UnitTests.DBManagement
         [Fact]
         public void ShouldExecuteFilesInFolder()
         {
-            var scriptsFromFolder = new Dictionary<string, string>
+            var scriptsFromFolder = new IFile[]
             {
-                {"firstScriptPath", "firstScriptText" },
-                {"secondScriptPath", "secondScriptText" }
+                new FileModel{ Path="firstScriptPath", Content = "firstScriptText"},
+                new FileModel{ Path="secondScriptPath", Content = "secondScriptText"}
             };
             _databaseMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
             _scriptsMock.SetupGet(x => x.IsFolder).Returns(true);
-            _storageAccessorMock.Setup(x => x.ReadAllText(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
+            _storageAccessorMock.Setup(x => x.GetFiles(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
 
-            foreach (var keyValuePair in scriptsFromFolder)
+            foreach (var script in scriptsFromFolder)
             {
-                _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(keyValuePair.Value, DatabaseName), Times.Once);
+                _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(script.Content, DatabaseName), Times.Once);
                 _loggerMock.Verify(x =>
-                    x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == keyValuePair.Key)), Times.Once);
+                    x.LogEvent(SPublisherEvent.SqlScriptExecuted, It.Is<ISqlScriptInfo>(y => y.Path == script.Path)), Times.Once);
             }
+        }
+
+        [Fact]
+        public void ShouldNotRunExcludedScripts()
+        {
+            var scriptsFromFolder = new IFile[]
+            {
+                new FileModel{ Path="firstScriptPath", Content = "firstScriptText", Hash = "firstScriptHash" },
+                new FileModel{ Path="secondScriptPath", Content = "secondScriptText", Hash = "secondScriptHash"}
+            };
+
+            var excludedScripts = new[]
+            {
+                scriptsFromFolder[0]
+            };
+
+            _sqlServerDataProviderMock.Setup(x => x.GetHashInfoList(DatabaseName)).Returns(excludedScripts);
+
+            _databaseMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
+            _scriptsMock.SetupGet(x => x.IsFolder).Returns(true);
+            _storageAccessorMock.Setup(x => x.GetFiles(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
+             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
+
+            _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(scriptsFromFolder[0].Content, DatabaseName), Times.Never);
+            _sqlServerDataProviderMock.Verify(x => x.ExecuteScript(scriptsFromFolder[1].Content, DatabaseName), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("", 0)]
+        [InlineData(DatabaseName, 1)]
+        public void ShouldCreateHashInfoTableIfDatabaseName(string databaseName, int times)
+        {
+            _databaseMock.SetupGet(x => x.DatabaseName).Returns(databaseName);
+            _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
+            _sqlServerDataProviderMock.Verify(x => x.CreateHashInfoTableIfNotExists(databaseName), Times.Exactly(times));
+        }
+
+        [Theory]
+        [InlineData("", 0)]
+        [InlineData(DatabaseName, 1)]
+        public void ShouldSaveHashInfoToDatabaseIfDatabaseName(string databaseName, int times)
+        {
+            _databaseMock.SetupGet(x => x.DatabaseName).Returns(databaseName);
+            _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
+            _sqlServerDataProviderMock.Verify(x => x.SaveHashInfo(DatabaseName, File), Times.Exactly(times));
         }
     }
 }

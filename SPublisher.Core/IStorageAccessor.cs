@@ -10,6 +10,7 @@ namespace SPublisher.Core
         void CreateFile(string path);
         string ReadAllText(string path);
         void AppendAllText(string path, string text);
-        IDictionary<string, string> ReadAllText(string folderPath, string extension);
+        IFile GetFile(string path);
+        IFile[] GetFiles(string folderPath, string extension);
     }
 }
