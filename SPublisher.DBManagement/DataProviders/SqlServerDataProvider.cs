@@ -32,6 +32,16 @@ namespace SPublisher.DBManagement.DataProviders
             ExecuteNonQuery(SqlHelpers.CreateDatabaseScript(database.DatabaseName));
         }
 
+        public void RestoreDatabase(IDatabase database)
+        {
+            var script =
+                DataBaseExists(database.DatabaseName)
+                    ? SqlHelpers.RestoreExistingDatabase(database.DatabaseName, database.BackupPath)
+                    : SqlHelpers.RestoreDatabase(database.DatabaseName, database.BackupPath);
+
+            ExecuteNonQuery(script);
+        }
+
         public void ExecuteScript(string script, string databaseName)
         {
             ExecuteNonQuery(

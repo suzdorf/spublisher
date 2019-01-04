@@ -8,6 +8,8 @@ namespace SPublisher.DBManagement
 
         void CreateDataBase(IDatabase database);
 
+        void RestoreDatabase(IDatabase database);
+
         void ExecuteScript(string script, string databaseName);
 
         void CreateHashInfoTableIfNotExists(string databaseName);

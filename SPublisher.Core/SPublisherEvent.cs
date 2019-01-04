@@ -36,6 +36,8 @@
         FileNotFound,
         DirectoryNotFound,
         SqlScriptExecuted,
-        DatabaseError
+        DatabaseError,
+        DatabaseRestorationStarted,
+        DatabaseRestored
     }
 }

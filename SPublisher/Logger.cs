@@ -75,7 +75,9 @@ namespace SPublisher
                 {SPublisherEvent.ScriptsExecutionStarted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' started."},
                 {SPublisherEvent.ScriptsExecutionCompleted, message => $"Execution scripts for database '{((IDatabase) message).DatabaseName ?? "master"}' completed." },
                 {SPublisherEvent.SqlScriptExecuted, message => $"Sql script '{Path.GetFullPath(((ISqlScriptInfo) message).Path)}' executed." },
-                {SPublisherEvent.DatabaseError, message => $"Application exited with error because SqlException has been thrown with message:{Environment.NewLine}{((IDatabaseErrorMessage) message).ErrorMessage}'." }
+                {SPublisherEvent.DatabaseError, message => $"Application exited with error because SqlException has been thrown with message:{Environment.NewLine}{((IDatabaseErrorMessage) message).ErrorMessage}'." },
+                {SPublisherEvent.DatabaseRestorationStarted, message => "Database restoration started." },
+                {SPublisherEvent.DatabaseRestored, message => $"Database with the name '{((IDatabase) message).DatabaseName}' restored from backup file '{((IDatabase) message).BackupPath}'." }
             };
 
         private readonly IStorageLogger _storageLogger;

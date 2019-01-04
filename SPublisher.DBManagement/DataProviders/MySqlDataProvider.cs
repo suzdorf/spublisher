@@ -31,6 +31,11 @@ namespace SPublisher.DBManagement.DataProviders
             ExecuteNonQuery(SqlHelpers.CreateDatabaseScript(database.DatabaseName));
         }
 
+        public void RestoreDatabase(IDatabase database)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void ExecuteScript(string script, string databaseName)
         {
             ExecuteNonQuery(

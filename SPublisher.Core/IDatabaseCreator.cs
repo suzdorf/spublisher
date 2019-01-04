@@ -2,6 +2,7 @@
 {
     public interface IDatabaseCreator
     {
-        DatabaseCreateResult Create(IDatabase databaseCreate);
+        DatabaseCreateResult Create(IDatabase database);
+        void Restore(IDatabase database);
     }
 }

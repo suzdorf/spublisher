@@ -63,7 +63,6 @@ namespace SPublisher.UnitTests.DBManagement
         [Fact]
         public void ShouldNotCreateDatabaseIfNullOrEmpty()
         {
-
             _databaseActionsExecutor.Execute(new DatabaseModel());
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseCreationStarted, null), Times.Never);
         }
@@ -98,6 +97,20 @@ namespace SPublisher.UnitTests.DBManagement
 
             Action action = () => { _databaseActionsExecutor.Execute(_firstDatabase); };
             action.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void ShouldRestoreDatabaseIfBackupPath()
+        {
+            var model = new DatabaseModel
+            {
+                BackupPath = "BackupPath",
+                DatabaseName = "DatabaseName"
+            };
+            _databaseActionsExecutor.Execute(model);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestorationStarted, null), Times.Once);
+            _databaseCreatorMock.Verify(x=>x.Restore(model));
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestored, model), Times.Once);
         }
     }
 }

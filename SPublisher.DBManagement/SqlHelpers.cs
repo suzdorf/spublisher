@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using SPublisher.Core;
 
 namespace SPublisher.DBManagement
@@ -28,6 +27,21 @@ namespace SPublisher.DBManagement
         {
             return
                 $"INSERT INTO SpublisherHashInfo (Path, Hash, DateExecuted)\r\nVALUES (\'{hashInfo.Path}\', \'{hashInfo.Hash}\', \'{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}\');";
+        }
+
+        public static string RestoreExistingDatabase(string databaseName, string backupPath)
+        {
+            return $"ALTER DATABASE {databaseName} " +
+                   "SET SINGLE_USER " +
+                   "WITH ROLLBACK AFTER 30 " +
+                   $"RESTORE DATABASE {databaseName} " +
+                   $"FROM DISK = '{backupPath}' " +
+                   $"ALTER DATABASE {databaseName} SET MULTI_USER ";
+        }
+
+        public static string RestoreDatabase(string databaseName, string backupPath)
+        {
+            return $"RESTORE DATABASE {databaseName} FROM DISK = '{backupPath}'";
         }
 
         public static class MySql

@@ -26,18 +26,27 @@ namespace SPublisher.DBManagement
             {
                 if (!string.IsNullOrEmpty(database.DatabaseName))
                 {
-                    _logger.LogEvent(SPublisherEvent.DatabaseCreationStarted);
-
-                    var result = _databaseCreator.Create(database);
-
-                    if (result == DatabaseCreateResult.AlreadyExists)
+                    if (!string.IsNullOrEmpty(database.BackupPath))
                     {
-                        _logger.LogEvent(SPublisherEvent.DatabaseExists, database);
+                        _logger.LogEvent(SPublisherEvent.DatabaseRestorationStarted);
+                        _databaseCreator.Restore(database);
+                        _logger.LogEvent(SPublisherEvent.DatabaseRestored, database);
                     }
-
-                    if (result == DatabaseCreateResult.Success)
+                    else
                     {
-                        _logger.LogEvent(SPublisherEvent.DatabaseCreated, database);
+                        _logger.LogEvent(SPublisherEvent.DatabaseCreationStarted);
+
+                        var result = _databaseCreator.Create(database);
+
+                        if (result == DatabaseCreateResult.AlreadyExists)
+                        {
+                            _logger.LogEvent(SPublisherEvent.DatabaseExists, database);
+                        }
+
+                        if (result == DatabaseCreateResult.Success)
+                        {
+                            _logger.LogEvent(SPublisherEvent.DatabaseCreated, database);
+                        }
                     }
                 }
 

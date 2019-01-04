@@ -11,15 +11,20 @@ namespace SPublisher.DBManagement
             _sqlServerDataProviderFactory = sqlServerDataProviderFactory;
         }
 
-        public DatabaseCreateResult Create(IDatabase databaseCreate)
+        public DatabaseCreateResult Create(IDatabase database)
         {
-            if (_sqlServerDataProviderFactory.Get().DataBaseExists(databaseCreate.DatabaseName))
+            if (_sqlServerDataProviderFactory.Get().DataBaseExists(database.DatabaseName))
             {
                 return DatabaseCreateResult.AlreadyExists;
             }
 
-            _sqlServerDataProviderFactory.Get().CreateDataBase(databaseCreate);
+            _sqlServerDataProviderFactory.Get().CreateDataBase(database);
             return DatabaseCreateResult.Success;
+        }
+
+        public void Restore(IDatabase database)
+        {
+            _sqlServerDataProviderFactory.Get().RestoreDatabase(database);
         }
     }
 }
