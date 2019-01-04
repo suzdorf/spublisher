@@ -99,18 +99,23 @@ namespace SPublisher.UnitTests.DBManagement
             action.Should().Throw<Exception>();
         }
 
-        [Fact]
-        public void ShouldRestoreDatabaseIfBackupPath()
+        [Theory]
+        [InlineData("BackupPath", true, 1)]
+        [InlineData("BackupPath", false, 0)]
+        [InlineData("", true, 0)]
+        [InlineData("", false, 0)]
+        public void ShouldRestoreDatabaseIfRestoreAvailableAndBackupPath(string backupPath, bool restoreAvailable, int times)
         {
             var model = new DatabaseModel
             {
-                BackupPath = "BackupPath",
+                RestoreAvailable = restoreAvailable,
+                BackupPath = backupPath,
                 DatabaseName = "DatabaseName"
             };
             _databaseActionsExecutor.Execute(model);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestorationStarted, null), Times.Once);
-            _databaseCreatorMock.Verify(x=>x.Restore(model));
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestored, model), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestorationStarted, null), Times.Exactly(times));
+            _databaseCreatorMock.Verify(x=>x.Restore(model), Times.Exactly(times));
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.DatabaseRestored, model), Times.Exactly(times));
         }
     }
 }

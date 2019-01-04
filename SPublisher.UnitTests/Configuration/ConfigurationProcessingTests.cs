@@ -3,6 +3,7 @@ using FluentAssertions;
 using SPublisher.Configuration;
 using SPublisher.Configuration.BuildSteps;
 using SPublisher.Configuration.Models;
+using SPublisher.Core;
 using Xunit;
 
 namespace SPublisher.UnitTests.Configuration
@@ -48,6 +49,34 @@ namespace SPublisher.UnitTests.Configuration
 
             (configuration.BuildSteps.First() as SqlStepModel).Databases.First().HashingEnabled.Should()
                 .Be(databaseLevelAfter);
+        }
+
+        [Theory]
+        [InlineData("", true)]
+        [InlineData(Constants.SqlServerType.MsSql, true)]
+        [InlineData(Constants.SqlServerType.MySql, false)]
+        [InlineData(Constants.SqlServerType.PostgreSql, false)]
+        public void ShouldProcessRestoreAvailableProperty(string serverType, bool restoreAvailable)
+        {
+            var configuration = new ConfigurationModel
+            {
+                BuildSteps = new BuildStepModel[]
+                {
+                    new SqlStepModel
+                    {
+                        ServerType = serverType,
+                        Databases = new[]
+                        {
+                            new DatabaseModel()
+                        }
+                    }
+                }
+            };
+
+            _configurationProcessing.SetRestoreAvailableProperty(configuration);
+
+            (configuration.BuildSteps.First() as SqlStepModel).Databases.First().RestoreAvailable.Should()
+                .Be(restoreAvailable);
         }
     }
 }

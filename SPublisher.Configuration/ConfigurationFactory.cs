@@ -33,6 +33,7 @@ namespace SPublisher.Configuration
             {
                 var configuration = JsonConvert.DeserializeObject<ConfigurationModel>(json, new BuildStepsConverter(_buildStepModelCreators));
                 _configurationProcessing.SetHashingEnabledProperty(configuration);
+                _configurationProcessing.SetRestoreAvailableProperty(configuration);
                 _validator.Validate(configuration);
                 return configuration;
             }

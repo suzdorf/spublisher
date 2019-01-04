@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using SPublisher.Configuration.BuildSteps;
+﻿using SPublisher.Configuration.BuildSteps;
+using SPublisher.Core;
+using SPublisher.Core.BuildSteps;
 
 namespace SPublisher.Configuration
 {
@@ -15,6 +16,20 @@ namespace SPublisher.Configuration
                     foreach (var sqlStepDatabase in sqlStep.Databases)
                     {
                         sqlStepDatabase.HashingEnabled = false;
+                    }
+                }
+            }
+        }
+
+        public void SetRestoreAvailableProperty(ConfigurationModel model)
+        {
+            foreach (var step in model.BuildSteps)
+            {
+                if (step is SqlStepModel sqlStep)
+                {
+                    foreach (var database in sqlStep.Databases)
+                    {
+                        database.RestoreAvailable = (sqlStep as ISqlStep).ServerType == SqlServerType.MsSql;
                     }
                 }
             }

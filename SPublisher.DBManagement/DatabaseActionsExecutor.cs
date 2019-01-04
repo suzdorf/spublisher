@@ -26,7 +26,7 @@ namespace SPublisher.DBManagement
             {
                 if (!string.IsNullOrEmpty(database.DatabaseName))
                 {
-                    if (!string.IsNullOrEmpty(database.BackupPath))
+                    if (database.RestoreAvailable && !string.IsNullOrEmpty(database.BackupPath))
                     {
                         _logger.LogEvent(SPublisherEvent.DatabaseRestorationStarted);
                         _databaseCreator.Restore(database);
