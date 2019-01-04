@@ -13,12 +13,18 @@ namespace SPublisher.Configuration
         private readonly IDictionary<string, Func<BuildStepModel>> _buildStepModelCreators;
         private readonly IConfigurationValidator _validator;
         private readonly ILogger _logger;
+        private readonly IConfigurationProcessing _configurationProcessing;
 
-        public ConfigurationFactory(IDictionary<string, Func<BuildStepModel>> buildStepModelCreators, IConfigurationValidator validator, ILogger logger)
+        public ConfigurationFactory(
+            IDictionary<string, Func<BuildStepModel>> buildStepModelCreators,
+            IConfigurationValidator validator,
+            ILogger logger,
+            IConfigurationProcessing configurationProcessing)
         {
             _buildStepModelCreators = buildStepModelCreators;
             _validator = validator;
             _logger = logger;
+            _configurationProcessing = configurationProcessing;
         }
 
         public IConfiguration Get(string json)
@@ -26,6 +32,7 @@ namespace SPublisher.Configuration
             try
             {
                 var configuration = JsonConvert.DeserializeObject<ConfigurationModel>(json, new BuildStepsConverter(_buildStepModelCreators));
+                _configurationProcessing.SetHashingEnabledProperty(configuration);
                 _validator.Validate(configuration);
                 return configuration;
             }

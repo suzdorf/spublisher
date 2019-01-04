@@ -76,7 +76,7 @@ namespace SPublisher.UnitTests.DBManagement
             };
 
             _sqlServerDataProviderMock.Setup(x => x.GetHashInfoList(DatabaseName)).Returns(excludedScripts);
-
+            _databaseMock.SetupGet(x => x.HashingEnabled).Returns(true);
             _databaseMock.SetupGet(x => x.DatabaseName).Returns(DatabaseName);
             _scriptsMock.SetupGet(x => x.IsFolder).Returns(true);
             _storageAccessorMock.Setup(x => x.GetFiles(ScriptPath, SqlHelpers.SqlFileExtension)).Returns(scriptsFromFolder);
@@ -87,20 +87,26 @@ namespace SPublisher.UnitTests.DBManagement
         }
 
         [Theory]
-        [InlineData("", 0)]
-        [InlineData(DatabaseName, 1)]
-        public void ShouldCreateHashInfoTableIfDatabaseName(string databaseName, int times)
+        [InlineData(true, "", 0)]
+        [InlineData(true, DatabaseName, 1)]
+        [InlineData(false, "", 0)]
+        [InlineData(false, DatabaseName, 0)]
+        public void ShouldCreateHashInfoTableIfHashingEnabled(bool hashingEnabled, string databaseName, int times)
         {
+            _databaseMock.SetupGet(x => x.HashingEnabled).Returns(hashingEnabled);
             _databaseMock.SetupGet(x => x.DatabaseName).Returns(databaseName);
             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
             _sqlServerDataProviderMock.Verify(x => x.CreateHashInfoTableIfNotExists(databaseName), Times.Exactly(times));
         }
 
         [Theory]
-        [InlineData("", 0)]
-        [InlineData(DatabaseName, 1)]
-        public void ShouldSaveHashInfoToDatabaseIfDatabaseName(string databaseName, int times)
+        [InlineData(true, "", 0)]
+        [InlineData(true, DatabaseName, 1)]
+        [InlineData(false, "", 0)]
+        [InlineData(false, DatabaseName, 0)]
+        public void ShouldSaveHashInfoToDatabaseIfHashingEnabled(bool hashingEnabled, string databaseName, int times)
         {
+            _databaseMock.SetupGet(x => x.HashingEnabled).Returns(hashingEnabled);
             _databaseMock.SetupGet(x => x.DatabaseName).Returns(databaseName);
             _scriptsExecutor.ExecuteScripts(_databaseMock.Object);
             _sqlServerDataProviderMock.Verify(x => x.SaveHashInfo(DatabaseName, File), Times.Exactly(times));

@@ -4,5 +4,6 @@
     {
         string DatabaseName { get; }
         IScripts[] Scripts { get; }
+        bool HashingEnabled { get; }
     }
 }

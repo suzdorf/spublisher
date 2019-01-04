@@ -9,6 +9,7 @@ namespace SPublisher.Configuration.BuildSteps
     {
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }
+        public bool HashingEnabled { get; set; } = true;
 
         [JsonIgnore]
         SqlServerType ISqlConnectionSettings.ServerType

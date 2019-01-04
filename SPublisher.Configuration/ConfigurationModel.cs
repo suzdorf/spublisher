@@ -4,13 +4,11 @@ using SPublisher.Core.BuildSteps;
 
 namespace SPublisher.Configuration
 {
-    class ConfigurationModel : IConfiguration
+    public class ConfigurationModel : IConfiguration
     {
+        public bool HashingEnabled { get; set; } = true;
         public BuildStepModel[] BuildSteps { get; set; }
 
-        IBuildStep[] IConfiguration.BuildSteps
-        {
-            get { return BuildSteps; }
-        }
+        IBuildStep[] IConfiguration.BuildSteps => BuildSteps;
     }
 }

@@ -106,6 +106,7 @@
     <Compile Include="BuildExecutor\IisManagementExecutorTests.cs" />
     <Compile Include="BuildExecutor\SqlExecutorTests.cs" />
     <Compile Include="Configuration\CommandLineStepValidatorTests.cs" />
+    <Compile Include="Configuration\ConfigurationProcessingTests.cs" />
     <Compile Include="Configuration\ConfigurationValidatorTests.cs" />
     <Compile Include="Configuration\IisManagementStepValidatorTests.cs" />
     <Compile Include="Configuration\RunOptionsFactoryTests.cs" />

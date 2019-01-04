@@ -19,7 +19,7 @@ namespace SPublisher.DBManagement
 
         public void ExecuteScripts(IDatabase database)
         {
-            var hashingEnabled = !string.IsNullOrEmpty(database.DatabaseName);
+            var hashingEnabled = database.HashingEnabled && !string.IsNullOrEmpty(database.DatabaseName);
 
             var dataProvider = _sqlServerDataProviderFactory.Get();
             if (hashingEnabled)
