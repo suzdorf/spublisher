@@ -1,5 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Sockets;
 using MySql.Data.MySqlClient;
 using Npgsql;
 using SPublisher.Core;
@@ -68,6 +70,14 @@ namespace SPublisher.DBManagement
             catch (PostgresException ex)
             {
                 throw new DatabaseException(ex.Message);
+            }
+            catch (SocketException ex)
+            {
+                throw new DatabaseException(ex.Message);
+            }
+            catch (ArgumentException)
+            {
+                throw new InvalidConnectionStringException();
             }
         }
     }

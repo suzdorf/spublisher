@@ -32,6 +32,8 @@ namespace SPublisher
         {
             try
             {
+                _logger.LogEvent(SPublisherEvent.SPublisherStarted);
+
                 var options = _runOptionsFactory.Get(args);
                 var json = _storageAccessor.ReadAllText(options.ConfigurationFileName);
                 var model = _configurationFactory.Get(json);
@@ -42,6 +44,8 @@ namespace SPublisher
                     _buildExecutor.Execute(model.BuildSteps);
                     _logger.LogEvent(SPublisherEvent.BuildExecutionCompleted);
                 }
+
+                _logger.LogEvent(SPublisherEvent.SPublisherCompleted);
             }
             catch (SPublisherException ex)
             {

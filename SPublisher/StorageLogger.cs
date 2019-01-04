@@ -32,9 +32,10 @@ namespace SPublisher
             var currentTime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
             var message = exception.Message;
             var stackTrace = exception.StackTrace;
+            var exceptionType = exception.GetType().FullName;
 
             _storageAccessor.AppendAllText(_logsFilePath,
-                $"{Environment.NewLine}{currentTime}{Environment.NewLine}Message: {message}{Environment.NewLine}StackTrace:{stackTrace}");
+                $"{Environment.NewLine}{currentTime}{Environment.NewLine}Type: {exceptionType}{Environment.NewLine}Message: {message}{Environment.NewLine}StackTrace:{stackTrace}");
         }
     }
 }

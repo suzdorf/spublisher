@@ -29,6 +29,14 @@ namespace SPublisher.Configuration.BuildStepValidators
                 errors.Add(new ValidationError(ValidationErrorType.SqlStepPathValueIsRequired));
             }
 
+            if (sqlStep.Databases.Any(x =>
+                x.RestoreAvailable &&
+                !string.IsNullOrEmpty(x.BackupPath) &&
+                string.IsNullOrEmpty(x.DatabaseName)))
+            {
+                errors.Add(new ValidationError(ValidationErrorType.DatabaseNameMustBeSpecifiedForRestoreOperation));
+            }
+
             return errors.ToArray();
         }
     }

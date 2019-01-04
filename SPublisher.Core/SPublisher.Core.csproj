@@ -47,6 +47,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
+    <Compile Include="Exceptions\InvalidConnectionStringException.cs" />
     <Compile Include="IDatabaseActionsExecutor.cs" />
     <Compile Include="IDatabaseErrorMessage.cs" />
     <Compile Include="ExceptionMessages\IDirectoryNotFoundMessage.cs" />

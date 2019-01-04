@@ -2,6 +2,7 @@
 using Moq;
 using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
+using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 using Xunit;
@@ -80,6 +81,32 @@ namespace SPublisher.UnitTests.Configuration
             else
             {
                 result.Should().Contain(x => x.Type == ValidationErrorType.SqlServerTypeInvalidValue);
+            }
+        }
+
+        [Theory]
+        [InlineData("", true)]
+        [InlineData("BackupPath", false)]
+        public void ShouldValidateDatabaseNameIfBackupPathIsNotNullOrEmpty(string backupPath, bool isValid)
+        {
+            _buildStepMock.As<ISqlStep>().Setup(x => x.Databases).Returns(new[]
+            {
+                new DatabaseModel
+                {
+                    RestoreAvailable = true,
+                    BackupPath = backupPath
+                },
+            });
+
+            var result = _validator.Validate(_buildStepMock.Object);
+
+            if (isValid)
+            {
+                result.Should().NotContain(x => x.Type == ValidationErrorType.DatabaseNameMustBeSpecifiedForRestoreOperation);
+            }
+            else
+            {
+                result.Should().Contain(x => x.Type == ValidationErrorType.DatabaseNameMustBeSpecifiedForRestoreOperation);
             }
         }
     }

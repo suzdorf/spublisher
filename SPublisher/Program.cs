@@ -36,9 +36,7 @@ namespace SPublisher
 
         static void Main(string[] args)
         {
-            Logger.LogEvent(SPublisherEvent.SPublisherStarted);
             Spublisher.Run(args);
-            Logger.LogEvent(SPublisherEvent.SPublisherCompleted);
         }
 
         public static bool IsAdministratorMode

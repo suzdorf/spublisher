@@ -38,6 +38,7 @@
         SqlScriptExecuted,
         DatabaseError,
         DatabaseRestorationStarted,
-        DatabaseRestored
+        DatabaseRestored,
+        InvalidConnectionStringFormat
     }
 }

@@ -7,6 +7,7 @@
         ApplicationChildrenShouldHaveUniqueNames,
         SqlStepConnectionStringIsRequired,
         SqlStepPathValueIsRequired,
-        SqlServerTypeInvalidValue
+        SqlServerTypeInvalidValue,
+        DatabaseNameMustBeSpecifiedForRestoreOperation
     }
 }
