@@ -1,4 +1,4 @@
-﻿namespace SPublisher.Core
+﻿namespace SPublisher.Core.IisManagement
 {
     public interface IApplication : IAppPoolInfo, IApplicationInfo
     {

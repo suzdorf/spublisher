@@ -56,9 +56,9 @@
     <Compile Include="Exceptions\FileNotFoundException.cs" />
     <Compile Include="Exceptions\SPublisherException.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="IApplication.cs" />
-    <Compile Include="IApplicationInfo.cs" />
-    <Compile Include="IAppPoolInfo.cs" />
+    <Compile Include="IisManagement\IApplication.cs" />
+    <Compile Include="IisManagement\IApplicationInfo.cs" />
+    <Compile Include="IisManagement\IAppPoolInfo.cs" />
     <Compile Include="IBuildExecutor.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IConfigurationFactory.cs" />
@@ -66,6 +66,7 @@
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseCreator.cs" />
     <Compile Include="IFile.cs" />
+    <Compile Include="IisManagement\IBinding.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILogMessage.cs" />
     <Compile Include="IProcessOutputLogger.cs" />
@@ -74,7 +75,8 @@
     <Compile Include="IScriptHashInfo.cs" />
     <Compile Include="IScripts.cs" />
     <Compile Include="IScriptsExecutor.cs" />
-    <Compile Include="ISiteCreator.cs" />
+    <Compile Include="IisManagement\ISite.cs" />
+    <Compile Include="IisManagement\ISiteCreator.cs" />
     <Compile Include="ISqlConnectionSettings.cs" />
     <Compile Include="IStorageAccessor.cs" />
     <Compile Include="IStorageLogger.cs" />

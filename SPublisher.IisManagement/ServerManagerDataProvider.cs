@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Web.Administration;
 using SPublisher.Core;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
 {

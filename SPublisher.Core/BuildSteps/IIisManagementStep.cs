@@ -1,7 +1,9 @@
-﻿namespace SPublisher.Core.BuildSteps
+﻿using SPublisher.Core.IisManagement;
+
+namespace SPublisher.Core.BuildSteps
 {
     public interface IIisManagementStep : IBuildStep
     {
-        IApplication[] Applications { get; }
+        ISite[] Sites { get; }
     }
 }

@@ -5,6 +5,7 @@ using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.IisManagement;
 using Xunit;
 
 namespace SPublisher.UnitTests.Configuration
@@ -42,11 +43,11 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", false)]
         public void ShouldValidateName(string name, bool isValid)
         {
-            var applicationMock = new Mock<IApplication>();
-            applicationMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(new[]
+            var siteMock = new Mock<ISite>();
+            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
             {
-                applicationMock.Object
+                siteMock.Object
             });
 
             var validator = new IisManagementStepValidator(true);
@@ -68,11 +69,11 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", false)]
         public void ShouldValidatePath(string path, bool isValid)
         {
-            var applicationMock = new Mock<IApplication>();
-            applicationMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(new[]
+            var siteMock = new Mock<ISite>();
+            siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
             {
-                applicationMock.Object
+                siteMock.Object
             });
 
             var validator = new IisManagementStepValidator(true);
@@ -92,12 +93,12 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldValidateUniqueApplicationNames()
         {
-            var applicationMock = new Mock<IApplication>();
-            applicationMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(new[]
+            var siteMock = new Mock<ISite>();
+            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
             {
-                applicationMock.Object,
-                applicationMock.Object
+                siteMock.Object,
+                siteMock.Object
             });
 
             var validator = new IisManagementStepValidator(true);
@@ -112,21 +113,21 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", "" , false)]
         public void ShouldValidateNestedApplications(string name, string path, bool isValid)
         {
-            var applicationMock = new Mock<IApplication>();
+            var siteMock = new Mock<ISite>();
             var nestedApplicationMock = new Mock<IApplication>();
-            applicationMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(Path);
-            applicationMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
+            siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(Path);
+            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
             nestedApplicationMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
             nestedApplicationMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
 
-            applicationMock.SetupGet(x => x.Applications).Returns(new[]
+            siteMock.SetupGet(x => x.Applications).Returns(new[]
             {
                 nestedApplicationMock.Object
             });
 
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(new[]
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
             {
-                applicationMock.Object
+                siteMock.Object
             });
 
             var validator = new IisManagementStepValidator(true);

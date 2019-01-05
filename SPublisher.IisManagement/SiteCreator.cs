@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SPublisher.Core;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
 {
@@ -16,9 +17,9 @@ namespace SPublisher.IisManagement
             _logger = logger;
         }
 
-        public void Create(IApplication[] applications)
+        public void Create(ISite[] sites)
         {
-            if (applications == null || !applications.Any())
+            if (sites == null || !sites.Any())
             {
                 _logger.LogEvent(SPublisherEvent.ApplicationListIsEmpty);
                 return;
@@ -26,9 +27,9 @@ namespace SPublisher.IisManagement
 
             using (_serverManagerCreator.ServerManager())
             {
-                foreach (var application in applications)
+                foreach (var site in sites)
                 {
-                    _applicationCreator.Create(application);
+                    _applicationCreator.Create(site);
                 }
 
                 _serverManagerCreator.CommitChanges();

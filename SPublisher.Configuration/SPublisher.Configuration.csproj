@@ -72,9 +72,11 @@
     <Compile Include="BuildSteps\BuildStepModel.cs" />
     <Compile Include="BuildSteps\CommandLineStepModel.cs" />
     <Compile Include="JsonConversion\CustomConverter.cs" />
+    <Compile Include="Models\BindingModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\RunOptionsModel.cs" />
     <Compile Include="Models\ScriptsModel.cs" />
+    <Compile Include="Models\SiteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunOptionsFactory.cs" />
     <Compile Include="ValidationError.cs" />

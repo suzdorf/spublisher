@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SPublisher.Core;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
 {

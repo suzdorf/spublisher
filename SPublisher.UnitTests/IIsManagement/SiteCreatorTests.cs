@@ -4,6 +4,7 @@ using Moq;
 using SPublisher.IisManagement;
 using Xunit;
 using SPublisher.Core;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.UnitTests.IIsManagement
 {
@@ -14,9 +15,9 @@ namespace SPublisher.UnitTests.IIsManagement
         private readonly Mock<IDisposable> _serverManagerMock = new Mock<IDisposable>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
         private readonly ISiteCreator _siteCreator;
-        private readonly IApplication[] _applications = {
-            new Mock<IApplication>().Object,
-            new Mock<IApplication>().Object
+        private readonly ISite[] _sites = {
+            new Mock<ISite>().Object,
+            new Mock<ISite>().Object
         };
 
         public SiteCreatorTests()
@@ -28,7 +29,7 @@ namespace SPublisher.UnitTests.IIsManagement
         [Fact]
         public void ShouldCreateServerManagerInstanceCommitChangesAndDispose()
         {
-            _siteCreator.Create(_applications);
+            _siteCreator.Create(_sites);
 
             _accessorMock.Verify(x=>x.ServerManager(), Times.Once);
             _accessorMock.Verify(x => x.CommitChanges(), Times.Once);
@@ -38,10 +39,10 @@ namespace SPublisher.UnitTests.IIsManagement
         [Fact]
         public void ShouldCallCreateForEachApplication()
         {
-            _siteCreator.Create(_applications);
+            _siteCreator.Create(_sites);
 
-            _applicationCreatorMock.Verify(x=>x.Create(_applications.First()), Times.Once);
-            _applicationCreatorMock.Verify(x => x.Create(_applications.Last()), Times.Once);
+            _applicationCreatorMock.Verify(x=>x.Create(_sites.First()), Times.Once);
+            _applicationCreatorMock.Verify(x => x.Create(_sites.Last()), Times.Once);
         }
 
         [Fact]
@@ -59,7 +60,7 @@ namespace SPublisher.UnitTests.IIsManagement
         [Fact]
         public void ShouldReturnIfApplicationsIsEmptyAndLogEvent()
         {
-            _siteCreator.Create(new IApplication[0]);
+            _siteCreator.Create(new ISite[0]);
 
             _accessorMock.Verify(x => x.ServerManager(), Times.Never);
             _accessorMock.Verify(x => x.CommitChanges(), Times.Never);

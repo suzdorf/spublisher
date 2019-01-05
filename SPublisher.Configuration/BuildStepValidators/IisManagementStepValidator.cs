@@ -3,6 +3,7 @@ using System.Linq;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.Configuration.BuildStepValidators
 {
@@ -24,7 +25,7 @@ namespace SPublisher.Configuration.BuildStepValidators
                 throw new ShouldRunAsAdministratorException();
             }
 
-            ValidateApplications(iisManagementStep.Applications, errors);
+            ValidateApplications(iisManagementStep.Sites, errors);
 
             return errors.ToArray();
         }

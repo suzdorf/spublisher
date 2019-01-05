@@ -1,5 +1,6 @@
 ﻿using Moq;
 using SPublisher.Core;
+using SPublisher.Core.IisManagement;
 using SPublisher.IisManagement;
 using Xunit;
 

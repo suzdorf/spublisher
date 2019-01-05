@@ -3,6 +3,7 @@ using SPublisher.BuildExecutor;
 using SPublisher.BuildExecutor.BuildStepExecutors;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.IisManagement;
 using Xunit;
 
 namespace SPublisher.UnitTests.BuildExecutor
@@ -12,8 +13,8 @@ namespace SPublisher.UnitTests.BuildExecutor
         private readonly Mock<ISiteCreator> _siteCreatorMock =  new Mock<ISiteCreator>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
         private readonly Mock<IBuildStep> _buildStepMock = new Mock<IBuildStep>();
-        private readonly Mock<IApplication> _firstApplicationMock = new Mock<IApplication>();
-        private IApplication[] _applications;
+        private readonly Mock<ISite> _firstApplicationMock = new Mock<ISite>();
+        private ISite[] _sites;
         private readonly IBuildStepExecutor _iisManagementExecutor;
 
         public IisManagementExecutorTests()
@@ -24,15 +25,15 @@ namespace SPublisher.UnitTests.BuildExecutor
         [Fact]
         public void ShouldCallCreateAndLogIfAny()
         {
-            _applications = new[]
+            _sites = new[]
             {
                 _firstApplicationMock.Object
             };
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(_applications);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(_sites);
 
             _iisManagementExecutor.Execute(_buildStepMock.Object);
 
-            _siteCreatorMock.Verify(x=>x.Create(_applications), Times.Once);
+            _siteCreatorMock.Verify(x=>x.Create(_sites), Times.Once);
             _loggerMock.Verify(x=>x.LogEvent(SPublisherEvent.IisManagementStarted, null), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.IisManagementCompleted, null), Times.Once);
         }
@@ -40,12 +41,12 @@ namespace SPublisher.UnitTests.BuildExecutor
         [Fact]
         public void ShouldNotCreateAndLogIfNone()
         {
-            _applications = new IApplication[0];
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Applications).Returns(_applications);
+            _sites = new ISite[0];
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(_sites);
 
             _iisManagementExecutor.Execute(_buildStepMock.Object);
 
-            _siteCreatorMock.Verify(x => x.Create(_applications), Times.Never);
+            _siteCreatorMock.Verify(x => x.Create(_sites), Times.Never);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.IisManagementStarted, null), Times.Never);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.IisManagementCompleted, null), Times.Never);
         }

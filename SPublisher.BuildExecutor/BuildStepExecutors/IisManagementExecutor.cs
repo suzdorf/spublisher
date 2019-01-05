@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.BuildExecutor.BuildStepExecutors
 {
@@ -19,10 +20,10 @@ namespace SPublisher.BuildExecutor.BuildStepExecutors
         {
             var step = (IIisManagementStep) buildStep;
 
-            if (step.Applications.Any())
+            if (step.Sites.Any())
             {
                 _logger.LogEvent(SPublisherEvent.IisManagementStarted);
-                _siteCreator.Create(step.Applications);
+                _siteCreator.Create(step.Sites);
                 _logger.LogEvent(SPublisherEvent.IisManagementCompleted);
             }
 

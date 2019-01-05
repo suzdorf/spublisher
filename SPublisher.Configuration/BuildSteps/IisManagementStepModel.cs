@@ -1,13 +1,13 @@
 ﻿using SPublisher.Configuration.Models;
-using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.IisManagement;
 
 namespace SPublisher.Configuration.BuildSteps
 {
     public class IisManagementStepModel : BuildStepModel, IIisManagementStep
     {
-        public ApplicationModel[] Applications { get; set; } = new ApplicationModel[0];
+        public SiteModel[] Sites { get; set; } = new SiteModel[0];
 
-        IApplication[] IIisManagementStep.Applications => Applications;
+        ISite[] IIisManagementStep.Sites => Sites;
     }
 }
