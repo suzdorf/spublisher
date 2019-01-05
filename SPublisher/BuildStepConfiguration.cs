@@ -21,8 +21,9 @@ namespace SPublisher
         // IIS Management
         private static readonly ServerManagerAccessor ServerManagerAccessor = new ServerManagerAccessor();
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
-        private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger);
-        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger);
+        private static readonly IAppPoolCreator AppPoolCreator = new AppPoolCreator(ServerManagerDataProvider, Logger);
+        private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger, AppPoolCreator);
+        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger, ServerManagerDataProvider, AppPoolCreator);
 
         // DB Management
         private static readonly DbConnection DbConnection = new DbConnection();

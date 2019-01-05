@@ -167,6 +167,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationCreator.cs" />
+    <Compile Include="AppPoolCreator.cs" />
+    <Compile Include="IAppPoolCreator.cs" />
     <Compile Include="SiteCreator.cs" />
     <Compile Include="IApplicationCreator.cs" />
     <Compile Include="IServerManagerAccessor.cs" />

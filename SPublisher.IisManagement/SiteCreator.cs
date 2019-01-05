@@ -6,34 +6,59 @@ namespace SPublisher.IisManagement
 {
     public class SiteCreator : ISiteCreator
     {
+        private readonly IServerManagerDataProvider _serverManagerDataProvider;
         private readonly IApplicationCreator _applicationCreator;
-        private readonly IServerManagerAccessor _serverManagerCreator;
+        private readonly IAppPoolCreator _appPoolCreator;
+        private readonly IServerManagerAccessor _serverManagerAccessor;
         private readonly ILogger _logger;
 
-        public SiteCreator(IServerManagerAccessor serverManagerCreator, IApplicationCreator applicationCreator, ILogger logger)
+        public SiteCreator(IServerManagerAccessor serverManagerAccessor, IApplicationCreator applicationCreator, ILogger logger, IServerManagerDataProvider serverManagerDataProvider, IAppPoolCreator appPoolCreator)
         {
-            _serverManagerCreator = serverManagerCreator;
+            _serverManagerAccessor = serverManagerAccessor;
             _applicationCreator = applicationCreator;
             _logger = logger;
+            _serverManagerDataProvider = serverManagerDataProvider;
+            _appPoolCreator = appPoolCreator;
         }
 
         public void Create(ISite[] sites)
         {
-            if (sites == null || !sites.Any())
+            if (!sites.Any())
             {
                 _logger.LogEvent(SPublisherEvent.ApplicationListIsEmpty);
                 return;
             }
 
-            using (_serverManagerCreator.ServerManager())
+            using (_serverManagerAccessor.ServerManager())
             {
                 foreach (var site in sites)
                 {
-                    _applicationCreator.Create(site);
+                   CreateSite(site);
                 }
 
-                _serverManagerCreator.CommitChanges();
+                _serverManagerAccessor.CommitChanges();
             }
+        }
+
+        private void CreateSite(ISite site)
+        {
+            _appPoolCreator.Create(site);
+
+            if (!_serverManagerDataProvider.SiteIsExist(site.Name))
+            {
+                _serverManagerDataProvider.CreateSite(site);
+                _logger.LogEvent(SPublisherEvent.SiteCreated, site);
+            }
+            else
+            {
+                _logger.LogEvent(SPublisherEvent.SiteExists, site);
+            }
+
+            if (site.Applications.Any())
+                foreach (var app in site.Applications)
+                {
+                    _applicationCreator.Create(app, site.Name);
+                }
         }
     }
 }

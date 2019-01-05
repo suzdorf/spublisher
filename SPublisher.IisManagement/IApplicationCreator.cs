@@ -5,6 +5,6 @@ namespace SPublisher.IisManagement
 {
     public interface IApplicationCreator
     {
-        void Create(IApplication application);
+        void Create(IApplication application, string siteName, string path = "/");
     }
 }

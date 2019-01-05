@@ -8,39 +8,20 @@ namespace SPublisher.IisManagement
     {
         private readonly IServerManagerDataProvider _serverManagerDataProvider;
         private readonly ILogger _logger;
+        private readonly IAppPoolCreator _appPoolCreator;
 
-        public ApplicationCreator(IServerManagerDataProvider serverManagerDataProvider, ILogger logger)
+        public ApplicationCreator(IServerManagerDataProvider serverManagerDataProvider, ILogger logger, IAppPoolCreator appPoolCreator)
         {
             _serverManagerDataProvider = serverManagerDataProvider;
             _logger = logger;
+            _appPoolCreator = appPoolCreator;
         }
 
-        public void Create(IApplication application)
-        {
-            CreateAppPool(application);
-
-            if (!_serverManagerDataProvider.SiteIsExist(application.Name))
-            {
-                _serverManagerDataProvider.CreateSite(application);
-                _logger.LogEvent(SPublisherEvent.SiteCreated, application);
-            }
-            else
-            {
-                _logger.LogEvent(SPublisherEvent.SiteExists, application);
-            }
-
-            if (application.Applications != null && application.Applications.Any())
-                foreach (var app in application.Applications)
-                {
-                  CreateApplication(app, application.Name, "/");
-                }
-        }
-
-        private void CreateApplication(IApplication application, string siteName, string path)
+        public void Create(IApplication application, string siteName, string path = "/")
         {
             if (!application.IsVirtualDirectory)
             {
-                CreateAppPool(application);
+                _appPoolCreator.Create(application);
 
                 if (!_serverManagerDataProvider.ApplicationIsExist(siteName, $"{path}{application.Name}"))
                 {
@@ -68,23 +49,8 @@ namespace SPublisher.IisManagement
             if (application.Applications != null && application.Applications.Any())
                 foreach (var app in application.Applications)
                 {
-                    CreateApplication(app, siteName, $"{path}{application.Name}/");
+                    Create(app, siteName, $"{path}{application.Name}/");
                 }
-        }
-
-        private void CreateAppPool(IAppPoolInfo info)
-        {
-            if (string.IsNullOrEmpty(info.AppPoolName)) return;
-
-            if (!_serverManagerDataProvider.PoolIsExist(info.AppPoolName))
-            {
-                _serverManagerDataProvider.CreateAppPool(info);
-                _logger.LogEvent(SPublisherEvent.ApplicationPoolCreated, info);
-            }
-            else
-            {
-                _logger.LogEvent(SPublisherEvent.ApplicationPoolExists, info);
-            }
         }
     }
 }
