@@ -1,4 +1,4 @@
-﻿namespace SPublisher.Core
+﻿namespace SPublisher.Core.Enums
 {
     public enum SPublisherEvent
     {
@@ -39,6 +39,8 @@
         DatabaseError,
         DatabaseRestorationStarted,
         DatabaseRestored,
-        InvalidConnectionStringFormat
+        InvalidConnectionStringFormat,
+        BindingAlreadyExists,
+        BindingAdded
     }
 }

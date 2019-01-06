@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
@@ -10,15 +11,17 @@ namespace SPublisher.IisManagement
         private readonly IApplicationCreator _applicationCreator;
         private readonly IAppPoolCreator _appPoolCreator;
         private readonly IServerManagerAccessor _serverManagerAccessor;
+        private readonly IBindingsManager _bindingsManager;
         private readonly ILogger _logger;
 
-        public SiteCreator(IServerManagerAccessor serverManagerAccessor, IApplicationCreator applicationCreator, ILogger logger, IServerManagerDataProvider serverManagerDataProvider, IAppPoolCreator appPoolCreator)
+        public SiteCreator(IServerManagerAccessor serverManagerAccessor, IApplicationCreator applicationCreator, ILogger logger, IServerManagerDataProvider serverManagerDataProvider, IAppPoolCreator appPoolCreator, IBindingsManager bindingsManager)
         {
             _serverManagerAccessor = serverManagerAccessor;
             _applicationCreator = applicationCreator;
             _logger = logger;
             _serverManagerDataProvider = serverManagerDataProvider;
             _appPoolCreator = appPoolCreator;
+            _bindingsManager = bindingsManager;
         }
 
         public void Create(ISite[] sites)
@@ -46,12 +49,18 @@ namespace SPublisher.IisManagement
 
             if (!_serverManagerDataProvider.SiteIsExist(site.Name))
             {
-                _serverManagerDataProvider.CreateSite(site);
+                _serverManagerDataProvider.CreateSite(site,
+                    site.Bindings.FirstOrDefault() ?? new DefaultBinding(site.Name));
                 _logger.LogEvent(SPublisherEvent.SiteCreated, site);
             }
             else
             {
                 _logger.LogEvent(SPublisherEvent.SiteExists, site);
+            }
+
+            if (site.Bindings.Any())
+            {
+                _bindingsManager.Manage(site.Name, site.Bindings);
             }
 
             if (site.Applications.Any())

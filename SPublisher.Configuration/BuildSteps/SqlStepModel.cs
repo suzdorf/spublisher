@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Linq;
+using Newtonsoft.Json;
 using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Enums;
 
 namespace SPublisher.Configuration.BuildSteps
 {
@@ -10,32 +12,28 @@ namespace SPublisher.Configuration.BuildSteps
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }
         public bool HashingEnabled { get; set; } = true;
+        public DatabaseModel[] Databases { get; set; }
+        IDatabase[] ISqlStep.Databases => Databases;
 
         [JsonIgnore]
         SqlServerType ISqlConnectionSettings.ServerType
         {
             get
             {
-                if (string.IsNullOrEmpty(ServerType) || ServerType.ToLower() == Constants.SqlServerType.MsSql)
+                var typeKeyValuePair = Constants.SqlServerType.BuildDictionary.FirstOrDefault(x => x.Value == ServerType);
+
+                if (string.IsNullOrEmpty(ServerType))
                 {
                     return SqlServerType.MsSql;
                 }
 
-                if (ServerType.ToLower() == Constants.SqlServerType.MySql)
+                if (typeKeyValuePair.Value != null)
                 {
-                    return SqlServerType.MySql;
-                }
-
-                if (ServerType.ToLower() == Constants.SqlServerType.PostgreSql)
-                {
-                    return SqlServerType.PostgreSql;
+                    return typeKeyValuePair.Key;
                 }
 
                 return SqlServerType.Invalid;
             }
         }
-
-        public DatabaseModel[] Databases { get; set; }
-        IDatabase[] ISqlStep.Databases => Databases;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 
 namespace SPublisher.DBManagement
 {

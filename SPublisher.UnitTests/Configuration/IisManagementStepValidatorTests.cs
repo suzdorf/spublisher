@@ -5,6 +5,7 @@ using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
 using Xunit;
 

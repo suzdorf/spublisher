@@ -23,7 +23,8 @@ namespace SPublisher
         private static readonly IServerManagerDataProvider ServerManagerDataProvider = new ServerManagerDataProvider(ServerManagerAccessor);
         private static readonly IAppPoolCreator AppPoolCreator = new AppPoolCreator(ServerManagerDataProvider, Logger);
         private static readonly IApplicationCreator ApplicationCreator = new ApplicationCreator(ServerManagerDataProvider, Logger, AppPoolCreator);
-        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger, ServerManagerDataProvider, AppPoolCreator);
+        private static readonly IBindingsManager BindingsManager = new BindingsManager(ServerManagerDataProvider, Logger);
+        private static readonly ISiteCreator SiteCreator = new SiteCreator(ServerManagerAccessor, ApplicationCreator, Logger, ServerManagerDataProvider, AppPoolCreator, BindingsManager);
 
         // DB Management
         private static readonly DbConnection DbConnection = new DbConnection();
@@ -32,32 +33,28 @@ namespace SPublisher
         private static readonly IScriptsExecutor ScriptsExecutor = new ScriptsExecutor(SqlServerDataProviderFactory, StorageAccessor, Logger);
         private static readonly IDatabaseActionsExecutor DatabaseActionsExecutor =  new DatabaseActionsExecutor(DatabaseCreator,ScriptsExecutor, Logger);
 
-        private const string CommandLineBuildStep = "cmd";
-        private const string IisManagementBuildStep = "iis";
-        private const string SqlBuildStep = "sql";
-
         public static readonly IDictionary<string, IBuildStepExecutor> BuildStepExecutors =
             new Dictionary<string, IBuildStepExecutor>
             {
-                {CommandLineBuildStep, new CommandLineExecutor(Logger)},
-                {IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
-                {SqlBuildStep, new SqlExecutor(DbConnection, DatabaseActionsExecutor)}
+                {Constants.Steps.CommandLineBuildStep, new CommandLineExecutor(Logger)},
+                {Constants.Steps.IisManagementBuildStep, new IisManagementExecutor(SiteCreator, Logger)},
+                {Constants.Steps.SqlBuildStep, new SqlExecutor(DbConnection, DatabaseActionsExecutor)}
             };
 
         public static readonly IDictionary<string, Func<BuildStepModel>> BuildStepModelCreators =
             new Dictionary<string, Func<BuildStepModel>>
             {
-                {CommandLineBuildStep, () => new CommandLineStepModel()},
-                {IisManagementBuildStep, () => new IisManagementStepModel()},
-                {SqlBuildStep, () => new SqlStepModel()}
+                {Constants.Steps.CommandLineBuildStep, () => new CommandLineStepModel()},
+                {Constants.Steps.IisManagementBuildStep, () => new IisManagementStepModel()},
+                {Constants.Steps.SqlBuildStep, () => new SqlStepModel()}
             };
 
         public static readonly IDictionary<string, IBuildStepValidator> BuildStepValidators =
             new Dictionary<string, IBuildStepValidator>
             {
-                {CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode) },
-                {IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode)},
-                {SqlBuildStep, new SqlStepValidator()}
+                {Constants.Steps.CommandLineBuildStep, new CommandLineStepValidator(Program.IsAdministratorMode) },
+                {Constants.Steps.IisManagementBuildStep, new IisManagementStepValidator(Program.IsAdministratorMode)},
+                {Constants.Steps.SqlBuildStep, new SqlStepValidator()}
             };
     }
 }

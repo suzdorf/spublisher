@@ -1,6 +1,7 @@
 ﻿using Moq;
 using SPublisher.Configuration.Models;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.DBManagement;
 using Xunit;
 

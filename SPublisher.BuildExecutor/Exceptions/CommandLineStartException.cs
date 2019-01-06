@@ -1,4 +1,5 @@
 ﻿using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
 
 namespace SPublisher.BuildExecutor.Exceptions

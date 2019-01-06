@@ -5,6 +5,7 @@ using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Enums;
 using Xunit;
 
 namespace SPublisher.UnitTests.Configuration

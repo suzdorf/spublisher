@@ -1,4 +1,5 @@
-﻿using SPublisher.Core.ExceptionMessages;
+﻿using SPublisher.Core.Enums;
+using SPublisher.Core.ExceptionMessages;
 
 namespace SPublisher.Core.Exceptions
 {

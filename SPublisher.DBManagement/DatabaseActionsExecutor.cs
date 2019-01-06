@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using MySql.Data.MySqlClient;
 using Npgsql;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
 
 namespace SPublisher.DBManagement

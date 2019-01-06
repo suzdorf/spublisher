@@ -6,6 +6,7 @@ using Moq;
 using MySql.Data.MySqlClient;
 using SPublisher.Configuration.Models;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
 using SPublisher.DBManagement;
 using Xunit;

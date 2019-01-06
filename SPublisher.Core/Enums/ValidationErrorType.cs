@@ -1,4 +1,4 @@
-﻿namespace SPublisher.Core
+﻿namespace SPublisher.Core.Enums
 {
     public enum ValidationErrorType
     {

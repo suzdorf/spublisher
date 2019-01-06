@@ -1,4 +1,6 @@
 ﻿
+using SPublisher.Core.Enums;
+
 namespace SPublisher.Core
 {
     public interface IValidationError

@@ -1,4 +1,5 @@
 ﻿using System;
+using SPublisher.Core.Enums;
 
 namespace SPublisher.Core
 {

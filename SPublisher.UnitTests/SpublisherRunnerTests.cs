@@ -6,6 +6,7 @@ using SPublisher.Configuration;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
 using Xunit;
 

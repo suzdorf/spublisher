@@ -4,6 +4,7 @@ using Moq;
 using SPublisher.IisManagement;
 using Xunit;
 using SPublisher.Core;
+using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
 
 namespace SPublisher.UnitTests.IIsManagement
@@ -16,6 +17,7 @@ namespace SPublisher.UnitTests.IIsManagement
         private readonly Mock<IApplicationCreator> _applicationCreatorMock = new Mock<IApplicationCreator>();
         private readonly Mock<IServerManagerDataProvider> _serverManagerDataProviderMock = new Mock<IServerManagerDataProvider>();
         private readonly Mock<IAppPoolCreator> _appPoolCreatorMock = new Mock<IAppPoolCreator>();
+        private readonly Mock<IBindingsManager> _bindingsManagerMock =  new Mock<IBindingsManager>();
         private readonly Mock<IDisposable> _serverManagerMock = new Mock<IDisposable>();
         private readonly Mock<ISite> _firstSiteMock = new Mock<ISite>();
         private readonly Mock<ISite> _secondSiteMock = new Mock<ISite>();
@@ -32,8 +34,13 @@ namespace SPublisher.UnitTests.IIsManagement
                 _secondSiteMock.Object
             };
             _accessorMock.Setup(x => x.ServerManager()).Returns(_serverManagerMock.Object);
-            _siteCreator = new SiteCreator(_accessorMock.Object, _applicationCreatorMock.Object, _loggerMock.Object,
-                _serverManagerDataProviderMock.Object, _appPoolCreatorMock.Object);
+            _siteCreator = new SiteCreator(
+                _accessorMock.Object,
+                _applicationCreatorMock.Object,
+                _loggerMock.Object,
+                _serverManagerDataProviderMock.Object,
+                _appPoolCreatorMock.Object,
+                _bindingsManagerMock.Object);
         }
 
         [Fact]
@@ -53,9 +60,22 @@ namespace SPublisher.UnitTests.IIsManagement
             _serverManagerDataProviderMock.Setup(x => x.SiteIsExist(SecondSiteName)).Returns(true);
             _siteCreator.Create(_sites);
 
-            _serverManagerDataProviderMock.Verify(x=>x.CreateSite(_sites.First()), Times.Once);
+            _serverManagerDataProviderMock.Verify(
+                x => x.CreateSite(_sites.First(),
+                    It.Is<IBinding>(y =>
+                        y.HostName == FirstSiteName &&
+                        y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
+                        y.Port == Constants.SiteBinding.DefaultPort &&
+                        y.Type == BindingType.Http)), Times.Once);
+
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteCreated, _sites.First()), Times.Once);
-            _serverManagerDataProviderMock.Verify(x => x.CreateSite(_sites.Last()), Times.Never);
+
+            _serverManagerDataProviderMock.Verify(x => x.CreateSite(_sites.Last(), It.Is<IBinding>(y =>
+                y.HostName == SecondSiteName &&
+                y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
+                y.Port == Constants.SiteBinding.DefaultPort &&
+                y.Type == BindingType.Http)), Times.Never);
+
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteCreated, _sites.Last()), Times.Never);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteExists, _sites.Last()), Times.Once);
         }
@@ -68,7 +88,7 @@ namespace SPublisher.UnitTests.IIsManagement
             _accessorMock.Verify(x => x.ServerManager(), Times.Never);
             _accessorMock.Verify(x => x.CommitChanges(), Times.Never);
             _serverManagerMock.Verify(x => x.Dispose(), Times.Never);
-            _serverManagerDataProviderMock.Verify(x => x.CreateSite(It.IsAny<ISite>()), Times.Never);
+            _serverManagerDataProviderMock.Verify(x => x.CreateSite(It.IsAny<ISite>(), null), Times.Never);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.ApplicationListIsEmpty, null), Times.Once);
         }
 
@@ -111,6 +131,23 @@ namespace SPublisher.UnitTests.IIsManagement
             {
                 _applicationCreatorMock.Verify(x => x.Create(secondSiteApplication, SecondSiteName, "/"), Times.Once);
             }
+        }
+
+        [Fact]
+        public void ShouldManageBindingsIfAny()
+        {
+            var bindings = new []
+            {
+                new Mock<IBinding>().Object,
+                new Mock<IBinding>().Object
+            };
+            _firstSiteMock.SetupGet(x => x.Bindings).Returns(bindings);
+            _secondSiteMock.SetupGet(x => x.Bindings).Returns(new IBinding[0]);
+            _siteCreator.Create(_sites);
+
+            _serverManagerDataProviderMock.Verify(x => x.CreateSite(_sites.First(), bindings.First()), Times.Once);
+            _bindingsManagerMock.Verify(x=>x.Manage(FirstSiteName, bindings), Times.Once);
+            _bindingsManagerMock.Verify(x => x.Manage(SecondSiteName, It.IsAny<IBinding[]>()), Times.Never);
         }
     }
 }

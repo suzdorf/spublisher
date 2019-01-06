@@ -4,6 +4,7 @@ using System.IO;
 using SPublisher.Configuration;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Enums;
 using SPublisher.Core.ExceptionMessages;
 using SPublisher.Core.IisManagement;
 using SPublisher.DBManagement;
@@ -79,7 +80,23 @@ namespace SPublisher
                 {SPublisherEvent.DatabaseError, message => $"Application exited with error because Database exception has been thrown with message:{Environment.NewLine}{((IDatabaseErrorMessage) message).ErrorMessage}'." },
                 {SPublisherEvent.DatabaseRestorationStarted, message => "Database restoration started." },
                 {SPublisherEvent.DatabaseRestored, message => $"Database with the name '{((IDatabase) message).DatabaseName}' restored from backup file '{((IDatabase) message).BackupPath}'." },
-                {SPublisherEvent.InvalidConnectionStringFormat, message => "The connection string provided has invalid format." }
+                {SPublisherEvent.InvalidConnectionStringFormat, message => "The connection string provided has invalid format." },
+                {
+                    SPublisherEvent.BindingAdded, message =>
+                    {
+                        var binding = (IBinding) message;
+                        return
+                            $"Binding '{Constants.SiteBinding.Types.BuildDictionary[binding.Type]}:{binding.IpAddress}:{binding.Port}' with hostname '{binding.HostName}' has been added.";
+                    }
+                },
+                {
+                    SPublisherEvent.BindingAlreadyExists, message =>
+                    {
+                        var binding = (IBinding) message;
+                        return
+                            $"Binding '{Constants.SiteBinding.Types.BuildDictionary[binding.Type]}:{binding.IpAddress}:{binding.Port}' with hostname '{binding.HostName}' already exists.";
+                    }
+                }
             };
 
         private readonly IStorageLogger _storageLogger;
