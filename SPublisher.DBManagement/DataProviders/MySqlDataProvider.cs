@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using SPublisher.Core;
+using SPublisher.Core.DbManagement;
 using SPublisher.DBManagement.Models;
 
 namespace SPublisher.DBManagement.DataProviders

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SPublisher.Core;
+using SPublisher.Core.DbManagement;
 
 namespace SPublisher.Configuration.Models
 {

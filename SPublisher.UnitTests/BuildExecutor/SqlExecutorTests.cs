@@ -2,8 +2,8 @@
 using SPublisher.BuildExecutor;
 using SPublisher.BuildExecutor.BuildStepExecutors;
 using SPublisher.Configuration.Models;
-using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.DbManagement;
 using Xunit;
 
 namespace SPublisher.UnitTests.BuildExecutor

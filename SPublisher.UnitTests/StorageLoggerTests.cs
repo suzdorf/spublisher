@@ -1,6 +1,7 @@
 ﻿using System;
 using Moq;
 using SPublisher.Core;
+using SPublisher.Core.Log;
 using Xunit;
 
 namespace SPublisher.UnitTests

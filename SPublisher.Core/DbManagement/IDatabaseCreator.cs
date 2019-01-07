@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Core
+﻿using SPublisher.Core.Enums;
+
+namespace SPublisher.Core.DbManagement
 {
     public interface IDatabaseCreator
     {

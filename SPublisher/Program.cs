@@ -3,6 +3,7 @@ using System.Security.Principal;
 using SPublisher.BuildExecutor;
 using SPublisher.Configuration;
 using SPublisher.Core;
+using SPublisher.Core.Log;
 
 namespace SPublisher
 {

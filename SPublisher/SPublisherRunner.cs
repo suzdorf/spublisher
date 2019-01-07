@@ -4,6 +4,7 @@ using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
+using SPublisher.Core.Log;
 
 namespace SPublisher
 {

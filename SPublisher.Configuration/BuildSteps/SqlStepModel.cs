@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPublisher.Configuration.Models;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.DbManagement;
 using SPublisher.Core.Enums;
 
 namespace SPublisher.Configuration.BuildSteps

@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Core.IisManagement
+﻿using SPublisher.Core.Log;
+
+namespace SPublisher.Core.IisManagement
 {
     public interface IAppPoolInfo : ILogMessage
     {

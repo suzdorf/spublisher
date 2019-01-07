@@ -45,14 +45,14 @@
     <Compile Include="BuildSteps\IIisManagementStep.cs" />
     <Compile Include="BuildSteps\ISqlStep.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DatabaseCreateResult.cs" />
+    <Compile Include="Enums\DatabaseCreateResult.cs" />
     <Compile Include="Enums\BindingType.cs" />
     <Compile Include="ExceptionMessages\ICertificateNotFoundMessage.cs" />
     <Compile Include="Exceptions\CertificateNotFoundException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="Exceptions\InvalidConnectionStringException.cs" />
-    <Compile Include="IDatabaseActionsExecutor.cs" />
-    <Compile Include="IDatabaseErrorMessage.cs" />
+    <Compile Include="DbManagement\IDatabaseActionsExecutor.cs" />
+    <Compile Include="ExceptionMessages\IDatabaseErrorMessage.cs" />
     <Compile Include="ExceptionMessages\IDirectoryNotFoundMessage.cs" />
     <Compile Include="ExceptionMessages\IFileNotFoundMessage.cs" />
     <Compile Include="Exceptions\DirectoryNotFoundException.cs" />
@@ -65,24 +65,24 @@
     <Compile Include="IBuildExecutor.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IConfigurationFactory.cs" />
-    <Compile Include="IConnectionSetter.cs" />
-    <Compile Include="IDatabase.cs" />
-    <Compile Include="IDatabaseCreator.cs" />
+    <Compile Include="DbManagement\IConnectionSetter.cs" />
+    <Compile Include="DbManagement\IDatabase.cs" />
+    <Compile Include="DbManagement\IDatabaseCreator.cs" />
     <Compile Include="IFile.cs" />
     <Compile Include="IisManagement\IBinding.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="ILogMessage.cs" />
-    <Compile Include="IProcessOutputLogger.cs" />
+    <Compile Include="Log\ILogger.cs" />
+    <Compile Include="Log\ILogMessage.cs" />
+    <Compile Include="Log\IProcessOutputLogger.cs" />
     <Compile Include="IRunOptions.cs" />
     <Compile Include="IRunOptionsFactory.cs" />
-    <Compile Include="IScriptHashInfo.cs" />
-    <Compile Include="IScripts.cs" />
-    <Compile Include="IScriptsExecutor.cs" />
+    <Compile Include="DbManagement\IScriptHashInfo.cs" />
+    <Compile Include="DbManagement\IScripts.cs" />
+    <Compile Include="DbManagement\IScriptsExecutor.cs" />
     <Compile Include="IisManagement\ISite.cs" />
     <Compile Include="IisManagement\ISiteCreator.cs" />
-    <Compile Include="ISqlConnectionSettings.cs" />
+    <Compile Include="DbManagement\ISqlConnectionSettings.cs" />
     <Compile Include="IStorageAccessor.cs" />
-    <Compile Include="IStorageLogger.cs" />
+    <Compile Include="Log\IStorageLogger.cs" />
     <Compile Include="IValidationError.cs" />
     <Compile Include="IValidationErrorData.cs" />
     <Compile Include="IValidationInfo.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="Enums\SqlServerType.cs" />
     <Compile Include="Enums\ValidationErrorType.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

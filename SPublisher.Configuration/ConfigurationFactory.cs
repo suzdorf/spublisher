@@ -5,6 +5,7 @@ using SPublisher.Configuration.BuildSteps;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Configuration.JsonConversion;
 using SPublisher.Core;
+using SPublisher.Core.Log;
 
 namespace SPublisher.Configuration
 {

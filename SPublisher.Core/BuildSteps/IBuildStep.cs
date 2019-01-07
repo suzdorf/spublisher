@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Core.BuildSteps
+﻿using SPublisher.Core.Log;
+
+namespace SPublisher.Core.BuildSteps
 {
     public interface IBuildStep : ILogMessage
     {

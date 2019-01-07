@@ -8,6 +8,7 @@ using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 using SPublisher.Core.Enums;
 using SPublisher.Core.Exceptions;
+using SPublisher.Core.Log;
 using Xunit;
 
 namespace SPublisher.UnitTests

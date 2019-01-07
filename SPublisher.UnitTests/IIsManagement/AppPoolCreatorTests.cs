@@ -1,7 +1,7 @@
 ﻿using Moq;
-using SPublisher.Core;
 using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
+using SPublisher.Core.Log;
 using SPublisher.IisManagement;
 using Xunit;
 

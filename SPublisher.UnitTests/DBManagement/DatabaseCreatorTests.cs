@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
-using SPublisher.Core;
+using SPublisher.Core.DbManagement;
+using SPublisher.Core.Enums;
 using SPublisher.DBManagement;
 using Xunit;
 

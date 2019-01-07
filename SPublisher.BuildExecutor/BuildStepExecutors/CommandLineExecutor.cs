@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using SPublisher.BuildExecutor.Exceptions;
-using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
+using SPublisher.Core.Log;
 
 namespace SPublisher.BuildExecutor.BuildStepExecutors
 {

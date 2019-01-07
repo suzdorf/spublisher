@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Core
+﻿using SPublisher.Core.Log;
+
+namespace SPublisher.Core.DbManagement
 {
     public interface IDatabase : ILogMessage
     {

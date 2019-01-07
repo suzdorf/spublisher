@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SPublisher.Core
+namespace SPublisher.Core.Log
 {
     public interface IStorageLogger
     {

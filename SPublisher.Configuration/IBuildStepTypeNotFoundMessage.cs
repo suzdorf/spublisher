@@ -1,4 +1,4 @@
-﻿using SPublisher.Core;
+﻿using SPublisher.Core.Log;
 
 namespace SPublisher.Configuration
 {

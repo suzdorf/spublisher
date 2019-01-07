@@ -1,4 +1,6 @@
-﻿namespace SPublisher.Core
+﻿using SPublisher.Core.DbManagement;
+
+namespace SPublisher.Core
 {
     public interface IFile : IScriptHashInfo
     {

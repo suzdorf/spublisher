@@ -1,4 +1,4 @@
-﻿namespace SPublisher.Core
+﻿namespace SPublisher.Core.DbManagement
 {
     public interface IDatabaseActionsExecutor
     {

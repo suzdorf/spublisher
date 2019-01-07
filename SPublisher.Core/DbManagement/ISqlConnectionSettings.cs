@@ -1,6 +1,6 @@
 ﻿using SPublisher.Core.Enums;
 
-namespace SPublisher.Core
+namespace SPublisher.Core.DbManagement
 {
     public interface ISqlConnectionSettings
     {

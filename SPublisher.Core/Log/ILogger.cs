@@ -1,7 +1,7 @@
 ﻿using System;
 using SPublisher.Core.Enums;
 
-namespace SPublisher.Core
+namespace SPublisher.Core.Log
 {
     public interface ILogger : IProcessOutputLogger
     {

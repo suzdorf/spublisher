@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using SPublisher.Core;
+using SPublisher.Core.DbManagement;
 using SPublisher.DBManagement.Models;
 
 namespace SPublisher.DBManagement.DataProviders

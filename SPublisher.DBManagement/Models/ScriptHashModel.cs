@@ -1,4 +1,4 @@
-﻿using SPublisher.Core;
+﻿using SPublisher.Core.DbManagement;
 
 namespace SPublisher.DBManagement.Models
 {
