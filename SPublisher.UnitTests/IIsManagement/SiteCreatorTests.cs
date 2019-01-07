@@ -61,14 +61,18 @@ namespace SPublisher.UnitTests.IIsManagement
             _siteCreator.Create(_sites);
 
             _serverManagerDataProviderMock.Verify(
-                x => x.CreateSite(_sites.First(),
-                    It.Is<IBinding>(y =>
-                        y.HostName == FirstSiteName &&
-                        y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
-                        y.Port == Constants.SiteBinding.DefaultPort &&
-                        y.Type == BindingType.Http)), Times.Once);
+                x => x.CreateSite(_sites.First(), It.Is<IBinding>(y =>
+                    y.HostName == FirstSiteName &&
+                    y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
+                    y.Port == Constants.SiteBinding.DefaultPort &&
+                    y.Type == BindingType.Http)), Times.Once);
 
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteCreated, _sites.First()), Times.Once);
+            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BindingAdded, It.Is<IBinding>(y =>
+                y.HostName == FirstSiteName &&
+                y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
+                y.Port == Constants.SiteBinding.DefaultPort &&
+                y.Type == BindingType.Http)), Times.Once);
 
             _serverManagerDataProviderMock.Verify(x => x.CreateSite(_sites.Last(), It.Is<IBinding>(y =>
                 y.HostName == SecondSiteName &&

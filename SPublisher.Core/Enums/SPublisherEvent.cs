@@ -40,7 +40,7 @@
         DatabaseRestorationStarted,
         DatabaseRestored,
         InvalidConnectionStringFormat,
-        BindingAlreadyExists,
-        BindingAdded
+        BindingAdded,
+        CertificateNotFound
     }
 }

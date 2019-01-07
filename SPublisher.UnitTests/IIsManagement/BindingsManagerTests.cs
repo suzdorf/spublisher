@@ -35,7 +35,6 @@ namespace SPublisher.UnitTests.IIsManagement
             _dataProviderMock.Verify(x=>x.AddBinding(bindings.First(), siteName), Times.Never);
             _dataProviderMock.Verify(x => x.AddBinding(bindings.Last(), siteName), Times.Once);
             _loggerMock.Verify(x=>x.LogEvent(SPublisherEvent.BindingAdded, bindings.Last()), Times.Once);
-            _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BindingAlreadyExists, bindings.First()), Times.Once);
         }
     }
 }

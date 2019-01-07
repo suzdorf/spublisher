@@ -24,10 +24,6 @@ namespace SPublisher.IisManagement
                     _serverManagerDataProvider.AddBinding(binding, siteName);
                     _logger.LogEvent(SPublisherEvent.BindingAdded, binding);
                 }
-                else
-                {
-                    _logger.LogEvent(SPublisherEvent.BindingAlreadyExists, binding);
-                }
             }
         }
     }

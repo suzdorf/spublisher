@@ -49,9 +49,10 @@ namespace SPublisher.IisManagement
 
             if (!_serverManagerDataProvider.SiteIsExist(site.Name))
             {
-                _serverManagerDataProvider.CreateSite(site,
-                    site.Bindings.FirstOrDefault() ?? new DefaultBinding(site.Name));
+                var binding = site.Bindings.FirstOrDefault() ?? new DefaultBinding(site.Name);
+                _serverManagerDataProvider.CreateSite(site, binding);
                 _logger.LogEvent(SPublisherEvent.SiteCreated, site);
+                _logger.LogEvent(SPublisherEvent.BindingAdded, binding);
             }
             else
             {

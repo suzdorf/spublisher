@@ -47,6 +47,8 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DatabaseCreateResult.cs" />
     <Compile Include="Enums\BindingType.cs" />
+    <Compile Include="ExceptionMessages\ICertificateNotFoundMessage.cs" />
+    <Compile Include="Exceptions\CertificateNotFoundException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="Exceptions\InvalidConnectionStringException.cs" />
     <Compile Include="IDatabaseActionsExecutor.cs" />

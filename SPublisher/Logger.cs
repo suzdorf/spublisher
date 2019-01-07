@@ -89,14 +89,7 @@ namespace SPublisher
                             $"Binding '{Constants.SiteBinding.Types.BuildDictionary[binding.Type]}:{binding.IpAddress}:{binding.Port}' with hostname '{binding.HostName}' has been added.";
                     }
                 },
-                {
-                    SPublisherEvent.BindingAlreadyExists, message =>
-                    {
-                        var binding = (IBinding) message;
-                        return
-                            $"Binding '{Constants.SiteBinding.Types.BuildDictionary[binding.Type]}:{binding.IpAddress}:{binding.Port}' with hostname '{binding.HostName}' already exists.";
-                    }
-                }
+                {SPublisherEvent.CertificateNotFound, message => $"Certificate with the thumbprint'{((ICertificateNotFoundMessage)message).CertificateThumbprint}' has not been found." }
             };
 
         private readonly IStorageLogger _storageLogger;

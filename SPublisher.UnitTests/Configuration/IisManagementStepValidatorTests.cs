@@ -1,9 +1,11 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
+using SPublisher.Configuration;
 using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Configuration.Models;
+using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
@@ -16,6 +18,17 @@ namespace SPublisher.UnitTests.Configuration
         private const string Name = "Name";
         private const string Path = "Path";
         private readonly Mock<IBuildStep> _buildStepMock = new Mock<IBuildStep>();
+        private readonly Mock<ISite> _siteMock = new Mock<ISite>();
+        private readonly IBuildStepValidator _validator;
+
+        public IisManagementStepValidatorTests()
+        {
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
+            {
+                _siteMock.Object
+            });
+            _validator = new IisManagementStepValidator(true);
+        }
 
         [Theory]
         [InlineData(true, true)]
@@ -43,16 +56,9 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", false)]
         public void ShouldValidateName(string name, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
+            _siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
 
-            var validator = new IisManagementStepValidator(true);
-
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
@@ -69,16 +75,9 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", false)]
         public void ShouldValidatePath(string path, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
+            _siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
 
-            var validator = new IisManagementStepValidator(true);
-
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
@@ -93,17 +92,14 @@ namespace SPublisher.UnitTests.Configuration
         [Fact]
         public void ShouldValidateUniqueApplicationNames()
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
+            _siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
             _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
             {
-                siteMock.Object,
-                siteMock.Object
+                _siteMock.Object,
+                _siteMock.Object
             });
 
-            var validator = new IisManagementStepValidator(true);
-
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames);
         }
@@ -113,26 +109,18 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("", "" , false)]
         public void ShouldValidateNestedApplications(string name, string path, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
             var nestedApplicationMock = new Mock<IApplication>();
-            siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(Path);
-            siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
+            _siteMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(Path);
+            _siteMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(Name);
             nestedApplicationMock.As<IApplicationInfo>().Setup(x => x.Path).Returns(path);
             nestedApplicationMock.As<IApplicationInfo>().Setup(x => x.Name).Returns(name);
 
-            siteMock.SetupGet(x => x.Applications).Returns(new[]
+            _siteMock.SetupGet(x => x.Applications).Returns(new[]
             {
                 nestedApplicationMock.Object
             });
 
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
-
-            var validator = new IisManagementStepValidator(true);
-
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
@@ -153,8 +141,7 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData(65535, true)]
         public void ShoulValidateBindingPorts(int port, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            _siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
             {
                 new BindingModel
                 {
@@ -162,12 +149,7 @@ namespace SPublisher.UnitTests.Configuration
                 }, 
             });
 
-            var validator = new IisManagementStepValidator(true);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
@@ -188,8 +170,7 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("invalid/dw", false)]
         public void ShoulValidateHostName(string hostName, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            _siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
             {
                 new BindingModel
                 {
@@ -197,12 +178,7 @@ namespace SPublisher.UnitTests.Configuration
                 },
             });
 
-            var validator = new IisManagementStepValidator(true);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {
@@ -223,21 +199,15 @@ namespace SPublisher.UnitTests.Configuration
         [InlineData("1.1.1.1", true)]
         public void ShoulValidateIpAddress(string ipdAddress, bool isValid)
         {
-            var siteMock = new Mock<ISite>();
-            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            _siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
             {
                 new BindingModel
                 {
                     IpAddress = ipdAddress
-                },
+                }
             });
 
-            var validator = new IisManagementStepValidator(true);
-            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
-            {
-                siteMock.Object
-            });
-            var result = validator.Validate(_buildStepMock.Object);
+            var result = _validator.Validate(_buildStepMock.Object);
 
             if (isValid)
             {

@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.Web.Administration;
 using SPublisher.Core;
 using SPublisher.Core.Enums;
+using SPublisher.Core.Exceptions;
 using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
@@ -50,11 +51,25 @@ namespace SPublisher.IisManagement
         
         public void CreateSite(IApplicationInfo info, IBinding binding)
         {
-            var iisSite = _storage.Get().Sites.Add(
-                info.Name,
-                GetBindingProtocol(binding.Type),
-                GetBindingInformation(binding),
-                Path.GetFullPath(info.Path));
+            Site iisSite;
+            if (binding.Type == BindingType.Https)
+            {
+                iisSite = _storage.Get().Sites.Add(
+                    info.Name,
+                    GetBindingInformation(binding),
+                    Path.GetFullPath(info.Path),
+                    GetCertificateHash(binding.CertificateThumbPrint),
+                    Constants.SiteBinding.CertificateStoreName);
+            }
+            else
+            {
+                iisSite = _storage.Get().Sites.Add(
+                    info.Name,
+                    GetBindingProtocol(binding.Type),
+                    GetBindingInformation(binding),
+                    Path.GetFullPath(info.Path));
+            }
+
 
             if (!string.IsNullOrEmpty(info.AppPoolName))
             {
@@ -84,12 +99,10 @@ namespace SPublisher.IisManagement
             var bindings = _storage.Get().Sites[siteName].Bindings;
             if (binding.Type == BindingType.Https)
             {
-                var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-                store.Open(OpenFlags.OpenExistingOnly);
-                var certificate =
-                    store.Certificates.Find(X509FindType.FindByThumbprint, binding.CertificateThumbPrint.ToUpper(), false);
-
-                bindings.Add(GetBindingInformation(binding), certificate[0].GetCertHash(), Constants.SiteBinding.CertificateStoreName);
+                bindings.Add(
+                    GetBindingInformation(binding),
+                    GetCertificateHash(binding.CertificateThumbPrint),
+                    Constants.SiteBinding.CertificateStoreName);
             }
             else
             {
@@ -126,6 +139,21 @@ namespace SPublisher.IisManagement
         private static string GetBindingProtocol(BindingType type)
         {
             return Constants.SiteBinding.Types.BuildDictionary[type];
+        }
+
+        private static byte[] GetCertificateHash(string certificateThumbprint)
+        {
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.OpenExistingOnly);
+            var certificate =
+                store.Certificates.Find(X509FindType.FindByThumbprint, certificateThumbprint.ToUpper(), false);
+
+            if (certificate.Count < 1)
+            {
+                throw new CertificateNotFoundException(certificateThumbprint);
+            }
+
+            return certificate[0].GetCertHash();
         }
     }
 }
