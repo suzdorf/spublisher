@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPublisher.Core;
 using SPublisher.Core.Enums;
 using SPublisher.DBManagement.DataProviders;
 

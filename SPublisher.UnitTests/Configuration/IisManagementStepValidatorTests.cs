@@ -3,7 +3,7 @@ using FluentAssertions;
 using Moq;
 using SPublisher.Configuration.BuildStepValidators;
 using SPublisher.Configuration.Exceptions;
-using SPublisher.Core;
+using SPublisher.Configuration.Models;
 using SPublisher.Core.BuildSteps;
 using SPublisher.Core.Enums;
 using SPublisher.Core.IisManagement;
@@ -14,10 +14,9 @@ namespace SPublisher.UnitTests.Configuration
     public class IisManagementStepValidatorTests
     {
         private const string Name = "Name";
-        private const string AppPoolName = "AppPoolName";
         private const string Path = "Path";
         private readonly Mock<IBuildStep> _buildStepMock = new Mock<IBuildStep>();
-        
+
         [Theory]
         [InlineData(true, true)]
         [InlineData(false, false)]
@@ -144,6 +143,109 @@ namespace SPublisher.UnitTests.Configuration
             {
                 result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationPathValueIsRequired);
                 result.Should().Contain(x => x.Type == ValidationErrorType.ApplicationNameValueIsRequired);
+            }
+        }
+
+        [Theory]
+        [InlineData(0, false)]
+        [InlineData(65536, false)]
+        [InlineData(1, true)]
+        [InlineData(65535, true)]
+        public void ShoulValidateBindingPorts(int port, bool isValid)
+        {
+            var siteMock = new Mock<ISite>();
+            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            {
+                new BindingModel
+                {
+                    Port = port
+                }, 
+            });
+
+            var validator = new IisManagementStepValidator(true);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
+            {
+                siteMock.Object
+            });
+            var result = validator.Validate(_buildStepMock.Object);
+
+            if (isValid)
+            {
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SitePortInvalidValue);
+            }
+            else
+            {
+                result.Should().Contain(x => x.Type == ValidationErrorType.SitePortInvalidValue);
+            }
+        }
+
+        [Theory]
+        [InlineData("www.valid.com", true)]
+        [InlineData("valid.com", true)]
+        [InlineData("valid", true)]
+        [InlineData("", true)]
+        [InlineData("[invalid]", false)]
+        [InlineData("invalid/dw", false)]
+        public void ShoulValidateHostName(string hostName, bool isValid)
+        {
+            var siteMock = new Mock<ISite>();
+            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            {
+                new BindingModel
+                {
+                    HostName = hostName
+                },
+            });
+
+            var validator = new IisManagementStepValidator(true);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
+            {
+                siteMock.Object
+            });
+            var result = validator.Validate(_buildStepMock.Object);
+
+            if (isValid)
+            {
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SiteHostNameHasInvalidValue);
+            }
+            else
+            {
+                result.Should().Contain(x => x.Type == ValidationErrorType.SiteHostNameHasInvalidValue);
+            }
+        }
+
+        [Theory]
+        [InlineData("random string", false)]
+        [InlineData("", false)]
+        [InlineData("257.256.256.256", false)]
+        [InlineData("-1.1.1.1", false)]
+        [InlineData("*", true)]
+        [InlineData("1.1.1.1", true)]
+        public void ShoulValidateIpAddress(string ipdAddress, bool isValid)
+        {
+            var siteMock = new Mock<ISite>();
+            siteMock.SetupGet(x => x.Bindings).Returns(new IBinding[]
+            {
+                new BindingModel
+                {
+                    IpAddress = ipdAddress
+                },
+            });
+
+            var validator = new IisManagementStepValidator(true);
+            _buildStepMock.As<IIisManagementStep>().SetupGet(x => x.Sites).Returns(new[]
+            {
+                siteMock.Object
+            });
+            var result = validator.Validate(_buildStepMock.Object);
+
+            if (isValid)
+            {
+                result.Should().NotContain(x => x.Type == ValidationErrorType.SiteIpAddressInvalidValue);
+            }
+            else
+            {
+                result.Should().Contain(x => x.Type == ValidationErrorType.SiteIpAddressInvalidValue);
             }
         }
     }

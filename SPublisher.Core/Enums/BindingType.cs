@@ -3,7 +3,6 @@
     public enum BindingType
     {
         Http,
-        Https,
-        Invalid
+        Https
     }
 }

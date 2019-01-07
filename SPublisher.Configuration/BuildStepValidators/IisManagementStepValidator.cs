@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using SPublisher.Configuration.Exceptions;
 using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
@@ -27,6 +29,8 @@ namespace SPublisher.Configuration.BuildStepValidators
             }
 
             ValidateApplications(iisManagementStep.Sites, errors);
+
+            ValidateBindings(iisManagementStep.Sites.SelectMany(x => x.Bindings).ToArray(), errors);
 
             return errors.ToArray();
         }
@@ -70,6 +74,41 @@ namespace SPublisher.Configuration.BuildStepValidators
                 if (errors.All(x => x.Type != ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames))
                     errors.Add(new ValidationError(ValidationErrorType.ApplicationChildrenShouldHaveUniqueNames));
             }
+        }
+
+        private static void ValidateBindings(IBinding[] bindings, List<IValidationError> errors)
+        {
+            if (bindings.Any(x => !ValidatePort(x.Port)))
+            {
+                errors.Add(new ValidationError(ValidationErrorType.SitePortInvalidValue));
+            }
+
+            if (bindings.Any(x => !ValidateIPv4(x.IpAddress)))
+            {
+                errors.Add(new ValidationError(ValidationErrorType.SiteIpAddressInvalidValue));
+            }
+
+            if (bindings.Any(x => !ValidateHostName(x.HostName)))
+            {
+                errors.Add(new ValidationError(ValidationErrorType.SiteHostNameHasInvalidValue));
+            }
+        }
+
+        private static bool ValidatePort(int value)
+        {
+            return value > 0 && value < 65536;
+        }
+
+        private static bool ValidateIPv4(string value)
+        {
+            if (value == Constants.SiteBinding.DefaultIpAddress) return true;
+            return value.Count(c => c == '.') == 3 && IPAddress.TryParse(value, out var address);
+        }
+
+        private static bool ValidateHostName(string value)
+        {
+            if (value == string.Empty) return true;
+            return Uri.CheckHostName(value) != UriHostNameType.Unknown;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using SPublisher.Core;
-using SPublisher.Core.Enums;
+﻿using SPublisher.Core.Enums;
 
 namespace SPublisher.DBManagement
 {

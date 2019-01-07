@@ -1,5 +1,4 @@
 ﻿using SPublisher.Configuration.BuildSteps;
-using SPublisher.Core;
 using SPublisher.Core.BuildSteps;
 using SPublisher.Core.Enums;
 

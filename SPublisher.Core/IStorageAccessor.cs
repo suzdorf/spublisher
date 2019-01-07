@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SPublisher.Core
+﻿namespace SPublisher.Core
 {
     public interface IStorageAccessor
     {

@@ -40,7 +40,10 @@ namespace SPublisher.Configuration
                 {ValidationErrorType.SqlStepConnectionStringIsRequired, (step, data) => $"'ConnectionString' value is missing or empty in the build step '{step.Name}'." },
                 {ValidationErrorType.SqlStepPathValueIsRequired, (step, data) => $"Some of the 'Path' values are null or empty in the build step '{step.Name}'. You should provide them." },
                 {ValidationErrorType.SqlServerTypeInvalidValue, (step, data) => $"'ServerType' contains invalid value in the build step '{step.Name}'." },
-                {ValidationErrorType.DatabaseNameMustBeSpecifiedForRestoreOperation, (step, data) => $"'BackupPath' contains a value in the build step '{step.Name}'. But the 'DatabaseName' value is empty. You should specify it in order to proceed with restore operation."}
+                {ValidationErrorType.DatabaseNameMustBeSpecifiedForRestoreOperation, (step, data) => $"'BackupPath' contains a value in the build step '{step.Name}'. But the 'DatabaseName' value is empty. You should specify it in order to proceed with restore operation."},
+                {ValidationErrorType.SiteHostNameHasInvalidValue, (step, data) => $"Build step \'{step.Name}\' contains incorrect \'HostName\' value. The host name must use a valid host name format and cannot contain the following characters: \"/\\[]:|<>+=;,?*$%#@{{}}^`. Example: www.spublisher.com." },
+                {ValidationErrorType.SitePortInvalidValue, (step, data) => $"Build step \'{step.Name}\' contains incorrect \'Port\' value. The server port number must be a positive integer between 1 and 65535." },
+                {ValidationErrorType.SiteIpAddressInvalidValue, (step, message) => $"Build step \'{step.Name}\' contains incorrect \'IpAddress\' value." }
             };
     }
 }

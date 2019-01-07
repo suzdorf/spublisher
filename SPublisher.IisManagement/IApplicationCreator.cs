@@ -1,5 +1,4 @@
-﻿using SPublisher.Core;
-using SPublisher.Core.IisManagement;
+﻿using SPublisher.Core.IisManagement;
 
 namespace SPublisher.IisManagement
 {
