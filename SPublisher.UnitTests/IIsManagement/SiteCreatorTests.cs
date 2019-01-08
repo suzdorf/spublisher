@@ -65,20 +65,20 @@ namespace SPublisher.UnitTests.IIsManagement
                 x => x.CreateSite(_sites.First(), It.Is<IBinding>(y =>
                     y.HostName == FirstSiteName &&
                     y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
-                    y.Port == Constants.SiteBinding.DefaultPort &&
+                    y.Port == Constants.SiteBinding.DefaultHttpPort &&
                     y.Type == BindingType.Http)), Times.Once);
 
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteCreated, _sites.First()), Times.Once);
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.BindingAdded, It.Is<IBinding>(y =>
                 y.HostName == FirstSiteName &&
                 y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
-                y.Port == Constants.SiteBinding.DefaultPort &&
+                y.Port == Constants.SiteBinding.DefaultHttpPort &&
                 y.Type == BindingType.Http)), Times.Once);
 
             _serverManagerDataProviderMock.Verify(x => x.CreateSite(_sites.Last(), It.Is<IBinding>(y =>
                 y.HostName == SecondSiteName &&
                 y.IpAddress == Constants.SiteBinding.DefaultIpAddress &&
-                y.Port == Constants.SiteBinding.DefaultPort &&
+                y.Port == Constants.SiteBinding.DefaultHttpPort &&
                 y.Type == BindingType.Http)), Times.Never);
 
             _loggerMock.Verify(x => x.LogEvent(SPublisherEvent.SiteCreated, _sites.Last()), Times.Never);

@@ -41,7 +41,8 @@ namespace SPublisher.Core
                 };
             }
 
-            public const int DefaultPort = 80;
+            public const int DefaultHttpPort = 80;
+            public const int DefaultHttpsPort = 443;
             public const string DefaultIpAddress = "*";
             public const string CertificateStoreName = "My";
         }

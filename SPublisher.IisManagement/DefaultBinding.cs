@@ -13,7 +13,7 @@ namespace SPublisher.IisManagement
 
         public BindingType Type => BindingType.Http;
         public string IpAddress => Constants.SiteBinding.DefaultIpAddress;
-        public int Port => Constants.SiteBinding.DefaultPort;
+        public int Port => Constants.SiteBinding.DefaultHttpPort;
         public string HostName { get; }
         public string CertificateThumbPrint => null;
     }
