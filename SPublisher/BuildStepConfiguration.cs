@@ -18,7 +18,8 @@ namespace SPublisher
     {
         private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
         private static readonly IStorageLogger StorageLogger = new StorageLogger(StorageAccessor, Program.LocalFolderPath);
-        private static readonly ILogger Logger = new Logger(StorageLogger);
+        private static readonly IConsoleLogger ConsoleLogger = new ConsoleLogger();
+        private static readonly ILogger Logger = new Logger(StorageLogger, ConsoleLogger);
 
         // IIS Management
         private static readonly ServerManagerAccessor ServerManagerAccessor = new ServerManagerAccessor();

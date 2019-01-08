@@ -11,7 +11,8 @@ namespace SPublisher
     {
         private static readonly IStorageAccessor StorageAccessor = new StorageAccessor();
         private static readonly IStorageLogger StorageLogger = new StorageLogger(StorageAccessor, LocalFolderPath);
-        private static readonly ILogger Logger = new Logger(StorageLogger);
+        private static readonly IConsoleLogger ConsoleLogger = new ConsoleLogger();
+        private static readonly ILogger Logger = new Logger(StorageLogger, ConsoleLogger);
         // Build executor
         private static readonly IBuildStepExecutorFactory BuildStepExecutorFactory = new BuildStepExecutorFactory(BuildStepConfiguration.BuildStepExecutors);
         private static readonly IBuildExecutor BuildExecutor = new BuildExecutor.BuildExecutor(BuildStepExecutorFactory, Logger);

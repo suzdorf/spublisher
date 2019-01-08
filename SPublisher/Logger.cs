@@ -95,20 +95,22 @@ namespace SPublisher
             };
 
         private readonly IStorageLogger _storageLogger;
+        private readonly IConsoleLogger _consoleLogger;
 
-        public Logger(IStorageLogger storageLogger)
+        public Logger(IStorageLogger storageLogger, IConsoleLogger consoleLogger)
         {
             _storageLogger = storageLogger;
+            _consoleLogger = consoleLogger;
         }
 
         public void LogEvent(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
-            Console.WriteLine($"INFO: {Messages[sPublisherEvent](logMessage)}");
+            _consoleLogger.LogInfo($"INFO: {Messages[sPublisherEvent](logMessage)}");
         }
 
         public void LogError(SPublisherEvent sPublisherEvent, ILogMessage logMessage = null)
         {
-            Console.WriteLine($"ERROR: {Messages[sPublisherEvent](logMessage)}");
+            _consoleLogger.LogError($"ERROR: {Messages[sPublisherEvent](logMessage)}");
         }
 
         public void LogError(Exception exception)
@@ -118,21 +120,21 @@ namespace SPublisher
 
         public void LogValidationError(IValidationInfo info)
         {
-            Console.WriteLine("VALIDATION ERROR: There are validation errors in you build configuration.");
+            _consoleLogger.LogError("VALIDATION ERROR: There are validation errors in you build configuration.");
             foreach (var error in info.Errors)
             {
-                Console.WriteLine($"VALIDATION ERROR: {error}");
+                _consoleLogger.LogError($"VALIDATION ERROR: {error}");
             }
         }
 
         public void LogOutput(string output)
         {
-            Console.WriteLine(output);
+            _consoleLogger.LogInfo(output);
         }
 
         public void LogError(string error)
         {
-            Console.WriteLine(error);
+            _consoleLogger.LogError(error);
         }
     }
 }

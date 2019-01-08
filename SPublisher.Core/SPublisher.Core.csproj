@@ -70,6 +70,7 @@
     <Compile Include="DbManagement\IDatabaseCreator.cs" />
     <Compile Include="IFile.cs" />
     <Compile Include="IisManagement\IBinding.cs" />
+    <Compile Include="Log\IConsoleLogger.cs" />
     <Compile Include="Log\ILogger.cs" />
     <Compile Include="Log\ILogMessage.cs" />
     <Compile Include="Log\IProcessOutputLogger.cs" />
