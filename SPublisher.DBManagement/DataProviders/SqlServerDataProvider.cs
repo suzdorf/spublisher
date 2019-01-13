@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using SPublisher.Core;
 using SPublisher.Core.DbManagement;
 using SPublisher.DBManagement.Models;
@@ -35,10 +36,11 @@ namespace SPublisher.DBManagement.DataProviders
 
         public void RestoreDatabase(IDatabase database)
         {
+            var backupPath = Path.GetFullPath(database.BackupPath);
             var script =
                 DataBaseExists(database.DatabaseName)
-                    ? SqlHelpers.RestoreExistingDatabase(database.DatabaseName, database.BackupPath)
-                    : SqlHelpers.RestoreDatabase(database.DatabaseName, database.BackupPath);
+                    ? SqlHelpers.RestoreExistingDatabase(database.DatabaseName, backupPath)
+                    : SqlHelpers.RestoreDatabase(database.DatabaseName, backupPath);
 
             ExecuteNonQuery(script);
         }
