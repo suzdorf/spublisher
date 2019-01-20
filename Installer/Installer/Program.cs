@@ -1,5 +1,8 @@
-﻿using WixSharp;
+﻿using System;
+using System.IO;
+using WixSharp;
 using WixSharp.CommonTasks;
+using File = WixSharp.File;
 
 namespace Installer
 {
@@ -23,10 +26,12 @@ namespace Installer
                 new Dir(@"%LocalAppData%\spublisher"),
                 pathVariable);
 
+            project.UI = WUI.WixUI_InstallDir;
             project.SetVersionFromFile(@"spublisher\SPublisher.exe");
             project.LicenceFile = "licence.rtf";
             project.ScheduleReboot = new ScheduleReboot{ InstallSequence = RebootInstallSequence.Both};
 
+            Compiler.WixLocation = Path.GetFullPath(@"..\packages\WixSharp.wix.bin.3.11.0\tools\bin");
             Compiler.BuildMsi(project);
         }
     }
